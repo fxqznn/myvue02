@@ -27,7 +27,7 @@
   import axios from 'axios/index';
 
   export default {
-    name: "Main",
+    name: "main",
     data: {
       name: null
     },

@@ -4,6 +4,9 @@ import HelloWorld from '@/components/HelloWorld'
 import login from '@/components/login'
 import Top from '@/components/Top'
 import managerEdge from "../components/managerEdge";
+import axios from 'axios'
+axios.defaults.baseURL='http://localhost:8081/'
+Vue.prototype.axios = axios
 
 Vue.use(Router);
 

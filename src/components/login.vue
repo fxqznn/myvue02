@@ -77,7 +77,7 @@
               if (res.data != null) {
                 this.$store.dispatch("setUser", this.ruleForm.uname);
                 if (res.data.role === 0){
-                  return this.$router.push({path: "/Top"})
+                  return this.$router.push({path: "/managerEdge"})
                 }
               }else {
                return this.$message("用户名或密码错误")

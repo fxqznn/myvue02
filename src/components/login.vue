@@ -74,13 +74,13 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             axios.get("http://localhost:8081/login/" + this.ruleForm.uname + "/" + this.ruleForm.pass).then(res => {
-              if (res.data != null) {
+              if (res.data != null && res.data != "") {
                 this.$store.dispatch("setUser", this.ruleForm.uname);
                 if (res.data.role === 0){
                   return this.$router.push({path: "/Top"})
                 }
               }else {
-               return this.$message("用户名或密码错误")
+               this.$message("用户名或密码错误")
               }
             })
           }

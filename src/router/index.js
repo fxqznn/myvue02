@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import mainFrame from '@/components/mainFrame';
 import login from '@/components/login'
 import managerEdge from "../components/managerEdge";
+import changePass from '@/components/changePass';
 
 
 import axios from 'axios'

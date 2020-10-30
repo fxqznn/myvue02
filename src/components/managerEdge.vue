@@ -1,6 +1,5 @@
 <template>
 
-
     <el-table style="width: 100%" border :data="tableData">
       <el-table-column
         prop="ename"

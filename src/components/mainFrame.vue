@@ -18,7 +18,7 @@
       </el-aside>
       <el-container>
         <el-main>
-          <router-view/>
+          <component :is="isShow"></component>
         </el-main>
       </el-container>
     </el-container>
@@ -28,15 +28,24 @@
 <script>
   import axios from 'axios';
   import NavigationItem from "./NavigationItem"; //引入菜单
+  import Router from 'vue-router'
+  import Vue from 'vue'
+  import changePass from './changePass';
+
+  Vue.use(Router);
 
   export default {
     name: "mainFrame",
-    components: {"navigation-item": NavigationItem},
+    components: {
+      "navigation-item": NavigationItem,
+      changePass,
+    },
     data() {
       return {
         menus: [],
         name: null,
-        role: null
+        role: null,
+        isShow: null
       }
     },
     methods: {
@@ -60,7 +69,7 @@
         }
       },
       changePass: function () {
-        this.$router.push({path: '/changePass'})
+        this.isShow = changePass;
       }
     },
     mounted() {//编译后去获取数据

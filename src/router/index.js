@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import mainFrame from '@/components/mainFrame';
 import login from '@/components/login'
-import Top from '@/components/Top'
 import managerEdge from "../components/managerEdge";
+
 
 import axios from 'axios'
 import empScoreList from "../components/empScoreList";
-axios.defaults.baseURL='http://localhost:8081/'
+
+axios.defaults.baseURL = 'http://localhost:8081/'
 Vue.prototype.axios = axios
 
 Vue.use(Router);
@@ -20,23 +21,18 @@ export default new Router({
       component: login
     },
     {
-      path: '/HelloWorld',
-      name: 'HelloWorld',
-      component: HelloWorld
-    },
-    {
-      path: '/Top',
-      name: 'Top',
-      component: Top
+      path: '/mainFrame',
+      name: 'mainFrame',
+      component: mainFrame
     },
     {
       path: '/managerEdge',
       name: 'managerEdge',
-      component:managerEdge
-    },{
+      component: managerEdge
+    }, {
       path: '/empScoreList',
       name: 'empScoreList',
-      component:empScoreList
+      component: empScoreList
     }
   ]
 })

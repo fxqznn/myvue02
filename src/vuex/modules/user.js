@@ -10,7 +10,7 @@ const getters = {
   getUname: state => {
     return state.uname;
   },
-  getRole: state => {
+  roleGetter: state => {
     return state.role;
   }
 };

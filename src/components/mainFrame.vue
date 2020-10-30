@@ -30,8 +30,8 @@
   import NavigationItem from "./NavigationItem"; //引入菜单
 
   export default {
-    name: "main",
-    components: {NavigationItem},
+    name: "mainFrame",
+    components: {"navigation-item": NavigationItem},
     data() {
       return {
         menus: [],
@@ -41,22 +41,13 @@
     },
     methods: {
       getName: function () {
-        if (this.$store.user.name == null) {
-          this.$router.push({path: "/"})
-        } else {
-          this.name = this.$store.user.name;
-        }
+        this.name = this.$store.state.user.uname;
       },
       getRole: function () {
-        if (this.$store.user.role == null) {
-          this.$router.push({path: "/"})
-        } else {
-          this.role = this.$store.user.role;
-          this.checkRole(this.role)
-        }
+        this.role = this.$store.state.user.role;
       },
       getMenu: function () {
-        axios.get('http://localhost:8080/getMenu/' + this.role).then(res => {
+        axios.get('http://localhost:8081/getMenu/' + this.role).then(res => {
           this.menus = res.data;
         })
       },
@@ -74,6 +65,7 @@
     },
     mounted() {//编译后去获取数据
       this.getName();
+      this.getRole();
       this.getMenu();
     }
   }

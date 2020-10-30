@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/components/login'
-import main from '@/components/main'
-import studentmenu from '@/components/studnetmenu'
+import mainFrame from '@/components/mainFrame'
+import changePass from '@/components/changePass'
 
 Vue.use(Router)
 
@@ -14,14 +14,14 @@ export default new Router({
       component: login
     },
     {
-      path: '/main',
-      name: 'main',
-      component: main
+      path: '/mainFrame',
+      name: 'mainFrame',
+      component: mainFrame
     },
     {
-      path:'/student',
-      component:resolve=>require([])
-
+      path:'/changePass',
+      name: 'changePass',
+      component: changePass
     }
   ]
 })

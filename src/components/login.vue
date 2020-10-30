@@ -75,10 +75,10 @@
           if (valid) {
             axios.get("http://localhost:8081/login/" + this.ruleForm.uname + "/" + this.ruleForm.pass).then(res => {
               if (res.data != null && res.data != "") {
-                this.$store.dispatch("setUser", this.ruleForm.uname);
-                if (res.data.role === 0){
-                  return this.$router.push({path: "/Top"})
-                }
+                this.$store.dispatch("user/setId", res.data.uid);
+                this.$store.dispatch("user/setUser", this.ruleForm.uname);
+                this.$store.dispatch("user/setPerm", res.data.role);
+                this.$router.push({path: "/main"})
               }else {
                this.$message("用户名或密码错误")
               }

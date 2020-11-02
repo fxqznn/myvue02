@@ -188,7 +188,6 @@
         })
       },
       handleSetPwdDefault:function (index, row) {
-        debugger
         axios.get('setDefaultPwd?uid=' + row.uid).then(res => {
           if(res.data == "success"){
             this.$message({

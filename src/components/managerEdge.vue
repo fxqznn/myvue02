@@ -1,22 +1,28 @@
 <template>
     <div>
+      <el-row :gutter="20">
 
-      <el-input v-model="ename"  placeholder="输入姓名查找" @change="showScores"></el-input>
+        <el-col :span="4" offset="8">
+          <el-input v-model="ename"  placeholder="输入姓名关键字查找" @change="showScores" suffix-icon="el-icon-search"></el-input>
+        </el-col>
+        <el-col :span="6">
+          <el-select v-model="value"  @change="showScores">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              v-model="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
 
-      <el-select v-model="value" placeholder="请选择" @change="showScores">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          v-model="item.value">
-        </el-option>
-      </el-select>
+      </el-row>
 
       <br><br>
       &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-      <span>部门：dname  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  &nbsp; &nbsp;&nbsp;&nbsp;       评价人：ename （eid）</span>
+      <span>部门：{{dname}}  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  &nbsp; &nbsp;&nbsp;&nbsp;       评价人：{{ename}}</span>
       <br><br>
-      <el-table style="width: 100%" border :data="tableData" >
+      <el-table style="width: 100%" border :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" >
         <el-table-column
           align="center"
           prop="eid"
@@ -49,20 +55,41 @@
           align="center"
           prop="title"
           label="综合评价(优缺点)">
+          <el-button type="text" @click="dialogFormVisible = true" size="mini">编写评价</el-button>
         </el-table-column>
       </el-table>
+      <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+        <el-form :model="form">
+          <el-form-item label="评价(包括主要优点及缺陷)" :label-width="formLabelWidth">
+            <el-input type="textarea" v-model="title"></el-input>
+          </el-form-item>
+
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        </div>
+      </el-dialog>
+      <div class="block" style="margin-top:15px;">
+        <el-pagination align='center' @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-sizes="[1,5,10,20]"
+                       :page-size="pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="tableData.length">
+        </el-pagination>
+      </div>
     </div>
-
-
 
 </template>
 
 <script>
   import axios from 'axios';
   export default {
-    name:"EmpList",
-    data(){
-      return{
+    name: "EmpList",
+    data() {
+      return {
+        dialogFormVisible: false,
         options: [{
           value: '0',
           label: '转正评价'
@@ -76,32 +103,50 @@
           value: '3',
           label: '第三年评价'
         }],
-        value:"0",
-        ename:"",
-        tableHead:[],
-        tableData:[]
+        title:"",
+        currentPage: 1,
+        total: 20,
+        pageSize: 5,
+        uname: "100001",
+        value: "0",
+        ename: "",
+        tableHead: [],
+        tableData: []
       }
     },
-    methods:{
-      getAllScores(){
-        axios.get("http://localhost:8081/getAllEntity?eid="+100001+"&&type="+0).then(res => {
-            this.tableHead=res.data;
-        })
-      },
-      showScores(){
-        axios.get("http://localhost:8081/showAbilityScore?eid="+100001+"&&type="+this.value+"&&ename="+this.ename).then(res => {
-          this.tableData=res.data;
-        })
-      },
-      resel(type){
+    methods: {
 
-      }
+      //每页条数改变时触发 选择一页显示多少行
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+        this.currentPage = 1;
+        this.pageSize = val;
+      },
+      //当前页改变时触发 跳转其他页
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+        this.currentPage = val;
+      },
+
+    getName: function () {
+      this.name = this.$store.state.user.uname;
     },
-    //生命周期钩子
+    getAllScores() {
+      axios.get("http://localhost:8081/getAllEntity?eid=" + this.uname + "&&type=" + this.value).then(res => {
+        this.tableHead = res.data;
+      })
+    },
+    showScores() {
+      axios.get("http://localhost:8081/showAbilityScore?eid=" + this.uname + "&&type=" + this.value + "&&ename=" + this.ename).then(res => {
+        this.tableData = res.data;
+      })
+    },
+  },
     mounted() {
       //编译后去获取数据
       this.getAllScores();
       this.showScores();
+      this.getName();
     }
   }
 </script>

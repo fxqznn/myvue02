@@ -1,24 +1,30 @@
 <template>
-  <el-container>
-    <el-header>
-      <el-dropdown>
-        <i class="el-icon-user" style="margin-right: 15px"></i>
-        <span v-text="name"></span>
+  <el-container id="all" style="width: 100%;height: 100%">
+    <el-header style="text-align: right;height: 15%">
+      <el-dropdown style="margin-top:1%">
+        <el-button>
+          <i class="el-icon-user"></i>
+          <span v-text="name" style="font-size: 15px"></span>
+        </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click="changePass">修改密码</el-dropdown-item>
-          <el-dropdown-item @click="exit">退出</el-dropdown-item>
+          <el-dropdown-item>
+            <el-button @click="changePass">修改密码</el-button>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <el-button @click="exit">退出</el-button>
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-header>
     <el-container>
-      <el-aside>
+      <el-aside style="width: 20%">
         <el-menu>
           <navigation-item v-for="(menu,i) in menus" :key="i" :item="menu"/>
         </el-menu>
       </el-aside>
       <el-container>
         <el-main>
-          <component :is="isShow"></component>
+          <router-view/>
         </el-main>
       </el-container>
     </el-container>
@@ -32,8 +38,6 @@
   import Vue from 'vue'
   import changePass from './changePass';
 
-  Vue.use(Router);
-
   export default {
     name: "mainFrame",
     components: {
@@ -45,7 +49,6 @@
         menus: [],
         name: null,
         role: null,
-        isShow: null
       }
     },
     methods: {
@@ -61,15 +64,19 @@
         })
       },
       exit: function () {
-        if (confirm("确认要退出吗？")) {
+        this.$confirm('确认退出吗', '提示', {
+          confirmButtonText: '退出',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
           this.$store.dispatch('user/setId', null);
           this.$store.dispatch('user/setUser', null);
           this.$store.dispatch('user/setPerm', null);
           this.$router.push({path: '/'})
-        }
+        })
       },
       changePass: function () {
-        this.isShow = changePass;
+        this.$router.push({path: '/mainFrame/changePass'})
       }
     },
     mounted() {//编译后去获取数据
@@ -81,26 +88,5 @@
 </script>
 
 <style scoped>
-  .el-header {
-    height: 20%;
-    width: 100%;
-    text-align: right;
-    font-size: 12px
-  }
 
-  .el-container {
-    height: 100%;
-    width: 100%;
-    border: 1px solid #eee
-  }
-
-  .el-main {
-    width: 70%;
-    height: 80%
-  }
-
-  .el-aside {
-    width: 30%;
-    height: 80%
-  }
 </style>

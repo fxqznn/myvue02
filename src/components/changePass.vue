@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="6" :offset="8" style="background-color: darkgrey">
+      <el-col :span="6" :offset="8">
         <div style="padding-top: 20px">
           <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
                    class="demo-ruleForm">
             <el-form-item label="新密码：" prop="newPass">
               <el-col :span="20" :offset="1">
-                <el-input :type="passw" v-model="ruleForm.newPass" autocomplete="off">
+                <el-input :type="passw" v-model="ruleForm.newPass" autocomplete="off" @change="setPass()">
                   <i slot="suffix" :class="icon" @click="showPass"></i>
                 </el-input>
               </el-col>
@@ -32,7 +32,7 @@
 
 <script>
   import axios from 'axios';
-  import user from "../vuex/modules/user";
+  import qs from 'qs';
 
   export default {
     name: "changePass",
@@ -50,9 +50,9 @@
       var checkCheckPass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请再次输入密码'));
-        } else if (value !== this.ruleForm.pass) {
+        } else if (value !== this.ruleForm.newPass) {
           callback(new Error('两次输入密码不一致!'));
-        }else {
+        } else {
           callback();
         }
       };
@@ -61,10 +61,8 @@
         //用于改变Input类型
         passw: "password",
         icon: "el-icon-view",
-        user: {
-          uid: this.$store.user.uid,
-          pwd: this.ruleForm.newPass
-        },
+        uid: this.$store.state.user.uid,
+        pwd: '',
         ruleForm: {
           newPass: '',
           checkPass: ''
@@ -82,20 +80,22 @@
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            axios.post("http://localhost:8081/editUser",{user:this.user}).then(res => {
-              if (res.data == "success") {
-                this.$message("修改密码成功")
-              } else {
-                this.$message("修改密码失败")
-              }
-            })
+            if (valid) {
+              axios.get("changePass/" + this.uid + "/" + this.pwd).then(res => {
+                if (res.data == "success") {
+                  this.$message("修改密码成功")
+                } else {
+                  this.$message("修改密码失败")
+                }
+              })
+            }
           }
-        })
+        )
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
-      },
+      }
+      ,
       //密码的隐藏和显示
       showPass() {
         //点击图标是密码隐藏或显示
@@ -107,6 +107,10 @@
           this.passw = "text";
           this.icon = "el-icon-loading"
         }
+      }
+      ,
+      setPass() {
+        this.pwd = this.ruleForm.newPass;
       }
     }
   }

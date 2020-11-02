@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import mainFrame from '@/components/mainFrame';
 import login from '@/components/login'
-import managerEdge from "../components/managerEdge";
-import changePass from '@/components/changePass';
+import managerEdge from "../components/managerEdge"
+import changePass from '@/components/changePass'
 
 
 import axios from 'axios'
@@ -24,7 +24,14 @@ export default new Router({
     {
       path: '/mainFrame',
       name: 'mainFrame',
-      component: mainFrame
+      component: mainFrame,
+      children: [
+        {
+          path: 'changePass',
+          name: 'changePass',
+          component: changePass
+        }
+      ]
     },
     {
       path: '/managerEdge',

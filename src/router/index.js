@@ -7,7 +7,7 @@ import changePass from '@/components/changePass';
 
 
 import axios from 'axios'
-import empScoreList from "../components/empScoreList";
+
 
 axios.defaults.baseURL = 'http://localhost:8081/'
 Vue.prototype.axios = axios
@@ -30,10 +30,6 @@ export default new Router({
       path: '/managerEdge',
       name: 'managerEdge',
       component: managerEdge
-    }, {
-      path: '/empScoreList',
-      name: 'empScoreList',
-      component: empScoreList
     }
   ]
 })

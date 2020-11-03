@@ -22,7 +22,7 @@
               :default-sort="{prop:'uid',order:'ascending'}"  @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection"></el-table-column>
       <el-table-column fixed prop="uid" label="编号"></el-table-column>
-      <el-table-column prop="uname" label="用户名"></el-table-column>
+      <el-table-column fixed prop="uname" label="用户名"></el-table-column>
       <el-table-column prop="role" label="角色" :formatter="roleFormat"></el-table-column>
       <el-table-column fixed="right" label="操作">
         <template slot-scope="scope">

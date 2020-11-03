@@ -1,5 +1,6 @@
 <template>
     <div>
+      <br>
       <el-row :gutter="20">
 
         <el-col :span="4" offset="8">
@@ -15,13 +16,12 @@
             </el-option>
           </el-select>
         </el-col>
-
+        <br>
+        <el-col :offset="6">
+          <span>部门：{{dname}}  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  &nbsp; &nbsp;&nbsp;&nbsp;       评价人：{{ename}}</span>
+        </el-col>
       </el-row>
-
-      <br><br>
-      &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-      <span>部门：{{dname}}  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  &nbsp; &nbsp;&nbsp;&nbsp;       评价人：{{ename}}</span>
-      <br><br>
+      <br>
       <el-table style="width: 100%" border :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" >
         <el-table-column
           align="center"
@@ -42,7 +42,7 @@
           align="center"
           label="成绩">
           <template v-for="(item,index) in tableHead">
-            <el-table-column :prop="item.cid" :label="item.cname" align="center">
+            <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
             </el-table-column>
           </template>
         </el-table-column>
@@ -115,7 +115,13 @@
       }
     },
     methods: {
-
+      showJudge(row,column){
+        const score = row[column.property];
+        if (score == undefined){
+            return "未评分";
+        }
+        return score;
+      },
       //每页条数改变时触发 选择一页显示多少行
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);

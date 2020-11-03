@@ -12,7 +12,7 @@
           </el-option>
         </el-select>
       </el-col>
-      <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4" :offset="6">
+      <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4" :offset="5">
         <el-button @click="addUser" >添加用户</el-button>
         <el-button @click="deleteUsers" >删除用户</el-button>
       </el-col>
@@ -23,10 +23,11 @@
       <el-table-column fixed type="selection"></el-table-column>
       <el-table-column fixed prop="uid" label="编号"></el-table-column>
       <el-table-column prop="uname" label="用户名"></el-table-column>
-      <el-table-column prop="role" label="角色"></el-table-column>
+      <el-table-column prop="role" label="角色" :formatter="roleFormat"></el-table-column>
       <el-table-column fixed="right" label="操作">
         <template slot-scope="scope">
           <el-button @click="handleDelete(scope.$index, scope.row)" type="text" size="small">删除</el-button>
+          <el-button @click="handleEidt(scope.$index, scope.row)" type="text" size="small">修改权限</el-button>
           <el-button @click="handleSetPwdDefault(scope.$index,scope.row)" type="text" size="small">重置密码</el-button>
         </template>
       </el-table-column>
@@ -81,6 +82,35 @@
         <el-button @click="addConfirm()">确 定</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog title="修改权限" :visible.sync="userEditVisible" width="50%" :center="dialogCenter">
+      <el-form>
+        <el-row>
+          <el-col :span="12" :offset="6">
+            <el-form-item label="账户" label-width="50px">
+              <el-input v-model="editRowData.uname" readonly></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12" :offset="6">
+            <el-form-item label="角色" label-width="50px">
+              <el-select v-model="editRowData.role">
+                <el-option v-for="item in roles" :key="item.value" :label="item.label" :value="item.value">
+                  <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancelEdit()">取 消</el-button>
+        <el-button @click="eidtConfirm()">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -106,15 +136,35 @@
           {value:2,label:'部门经理'},
           {value:3,label:'学生'}],
         delMsgVisible:false,
-        delRowData:[],
+        delRowData:{},
         delRowsData:[],
         user:{name:'',role:3},
         userAddVisible:false,
         dialogCenter:true,
-        delUsersVisible:false
+        delUsersVisible:false,
+        userEditVisible:false,
+        editRowData:{}
       }
     },
     methods:{
+      cancelEdit: function(){
+        this.userEditVisible = false;
+        this.editRowData = {};
+      },
+      eidtConfirm: function(){
+        axios.post('editUser',qs.stringify(this.editRowData)).then(res => {
+          if(res.data == "success"){
+            this.$message({
+              message:'修改成功',
+              type:'success'
+            });
+          } else {
+            this.$message.error('服务器响应失败');
+          }
+        });
+        this.userEditVisible = false;
+        this.editRowData = {};
+      },
       addUser:function(){
         this.userAddVisible = true;
       },
@@ -143,16 +193,21 @@
         this.delMsgVisible = true;
         this.delRowData = row;
       },
+      handleEidt:function(index, row){
+        this.userEditVisible = true;
+        axios.get('getUserById?uid=' + row.uid).then(res => {
+          this.editRowData = res.data;
+        })
+      },
       cancelDel: function(){
         this.delMsgVisible = false;
-        this.delRowData = null;
+        this.delRowData = {};
         this.delCascade = true;
       },
       delConfirm: function(){
         this.delMsgVisible = false;
         if(this.delCascade){
           axios.get('delUserByIdCascade?uid=' + this.delRowData.uid).then(res => {
-            debugger
             if(res.data == "success"){
               this.$message({
                 message:'删除成功',
@@ -174,7 +229,7 @@
             }
           })
         }
-        this.delRowData = null;
+        this.delRowData = {};
         this.delCascade = true;
         this.tableRenderData();
       },
@@ -249,7 +304,7 @@
             }
           })
         } else {
-          axios.post('delUsersByIds',{"uids": uids}).then(res => {
+          axios.post('delUsersByIds',qs.stringify({uids:uids},{indices:false})).then(res => {
             if(res == "success"){
               this.$message({
                 message:'删除成功',
@@ -263,6 +318,17 @@
         this.delRowsData = [];
         this.delCascade = true;
         this.tableRenderData();
+      },
+      roleFormat:function (row, column) {
+        if(row.role == 0){
+          return '管理员';
+        } else if (row.role == 1){
+          return '教师';
+        } else if (row.role == 2){
+          return '部门经理'
+        } else {
+          return '学生'
+        }
       }
     },
     mounted() {

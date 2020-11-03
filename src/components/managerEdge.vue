@@ -33,6 +33,10 @@
           align="center"
           prop="ename"
           label="姓名">
+          <template slot-scope="scope">
+            <a href="">{{scope.row.ename}}</a>
+          </template>
+
         </el-table-column>
         <el-table-column
           align="center"
@@ -49,28 +53,15 @@
         </el-table-column>
         <el-table-column
           align="center"
-          prop="sum"
+          prop="avg"
           label="整体评价分数(平均分)">
+            <template slot-scope="scope">
+              {{scope.row.avg || "尚未评分"}}
+            </template>
         </el-table-column>
-        <el-table-column
-          align="center"
-          prop="title"
-          label="综合评价(优缺点)">
-          <el-button type="text" @click="dialogFormVisible = true" size="mini">编写评价</el-button>
-        </el-table-column>
-      </el-table>
-      <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
-        <el-form :model="form">
-          <el-form-item label="评价(包括主要优点及缺陷)" :label-width="formLabelWidth">
-            <el-input type="textarea" v-model="title"></el-input>
-          </el-form-item>
 
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-        </div>
-      </el-dialog>
+      </el-table>
+
       <div class="block" style="margin-top:15px;">
         <el-pagination align='center' @size-change="handleSizeChange" @current-change="handleCurrentChange"
                        :current-page="currentPage"
@@ -90,7 +81,7 @@
     name: "EmpList",
     data() {
       return {
-        dialogFormVisible: false,
+
         options: [{
           value: '0',
           label: '转正评价'
@@ -104,8 +95,6 @@
           value: '3',
           label: '第三年评价'
         }],
-
-        title:"",
         currentPage: 1,
         total: 20,
         pageSize: 5,

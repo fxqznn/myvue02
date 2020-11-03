@@ -5,6 +5,7 @@ import login from '@/components/login'
 import managerEdge from "../components/managerEdge";
 import changePass from '@/components/changePass';
 import userManage from '@/components/userManage'
+import StudentList from '@/components/StudentList';
 
 
 import axios from 'axios'
@@ -35,6 +36,11 @@ export default new Router({
       path: '/managerEdge',
       name: 'managerEdge',
       component: managerEdge
+    },
+    {
+      path: '/StudentList',
+      name: 'StudentList',
+      component: StudentList
     }
   ]
 })

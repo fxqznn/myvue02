@@ -17,10 +17,11 @@
           </el-select>
         </el-col>
         <br>
-        <el-col :offset="6">
-          <span>部门：{{dname}}  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  &nbsp; &nbsp;&nbsp;&nbsp;       评价人：{{ename}}</span>
-        </el-col>
+
       </el-row>
+      <br>
+        <span>部门：{{dname}}  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  &nbsp; &nbsp;&nbsp;&nbsp;       评价人：{{ename}}</span>
+      <br>
       <br>
       <el-table style="width: 100%" border :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" >
         <el-table-column

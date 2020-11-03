@@ -49,8 +49,8 @@
         </el-table-column>
         <el-table-column
           align="center"
-          prop="grade"
-          label="整体评价分数">
+          prop="sum"
+          label="整体评价分数(平均分)">
         </el-table-column>
         <el-table-column
           align="center"
@@ -104,6 +104,7 @@
           value: '3',
           label: '第三年评价'
         }],
+
         title:"",
         currentPage: 1,
         total: 20,
@@ -120,9 +121,11 @@
         const score = row[column.property];
         if (score == undefined){
             return "未评分";
+        }else{
+          return score;
         }
-        return score;
       },
+
       //每页条数改变时触发 选择一页显示多少行
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
@@ -140,6 +143,7 @@
     },
     getAllScores() {
       axios.get("http://localhost:8081/getAllEntity?eid=" + this.uname + "&&type=" + this.value).then(res => {
+
         this.tableHead = res.data;
       })
     },
@@ -159,5 +163,6 @@
 </script>
 
 <style scoped>
+
 
 </style>

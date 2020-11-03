@@ -40,7 +40,7 @@
         align="center"
         label="成绩">
         <template v-for="(item,index) in tableHead">
-          <el-table-column :prop="item.cid" :label="item.cname" align="center">
+          <el-table-column :prop="item.cid" :label="item.cname" :formatter="scoreShow" align="center">
           </el-table-column>
         </template>
       </el-table-column>
@@ -114,6 +114,14 @@
             this.size = res.data.size;
             this.total = res.data.total;
           })
+        },
+        scoreShow:function (row,column) {
+          var data = row[column.property];
+          if (data < 0){
+             return "待评价"
+          } else {
+            return data;
+          }
         }
       },
       mounted() {

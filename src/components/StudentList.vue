@@ -80,15 +80,6 @@
           options: [{
             value: '1',
             label: '学期'
-          }, {
-            value: '1',
-            label: '第一年评价'
-          }, {
-            value: '2',
-            label: '第二年评价'
-          }, {
-            value: '3',
-            label: '第三年评价'
           }],
           snamelike:'',
           current: 1,
@@ -100,12 +91,16 @@
         }
       },
       methods:{
+          getAllTerm(){
+            axios.get('getAllTerm?tid=' + this.tid).then(res =>{
+
+            })
+          },
         getAllScores(){
           axios.get("getCourses?tid="+1).then(res => {
             this.tableHead=res.data;
           })
         },
-
         tableRenderData:function () {
           axios.get('getCourseWithScore?current=' + this.current + '&size=' + this.size+'&tid=' + this.tid
             +"&snamelike=" + this.snamelike).then(res => {
@@ -118,7 +113,7 @@
         scoreShow:function (row,column) {
           var data = row[column.property];
           if (data < 0){
-             return "待评价"
+             return "未评分"
           } else {
             return data;
           }

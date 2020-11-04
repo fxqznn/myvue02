@@ -22,11 +22,16 @@
         fixed="left"
         label="ID">
       </el-table-column>
+
       <el-table-column
         align="center"
         prop="sname"
         label="姓名">
+        <template slot-scope="scope">
+          <el-link ref="#/studentMsg/{{sid}}" type="primary">{{scope.row.sname}}</el-link>
+        </template>
       </el-table-column>
+
       <el-table-column
         align="center"
         prop="sex"

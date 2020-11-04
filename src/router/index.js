@@ -6,6 +6,7 @@ import managerEdge from "../components/managerEdge";
 import changePass from '@/components/changePass';
 import userManage from '@/components/userManage'
 import StudentList from '@/components/StudentList';
+import studentMsg from '@/components/studentMsg'
 
 
 import axios from 'axios'
@@ -41,6 +42,11 @@ export default new Router({
       path: '/StudentList',
       name: 'StudentList',
       component: StudentList
+    },
+    {
+      path: '/studentMsg',
+      name: 'studentMsg',
+      component: studentMsg
     }
   ]
 })

@@ -20,7 +20,7 @@
 
       </el-row>
       <br>
-        <span>部门：{{dname}}  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  &nbsp; &nbsp;&nbsp;&nbsp;       评价人：{{ename}}</span>
+        <span>部门：  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  &nbsp; &nbsp;&nbsp;&nbsp;       评价人：{{ename}}</span>
       <br>
       <br>
       <el-table style="width: 100%" border :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" >
@@ -34,9 +34,8 @@
           prop="ename"
           label="姓名">
           <template slot-scope="scope">
-            <a href="">{{scope.row.ename}}</a>
+            <router-link to="/managerEdit/2">{{scope.row.ename}}</router-link>
           </template>
-
         </el-table-column>
         <el-table-column
           align="center"
@@ -81,7 +80,6 @@
     name: "EmpList",
     data() {
       return {
-
         options: [{
           value: '0',
           label: '转正评价'

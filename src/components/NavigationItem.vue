@@ -37,7 +37,7 @@
     methods: {
       handleRoute (menu) {
         // 通过菜单URL跳转至指定路由
-        this.child.$router.push(menu.path)
+        this.$router.push(menu.path)
       }
     }
 

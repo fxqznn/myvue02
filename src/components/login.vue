@@ -79,6 +79,12 @@
                 this.$store.dispatch("user/setUser", this.ruleForm.uname);
                 this.$store.dispatch("user/setPerm", res.data.role);
                 this.$router.push({path: "/mainFrame"})
+                if (res.data.role==3){
+                  axios.get("getStudentByUser/"+this.ruleForm.uname).then(res =>{
+                    this.$store.dispatch("student/setStudent",res.data.sid);
+                    this.$store.dispatch("student/setImg",res.data.pic)
+                  })
+                }
               }else {
                this.$message("用户名或密码错误")
               }

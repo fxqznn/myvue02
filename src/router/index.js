@@ -4,11 +4,9 @@ import mainFrame from '@/components/mainFrame';
 import login from '@/components/login'
 import managerEdge from "../components/managerEdge";
 import changePass from '@/components/changePass';
-import userManage from '@/components/userManage'
-
+import CourseScoreList from '@/components/CourseScoreList';
 
 import axios from 'axios'
-import empScoreList from "../components/empScoreList";
 
 axios.defaults.baseURL = 'http://localhost:8081/'
 Vue.prototype.axios = axios
@@ -26,19 +24,23 @@ export default new Router({
       path: '/mainFrame',
       name: 'mainFrame',
       component: mainFrame,
-      children:[
-        {path:'changePass',name:'changePass',component:changePass},
-        {path:'userManage',name:'userManage',component:userManage}
+      children: [
+        {
+          path: 'changePass',
+          name: 'changePass',
+          component: changePass
+        },
+        {
+          path:'CourseScoreList',
+          name:'CourseScoreList',
+          component:CourseScoreList
+        }
       ]
     },
     {
       path: '/managerEdge',
       name: 'managerEdge',
       component: managerEdge
-    }, {
-      path: '/empScoreList',
-      name: 'empScoreList',
-      component: empScoreList
     }
   ]
 })

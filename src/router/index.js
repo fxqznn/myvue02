@@ -44,7 +44,7 @@ export default new Router({
       component: StudentList
     },
     {
-      path: '/managerEdit/:sid',
+      path: '/managerEdit/:eid',
       name: 'managerEdit',
       component: managerEdit
     }

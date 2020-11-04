@@ -1,9 +1,5 @@
 <template>
   <div>
-
-
-
-
     <table >
       <tr>
         <td colspan="7"> <h2>金桥学员成长跟踪表</h2></td>
@@ -44,7 +40,6 @@
       <tr>
         <td colspan="7" height="40px">
           <h3>{{type == 0 ? "转正工作评价": "第一年工作评价"}}</h3>
-
         </td>
       </tr>
       <tr>
@@ -98,18 +93,17 @@
               info:""
             },
             sid:0,
-
           }
       },
       methods:{
           showInfo(){
-            axios.get("http://localhost:8081/getSelf?sid="+this.sid).then(res=>{
+            axios.get("http://localhost:8081/getStudent?eid="+this.eid).then(res=>{
               this.student =res.data;
             })
           }
       },
       mounted() {
-          this.sid = this.$route.params.sid;
+          this.eid = this.$route.params.eid;
             this.showInfo();
             this.getAllScores();
 

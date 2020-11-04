@@ -28,14 +28,14 @@
           align="center"
           prop="eid"
           label="工号">
+          <template slot-scope="scope">
+            <router-link :to="'/managerEdit/'+scope.row.eid">{{scope.row.eid}}</router-link>
+          </template>
         </el-table-column>
         <el-table-column
           align="center"
           prop="ename"
           label="姓名">
-          <template slot-scope="scope">
-            <router-link to="/managerEdit/2">{{scope.row.ename}}</router-link>
-          </template>
         </el-table-column>
         <el-table-column
           align="center"
@@ -93,6 +93,7 @@
           value: '3',
           label: '第三年评价'
         }],
+        sid:1,
         currentPage: 1,
         total: 20,
         pageSize: 5,
@@ -129,7 +130,7 @@
       this.name = this.$store.state.user.uname;
     },
     getAllScores() {
-      axios.get("http://localhost:8081/getAllEntity?eid=" + this.uname + "&&type=" + this.value).then(res => {
+      axios.get("http://localhost:8081/getAllEntity?eid=" + this.uname ).then(res => {
 
         this.tableHead = res.data;
       })

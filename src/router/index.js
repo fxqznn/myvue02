@@ -31,7 +31,10 @@ export default new Router({
       component: mainFrame,
       children:[
         {path:'changePass',name:'changePass',component:changePass},
-        {path:'userManage',name:'userManage',component:userManage}
+        {path:'userManage',name:'userManage',component:userManage},
+        {path:'managerEdit/:sid',name:'managerEdit',component:managerEdit},
+        {path: 'StudentList', name: 'StudentList', component: StudentList},
+        {path: 'studentMsg/:sid', name: 'studentMsg', component: studentMsg}
       ]
     },
     {

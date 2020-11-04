@@ -244,6 +244,8 @@
                 }
               })
             }
+            this.delEmpVisiable = false;
+            this.tableRenderData();
           },
           handleEidt : function(index, row) {
             this.empForEdit = {eid:'',ename:'',job:'',did:'',};
@@ -277,7 +279,9 @@
               } else {
                 this.$message.error('服务器响应失败');
               }
-            })
+            });
+            this.editEmpVisible = false;
+            this.tableRenderData();
           },
           addEmp : function () {
             axios.get('getAllDeptForEmp').then(res => {
@@ -356,6 +360,8 @@
                 }
               })
             }
+            this.delEmpsVisiable = false;
+            this.tableRenderData();
           },
           didFormat : function(row, column) {
               var dept_name = '';

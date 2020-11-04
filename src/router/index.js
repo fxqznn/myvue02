@@ -50,7 +50,7 @@ export default new Router({
       component: managerEdit
     },
     {
-      path: '/studentMsg',
+      path: '/studentMsg/:sid',
       name: 'studentMsg',
       component: studentMsg
     }

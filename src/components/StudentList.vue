@@ -21,15 +21,16 @@
         prop="sid"
         fixed="left"
         label="ID">
+        <template slot-scope="scope">
+          <router-link :to="'/studentMsg/'+scope.row.sid">{{scope.row.sid}}</router-link>
+        </template>
       </el-table-column>
 
       <el-table-column
         align="center"
         prop="sname"
         label="姓名">
-        <template slot-scope="scope">
-          <el-link ref="#/studentMsg/{{sid}}" type="primary">{{scope.row.sname}}</el-link>
-        </template>
+
       </el-table-column>
 
       <el-table-column
@@ -143,17 +144,23 @@
       },
       methods:{
           getAllTerm(){
-            axios.get('getTermByEid?eid=' + this.eid).then(res =>{
-              this.options = res.data;
-            })
-          },
+          axios.get('getTermByEid?eid=' + this.eid).then(res =>{
+            this.options = res.data;
+            var max = 0;
+            this.options.forEach(function (item,index) {
+              if (item.tid>max){
+                max = item.tid;
+              }
+            });
+            this.term = max;
+          })
+        },
         getAllScores(){
           axios.get("getCourses?tid="+this.term).then(res => {
             this.tableHead=res.data;
           })
         },
         tableRenderData:function () {
-            this.getAllTerm();
             this.getAllScores();
           axios.get('getCourseWithScore?current=' + this.current + '&size=' + this.size+'&tid=' + this.term
             +"&snamelike=" + this.snamelike).then(res => {
@@ -161,14 +168,6 @@
             this.current = res.data.current;
             this.size = res.data.size;
             this.total = res.data.total;
-          });
-        },
-        lastTermShow:function(){
-          this.term = this.options[this.options.length-1].tid;
-          this.options.forEach(function (item, index) {
-            if (item.tid>this.term){
-              this.term = item.tid;
-            }
           });
         },
         stuMsgShow:function(){

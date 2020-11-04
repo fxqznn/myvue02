@@ -1,9 +1,5 @@
 <template>
   <div>
-
-
-
-
     <table >
       <tr>
         <td colspan="7"> <h2>金桥学员成长跟踪表</h2></td>

@@ -9,7 +9,6 @@ import StudentList from '@/components/StudentList';
 
 
 import axios from 'axios'
-import CourseScoreList from "../components/CourseScoreList";
 
 
 axios.defaults.baseURL = 'http://localhost:8081/'
@@ -42,10 +41,6 @@ export default new Router({
       path: '/StudentList',
       name: 'StudentList',
       component: StudentList
-    },{
-      path:'/CourseScoreList',
-      name:'courseScoreList',
-      component:CourseScoreList
     }
   ]
 })

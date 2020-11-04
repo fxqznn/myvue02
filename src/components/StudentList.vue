@@ -69,18 +69,51 @@
                    :current-page="current" :page-sizes="[5, 10, 15, 20, 25, 30]" :page-size="size"
                    layout="total, sizes, prev, pager, next, jumper" :total="total">
     </el-pagination>
-    <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="评价(包括主要优点及缺陷)" :label-width="formLabelWidth">
-          <el-input type="textarea" v-model="title"></el-input>
-        </el-form-item>
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-      </div>
-    </el-dialog>
+      <el-dialog title="学员详细信息" :visible.sync="dialogTableVisible" width="1300px">
+        <table style="width: 1200px;height: 400px" align="center">
+          <tr>
+            <td style="font-weight: bolder;width: 120px">姓名</td>
+            <td width="200"></td>
+            <td style="font-weight: bolder;width: 200px">性别</td>
+            <td width="200"></td>
+            <td style="font-weight: bolder;width: 200px">民族</td>
+            <td width="200"></td>
+            <td rowspan="5" width="300px"></td>
+          </tr>
+          <tr>
+            <td style="font-weight: bolder">出生年月</td>
+            <td></td>
+            <td style="font-weight: bolder">籍贯</td>
+            <td></td>
+            <td style="font-weight: bolder">婚否</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: bolder">联系电话</td>
+            <td></td>
+            <td style="font-weight: bolder">身份证号码</td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td style="font-weight: bolder">毕业院校</td>
+            <td></td>
+            <td style="font-weight: bolder">专业</td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td style="font-weight: bolder">入职时间</td>
+            <td></td>
+            <td style="font-weight: bolder">班期</td>
+            <td></td>
+            <td style="font-weight: bolder">部门名称</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: bolder">备注</td>
+            <td colspan="6"></td>
+          </tr>
+        </table>
+      </el-dialog>
   </div>
 </template>
 
@@ -90,24 +123,29 @@
         name: "StudentList",
       data() {
         return {
-          dialogFormVisible: false,
-          term:'',
+          dialogTableVisible: false,
+          term:0,
           count:0,
           average:0,
-          options: [],
+          options: [{tid:0,tname:"请选择"}],
           snamelike:'',
           current: 1,
           size: 5,
           total: 0,
-          eid:1,
+          eid:3,
           tableHead:[],
-          tableData:[]
+          tableData:[],
+          dialogTableData:[]
         }
       },
       methods:{
           getAllTerm(){
             axios.get('getTermByEid?eid=' + this.eid).then(res =>{
-                this.options = res.data;
+              var stu_tem = this.options;
+              res.data.forEach(function (item, index) {
+                stu_tem.push({tid:item.tid, tname:item.tname});
+              });
+              this.options = stu_tem;
             })
           },
         getAllScores(){
@@ -118,14 +156,29 @@
         },
         tableRenderData:function () {
           axios.get('getCourseWithScore?current=' + this.current + '&size=' + this.size+'&tid=' + this.term
-            +"&snamelike=" + this.snamelike).then(res => {
+            +"&snamelike=" + this.snamelike+"&eid="+this.eid).then(res => {
             this.tableData = res.data.records;
             this.current = res.data.current;
             this.size = res.data.size;
             this.total = res.data.total;
           })
         },
-
+        stuMsgShow:function(){
+          axios.get('').then(res=>{
+            this.dialogTableData = res.data;
+          })
+        },
+        //每页条数改变时触发 选择一页显示多少行
+        handleSizeChange(val) {
+          console.log(`每页 ${val} 条`);
+          this.currentPage = 1;
+          this.pageSize = val;
+        },
+        //当前页改变时触发 跳转其他页
+        handleCurrentChange(val) {
+          console.log(`当前页: ${val}`);
+          this.currentPage = val;
+        },
         scoreShow:function (row,column) {
           var data = row[column.property];
           if (data < 0){
@@ -141,6 +194,12 @@
           } else {
             return data;
           }
+        },
+
+        //查看学员个人信息及评价
+        handleClick:function(index,row){
+            this.dialogTableVisible = true;
+
         }
       },
 

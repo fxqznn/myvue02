@@ -35,9 +35,7 @@
           label="姓名">
           <template slot-scope="scope">
             <router-link to="/managerEdit/2">{{scope.row.ename}}</router-link>
-
           </template>
-
         </el-table-column>
         <el-table-column
           align="center"

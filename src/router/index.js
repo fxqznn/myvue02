@@ -9,6 +9,7 @@ import StudentList from '@/components/StudentList';
 
 
 import axios from 'axios'
+import managerEdit from "../components/managerEdit";
 
 
 axios.defaults.baseURL = 'http://localhost:8081/'
@@ -41,6 +42,11 @@ export default new Router({
       path: '/StudentList',
       name: 'StudentList',
       component: StudentList
+    },
+    {
+      path: '/managerEdit/:sid',
+      name: 'managerEdit',
+      component: managerEdit
     }
   ]
 })

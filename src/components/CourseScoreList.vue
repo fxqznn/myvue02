@@ -1,36 +1,55 @@
 <template>
   <div>
-    <el-table
-      :data="CourseData"
-      border
-      :summary-method="getAverage"
-      show-summary
-      style="width: 100%">
+    <br>
+    <br>
+    <el-table style="width: 100%" border :data="tableData" >
       <el-table-column
-        prop="cname"
-        label="课程名称"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="score"
-        label="分数"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="ename"
-        label="评分人"
-        width="180">
-      </el-table-column>
-      <el-table-column
+        align="center"
         prop="tname"
-        label="学期"
-        width="180">
+        label="学期">
       </el-table-column>
+      <el-table-column
+        align="center"
+        prop="ename"
+        label="工号">
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="eid"
+        label="工号">
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="ename"
+        label="姓名">
+        <template slot-scope="scope">
+          <a href="">{{scope.row.ename}}</a>
+        </template>
+
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="job"
+        label="职位">
+      </el-table-column>
+      <el-table-column
+        align="center"
+        label="成绩">
+        <template v-for="(item,index) in tableHead">
+          <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
+          </el-table-column>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="avg"
+        label="整体评价分数(平均分)">
+        <template slot-scope="scope">
+          {{scope.row.avg || "尚未评分"}}
+        </template>
+      </el-table-column>
+
     </el-table>
-    <span>主要优缺点：</span>
-    <label>
-      <textarea v-model="appraise"></textarea>
-    </label>
   </div>
 </template>
 

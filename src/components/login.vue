@@ -80,9 +80,8 @@
                 this.$store.dispatch("user/setPerm", res.data.role);
                 this.$router.push({path: "/mainFrame"})
                 if (res.data.role==3){
-                  axios.get("getStudentByUser/"+this.ruleForm.uname).then(res =>{
+                  axios.get("getStudentByUser/"+this.$store.state.user.uid).then(res =>{
                     this.$store.dispatch("student/setStudent",res.data.sid);
-                    this.$store.dispatch("student/setImg",res.data.pic)
                   })
                 }
               }else {

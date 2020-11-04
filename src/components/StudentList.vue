@@ -60,7 +60,7 @@
         fixed="right"
         label="操作">
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+          <el-button @click="handleClick" type="text" size="small">查看</el-button>
           <el-button type="text" size="small">编辑</el-button>
         </template>
       </el-table-column>
@@ -156,6 +156,14 @@
             this.current = res.data.current;
             this.size = res.data.size;
             this.total = res.data.total;
+          });
+        },
+        lastTermShow:function(){
+          this.term = this.options[this.options.length-1].tid;
+          this.options.forEach(function (item, index) {
+            if (item.tid>this.term){
+              this.term = item.tid;
+            }
           });
         },
         stuMsgShow:function(){

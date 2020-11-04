@@ -5,7 +5,7 @@
         <el-input v-model="snamelike"  placeholder="输入姓名关键字查找" @change="tableRenderData" suffix-icon="el-icon-search"></el-input>
       </el-col>
       <el-col :span="6">
-        <el-select v-model="term" @change="tableRenderData" >
+        <el-select v-model="term" @change="tableRenderData">
           <el-option
             v-for="item in options"
             :key="item.tid"
@@ -124,10 +124,8 @@
       data() {
         return {
           dialogTableVisible: false,
-          term:0,
-          count:0,
-          average:0,
-          options: [{tid:0,tname:"请选择"}],
+          term:3,
+          options: [],
           snamelike:'',
           current: 1,
           size: 5,
@@ -141,27 +139,24 @@
       methods:{
           getAllTerm(){
             axios.get('getTermByEid?eid=' + this.eid).then(res =>{
-              var stu_tem = this.options;
-              res.data.forEach(function (item, index) {
-                stu_tem.push({tid:item.tid, tname:item.tname});
-              });
-              this.options = stu_tem;
+              this.options = res.data;
             })
           },
         getAllScores(){
-          axios.get("getCourses?tid="+1).then(res => {
-            this.count = res.data.length;
+          axios.get("getCourses?tid="+this.term).then(res => {
             this.tableHead=res.data;
           })
         },
         tableRenderData:function () {
+            this.getAllTerm();
+            this.getAllScores();
           axios.get('getCourseWithScore?current=' + this.current + '&size=' + this.size+'&tid=' + this.term
-            +"&snamelike=" + this.snamelike+"&eid="+this.eid).then(res => {
+            +"&snamelike=" + this.snamelike).then(res => {
             this.tableData = res.data.records;
             this.current = res.data.current;
             this.size = res.data.size;
             this.total = res.data.total;
-          })
+          });
         },
         stuMsgShow:function(){
           axios.get('').then(res=>{
@@ -199,7 +194,6 @@
         //查看学员个人信息及评价
         handleClick:function(index,row){
             this.dialogTableVisible = true;
-
         }
       },
 
@@ -207,7 +201,6 @@
         this.getAllTerm();
         this.getAllScores();
         this.tableRenderData();
-
       }
     }
 </script>

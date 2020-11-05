@@ -1,8 +1,9 @@
 <template>
-  <div>
-    <el-row>
-      <el-col :span="6" :offset="8" style="background-color: darkgrey">
-        <div style="padding-top: 20px">
+  <div style="width: 100%; height: 100%"
+       v-bind:style="{backgroundImage:'url(' + bg + ')',backgroundRepeat:'no-repeat',backgroundSize:'100% 100%'}">
+    <el-row style="padding-top: 70px; padding-right: 100px">
+      <el-col :span="8" :offset="16">
+        <div style="padding-top: 20px;background-color: rgba(255,255,255,0.2)">
           <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
             <el-form-item label="用户名：" prop="uname">
               <el-col :span="20" :offset="1">
@@ -66,21 +67,21 @@
           uname: [
             { validator: checkUname, trigger: 'blur' }
           ]
-        }
+        },
+        bg: require('@/assets/company.jpg')
       };
     },
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            axios.get("http://localhost:8081/login/" + this.ruleForm.uname + "/" + this.ruleForm.pass).then(res => {
+            axios.get("login/" + this.ruleForm.uname + "/" + this.ruleForm.pass).then(res => {
               if (res.data != null && res.data != "") {
                 this.$store.dispatch("user/setId", res.data.uid);
                 this.$store.dispatch("user/setUser", this.ruleForm.uname);
                 this.$store.dispatch("user/setPerm", res.data.role);
-
                 if(this.$store.state.user.role == 0){
-                  this.$router.push({path:"/mainFrame/userManage"})
+
                 }else if(this.$store.state.user.role == 1){
 
                 }else if(this.$store.state.user.role == 2) {
@@ -89,8 +90,8 @@
                   axios.get("getByUser/"+this.$store.state.user.uid).then(res =>{
                     this.$store.dispatch("student/setStudent",res.data);
                   })
-                  this.$router.push({path: "/mainFrame"})
                 }
+                this.$router.push({path: "/mainFrame"})
               }else {
                this.$message("用户名或密码错误")
               }

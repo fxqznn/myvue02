@@ -1,6 +1,6 @@
 <template>
   <el-container id="all" style="width: 100%;height: 100%">
-    <el-header style="text-align: right;height: 15%">
+    <el-header  style="text-align: right;height: 10%">
       <el-dropdown style="margin-top:1%">
         <el-button>
           <i class="el-icon-user"></i>
@@ -8,22 +8,22 @@
         </el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>
-            <el-button @click="changePass">修改密码</el-button>
+            <el-button @click="changePass"  style="border: 0px">修改密码</el-button>
           </el-dropdown-item>
           <el-dropdown-item>
-            <el-button @click="exit">退出</el-button>
+            <el-button @click="exit"  style="border: 0px">退出</el-button>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-header>
     <el-container>
-      <el-aside style="width: 20%">
+      <el-aside  style="width: 20%; height: 90%" >
         <el-menu>
           <navigation-item v-for="(menu,i) in menus" :key="i" :item="menu"/>
         </el-menu>
       </el-aside>
       <el-container>
-        <el-main>
+        <el-main  style="width: 80%; height: 90%" >
           <router-view/>
         </el-main>
       </el-container>
@@ -59,7 +59,7 @@
         this.role = this.$store.state.user.role;
       },
       getMenu: function () {
-        axios.get('http://localhost:8081/getMenu/' + this.role).then(res => {
+        axios.get('getMenu/' + this.role).then(res => {
           this.menus = res.data;
         })
       },
@@ -77,9 +77,25 @@
       },
       changePass: function () {
         this.$router.push({path: '/mainFrame/changePass'})
+      },
+    loginControll : function () {
+      if(this.$store.state.user.uid == null) {
+        this.$router.push('/')
+      }else {
+        if(this.$store.state.user.role == 0){
+          this.$router.push('/mainFrame/userManage')
+        } else if (this.$store.state.user.role == 1) {
+
+        } else if(this.$store.state.user.role == 2) {
+
+        } else {
+
+        }
       }
+    }
     },
     mounted() {//编译后去获取数据
+      this.loginControll();
       this.getName();
       this.getRole();
       this.getMenu();

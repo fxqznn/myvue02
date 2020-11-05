@@ -20,7 +20,7 @@
 
       </el-row>
       <br>
-        <span>部门：{{dname}}  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  &nbsp; &nbsp;&nbsp;&nbsp;       评价人：{{ename}}</span>
+        <span>部门：{{dname}}  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  &nbsp; &nbsp;&nbsp;&nbsp;       评价人：{{ename1}}</span>
       <br>
       <br>
       <el-table style="width: 100%" border :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" >
@@ -93,7 +93,7 @@
           value: '3',
           label: '第三年评价'
         }],
-
+        ename1:"",
         dname:"",
         sid:1,
         currentPage: 1,
@@ -145,7 +145,7 @@
       showManager(){
         axios.get("http://localhost:8081/getManager?eid="+this.uname).then(res=>{
           this.dname= res.data.dname;
-          this.ename = res.data.ename;
+          this.ename1 = res.data.ename;
         })
       }
   },

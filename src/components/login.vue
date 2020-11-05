@@ -78,7 +78,17 @@
                 this.$store.dispatch("user/setId", res.data.uid);
                 this.$store.dispatch("user/setUser", this.ruleForm.uname);
                 this.$store.dispatch("user/setPerm", res.data.role);
-                this.$router.push({path: "/mainFrame"})
+
+                if(this.$store.user.role == 0){
+                  this.$router.push({path:"/mainFrame/userManage"})
+                }else if(this.$store.user.role == 1){
+
+                }else if(this.$store.user.role == 2) {
+
+                } else {
+
+                }
+
               }else {
                this.$message("用户名或密码错误")
               }

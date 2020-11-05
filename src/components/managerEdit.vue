@@ -2,68 +2,78 @@
   <div>
     <table >
       <tr>
-        <td colspan="7"> <h2>金桥学员成长跟踪表</h2></td>
+        <td colspan="10"> <h2>金桥学员成长跟踪表</h2></td>
       </tr>
       <tr >
-        <td height="40px" width="80px">姓名</td>
-        <td width="60px">{{student.sname}}</td>
+        <td height="40px" >姓名</td>
+        <td >{{student.sname}}</td>
         <td>性别</td>
         <td>{{student.sex}}</td>
-        <td>民族</td>
-        <td width="100px">{{student.nation}}</td>
-        <td rowspan="4" width="150px"><img :src=student.pic></td>
+        <td colspan="2">民族</td>
+        <td colspan="2">{{student.nation}}</td>
+        <td rowspan="4" colspan="2"><img :src=student.pic></td>
       </tr>
       <tr>
         <td height="40px">出生年月</td>
         <td>{{student.birthday}}</td>
-        <td width="60px">籍贯</td>
-        <td width="100px">{{student.address}}</td>
-        <td width="100px">婚否</td>
-        <td><span>{{student.marry ==0? "未婚":"已婚"}}</span></td>
+        <td >籍贯</td>
+        <td >{{student.address}}</td>
+        <td colspan="2">婚否</td>
+        <td colspan="2"><span>{{student.marry ==0? "未婚":"已婚"}}</span></td>
       </tr>
       <tr>
         <td height="40px">联系电话</td>
         <td colspan="2">{{student.phone}}</td>
         <td>身份证号码</td>
-        <td colspan="2">{{student.cardid}}</td>
+        <td colspan="4">{{student.cardid}}</td>
       </tr>
       <tr>
         <td height="40px">毕业学校</td>
         <td colspan="2">{{student.school}}</td>
         <td>专业</td>
-        <td colspan="2">{{student.major}}</td>
+        <td colspan="4" >{{student.major}}</td>
       </tr>
       <tr>
         <td height="40px">备注</td>
-        <td colspan="6">{{student.info}}</td>
+        <td colspan="9">{{student.info}}</td>
       </tr>
       <tr>
-        <td colspan="7" height="40px">
+        <td colspan="10" height="40px">
           <h3>{{type == 0 ? "转正工作评价": "第一年工作评价"}}</h3>
         </td>
       </tr>
       <tr>
-        <td height="40px">项目</td>
-        <td>员工部门</td>
-        <td>员工职务</td>
-        <td>评价人</td>
-        <td colspan="2" rowspan="2">
+        <td height="55px" rowspan="2">项目</td>
+        <td rowspan="2">员工部门</td>
+        <td rowspan="2">员工职务</td>
+        <td rowspan="2">评价人</td>
+        <td colspan="5" height="20">评价分项</td>
+        <td width="120" rowspan="2">整体评价分数</td>
+      </tr>
+      <tr>
 
-        </td>
-        <td>整体评价分数</td>
+        <td width="50">能力</td>
+        <td width="50">交流</td>
+        <td width="50">积极性</td>
+        <td width="50">性格</td>
+        <td width="50">人品</td>
 
       </tr>
       <tr>
         <td height="40px">工作评价</td>
         <td></td>
         <td></td>
-
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
         <td></td>
         <td></td>
       </tr>
       <tr>
-        <td height="150px">评价(包括主要优点及缺陷)</td>
-        <td colspan="6"></td>
+        <td width="60px" height="150px">评价(包括主要优点及缺陷)</td>
+        <td colspan="9"></td>
       </tr>
     </table>
   </div>

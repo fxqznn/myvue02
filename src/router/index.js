@@ -7,6 +7,10 @@ import changePass from '@/components/changePass';
 import CourseScoreList from '@/components/CourseScoreList';
 import userManage from '@/components/userManage'
 import StudentList from '@/components/StudentList';
+import studentMsg from '@/components/studentMsg'
+import empManage from '@/components/empManage'
+import courseManage from '@/components/courseManage'
+import studentManage from '@/components/studentManage'
 
 
 import axios from 'axios'
@@ -34,6 +38,11 @@ export default new Router({
       children:[
         {path:'changePass',name:'changePass',component:changePass},
         {path:'userManage',name:'userManage',component:userManage},
+        {path:'empManage',name:'empManage',component:empManage},
+        {path:'studentManage',name:'studentManage',component:studentManage},
+        {path:'managerEdit/:sid',name:'managerEdit',component:managerEdit},
+        {path: 'StudentList', name: 'StudentList', component: StudentList},
+        {path: 'studentMsg/:sid', name: 'studentMsg', component: studentMsg},
         {path:'StudentDetails',
           name:'StudentDetails',
           component:StudentDetails,
@@ -54,9 +63,14 @@ export default new Router({
       component: StudentList
     },
     {
-      path: '/managerEdit/:sid',
+      path: '/managerEdit/:eid',
       name: 'managerEdit',
       component: managerEdit
+    },
+    {
+      path: '/studentMsg/:sid',
+      name: 'studentMsg',
+      component: studentMsg
     }
   ]
 })

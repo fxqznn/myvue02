@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table width="1000px">
+    <table>
       <tr>
         <td colspan="7" align="center"><h4>培训学校评价</h4></td>
       </tr>

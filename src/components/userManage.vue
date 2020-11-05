@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" :offset="1">
+      <el-col :span="12" :offset="1">
         <el-input placeholder="请输入用户名" v-model="uname" style="width: 300px">
           <el-button slot="append" @click="tableRenderData">查询</el-button>
         </el-input>
@@ -12,7 +12,7 @@
           </el-option>
         </el-select>
       </el-col>
-      <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4" :offset="5">
+      <el-col :span="4" :offset="5">
         <el-button @click="addUser" >添加用户</el-button>
         <el-button @click="deleteUsers" >删除用户</el-button>
       </el-col>

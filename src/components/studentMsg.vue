@@ -39,25 +39,25 @@
       </tr>
       <tr>
         <td colspan="7" height="40px">
-          <h3>{{type == 0 ? "转正工作评价": "第一年工作评价"}}</h3>
+          <h3>培训学校评价</h3>
+
         </td>
       </tr>
       <tr>
-        <td height="40px">项目</td>
-        <td>员工部门</td>
-        <td>员工职务</td>
+        <td height="40px">培训学校</td>
+        <td>班期</td>
         <td>评价人</td>
-        <td colspan="2" rowspan="2">
-
+        <td colspan="3" rowspan="2">
+        <template v-for="(item,index) in tableHead">
+          <el-table-column :prop="item.cid" :label="item.cname" :formatter="scoreShow" align="center">
+          </el-table-column>
+        </template>
         </td>
         <td>整体评价分数</td>
-
       </tr>
       <tr>
         <td height="40px">工作评价</td>
         <td></td>
-        <td></td>
-
         <td></td>
         <td></td>
       </tr>
@@ -72,44 +72,70 @@
 
 <script>
   import axios from 'axios';
-    export default {
-        name: "managerEdit",
-      data(){
-          return{
-            type:0,
-            table1Data:[],
-            student:{
-              sname:"",
-              sex:"",
-              birthday:"",
-              nation:"",
-              address:"",
-              marry:0,
-              phone:0,
-              cardid:0,
-              school:"",
-              major:'',
-              pic:"",
-              info:""
-            },
-            sid:0,
-          }
-      },
-      methods:{
-          showInfo(){
-            axios.get("http://localhost:8081/getStudent?eid="+this.eid).then(res=>{
-              this.student =res.data;
-            })
-          }
-      },
-      mounted() {
-          this.eid = this.$route.params.eid;
-            this.showInfo();
-            this.getAllScores();
-
+  export default {
+    name: "studentMsg",
+    data(){
+      return{
+        type:0,
+        table1Data:[],
+        student:{
+          sname:"",
+          sex:"",
+          birthday:"",
+          nation:"",
+          address:"",
+          marry:0,
+          phone:0,
+          cardid:0,
+          school:"",
+          major:'',
+          pic:"",
+          info:"",
+          tid:"",
+          tableHead:[],
+          tableData:[],
+        },
+        sid:0,
 
       }
+    },
+    methods:{
+      showInfo(){
+        axios.get("http://localhost:8081/getSelf?sid="+this.sid).then(res=>{
+          this.student =res.data;
+        })
+      },
+      getAllTerm(){
+        axios.get('getTermByEid?eid=' + this.eid).then(res =>{
+          this.options = res.data;
+        })
+      },
+      getAllScores(){
+        axios.get("getCourses?tid="+this.tid).then(res => {
+          this.tableHead=res.data;
+        })
+      },
+      tableRenderData:function () {
+        this.getAllTerm();
+        this.getAllScores();
+        axios.get('getCourseWithScore?current=' + this.current + '&size=' + this.size+'&tid=' + this.tid
+          +"&snamelike=" + this.snamelike).then(res => {
+          this.tableData = res.data.records;
+          this.current = res.data.current;
+          this.size = res.data.size;
+          this.total = res.data.total;
+        });
+      }
+    },
+    mounted() {
+      this.sid = this.$route.params.sid;
+      this.showInfo();
+      this.getAllTerm();
+      this.getAllScores();
+      this.tableRenderData();
+
     }
+  }
 </script>
 
 <style scoped>

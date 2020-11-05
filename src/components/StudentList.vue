@@ -21,12 +21,18 @@
         prop="sid"
         fixed="left"
         label="ID">
+        <template slot-scope="scope">
+          <router-link :to="'/studentMsg/'+scope.row.sid">{{scope.row.sid}}</router-link>
+        </template>
       </el-table-column>
+
       <el-table-column
         align="center"
         prop="sname"
         label="姓名">
+
       </el-table-column>
+
       <el-table-column
         align="center"
         prop="sex"
@@ -60,7 +66,7 @@
         fixed="right"
         label="操作">
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+          <el-button @click="handleClick" type="text" size="small">查看</el-button>
           <el-button type="text" size="small">编辑</el-button>
         </template>
       </el-table-column>
@@ -138,17 +144,23 @@
       },
       methods:{
           getAllTerm(){
-            axios.get('getTermByEid?eid=' + this.eid).then(res =>{
-              this.options = res.data;
-            })
-          },
+          axios.get('getTermByEid?eid=' + this.eid).then(res =>{
+            this.options = res.data;
+            var max = 0;
+            this.options.forEach(function (item,index) {
+              if (item.tid>max){
+                max = item.tid;
+              }
+            });
+            this.term = max;
+          })
+        },
         getAllScores(){
           axios.get("getCourses?tid="+this.term).then(res => {
             this.tableHead=res.data;
           })
         },
         tableRenderData:function () {
-            this.getAllTerm();
             this.getAllScores();
           axios.get('getCourseWithScore?current=' + this.current + '&size=' + this.size+'&tid=' + this.term
             +"&snamelike=" + this.snamelike).then(res => {

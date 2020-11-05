@@ -78,11 +78,18 @@
                 this.$store.dispatch("user/setId", res.data.uid);
                 this.$store.dispatch("user/setUser", this.ruleForm.uname);
                 this.$store.dispatch("user/setPerm", res.data.role);
-                if (res.data.role==3){
+
+                if(this.$store.user.role == 0){
+                  this.$router.push({path:"/mainFrame/userManage"})
+                }else if(this.$store.user.role == 1){
+
+                }else if(this.$store.user.role == 2) {
+
+                } else if (res.data.role==3){
                   axios.get("getByUser/"+this.$store.state.user.uid).then(res =>{
                     this.$store.dispatch("student/setStudent",res.data);
                   })
-                this.$router.push({path: "/mainFrame"})
+                  this.$router.push({path: "/mainFrame"})
                 }
               }else {
                this.$message("用户名或密码错误")

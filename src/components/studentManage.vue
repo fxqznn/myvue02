@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="12" :offset="1">
+      <el-col :span="16" :offset="0">
         <el-input placeholder="请输入学生姓名" v-model="sname" style="width: 300px">
           <el-button slot="append" @click="tableRenderData">查询</el-button>
         </el-input>
@@ -12,12 +12,14 @@
           </el-option>
         </el-select>
       </el-col>
-      <el-col :span="8" :offset="3">
+      <el-col :span="8" :offset="0">
         <el-button @click="add()" >添加学生</el-button>
         <el-button @click="adds()" >批量添加</el-button>
         <el-button @click="dels()" >删除学生</el-button>
       </el-col>
     </el-row>
+
+    <br/>
 
     <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="600"
               :default-sort="{prop:'sid',order:'ascending'}"  @selection-change="handleSelectionChange">

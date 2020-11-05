@@ -1,28 +1,30 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="18" >
-        <el-input placeholder="请输入员工姓名" v-model="ename" style="width: 300px">
+      <el-col :span="16" :offset="0">
+        <el-input placeholder="请输入员工姓名" v-model="ename" style="width: 200px;">
           <el-button slot="append" @click="tableRenderData">查询</el-button>
         </el-input>
-        <el-select v-model="dept" @change="tableRenderData">
+        <el-select v-model="dept" @change="tableRenderData" style="width: 200px;">
           <el-option v-for="item in depts" :key="item.value" :label="item.label" :value="item.value">
             <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
             <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
           </el-option>
         </el-select>
-        <el-select v-model="isdel" @change="tableRenderData">
+        <el-select v-model="isdel" @change="tableRenderData" style="width: 200px;">
           <el-option v-for="item in isdels" :key="item.value" :label="item.label" :value="item.value">
             <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
             <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
           </el-option>
         </el-select>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="8" :offset="0">
         <el-button @click="addEmp" >添加用户</el-button>
         <el-button @click="delEmps" >删除用户</el-button>
       </el-col>
     </el-row>
+
+    <br/>
 
     <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="600"
               :default-sort="{prop:'eid',order:'ascending'}"  @selection-change="handleSelectionChange">

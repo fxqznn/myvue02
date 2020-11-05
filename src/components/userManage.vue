@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="12" :offset="1">
+      <el-col :span="16" :offset="0">
         <el-input placeholder="请输入用户名" v-model="uname" style="width: 300px">
           <el-button slot="append" @click="tableRenderData">查询</el-button>
         </el-input>
@@ -12,11 +12,13 @@
           </el-option>
         </el-select>
       </el-col>
-      <el-col :span="4" :offset="5">
+      <el-col :span="8" :offset="0">
         <el-button @click="addUser" >添加用户</el-button>
         <el-button @click="deleteUsers" >删除用户</el-button>
       </el-col>
     </el-row>
+
+    <br/>
 
     <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="600"
               :default-sort="{prop:'uid',order:'ascending'}"  @selection-change="handleSelectionChange">

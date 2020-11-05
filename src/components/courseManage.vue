@@ -1,24 +1,24 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="18">
-        <el-input placeholder="请输入课程名称" v-model="cname" style="width: 300px">
+      <el-col :span="16">
+        <el-input placeholder="请输入课程名称" v-model="cname" style="width: 200px">
           <el-button slot="append" @click="tableRenderData">查询</el-button>
         </el-input>
-        <el-select v-model="type" @change="tableRenderData">
+        <el-select v-model="type" @change="tableRenderData"  style="width: 200px">
           <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
             <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
             <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
           </el-option>
         </el-select>
-        <el-select v-model="isdel" @change="tableRenderData">
+        <el-select v-model="isdel" @change="tableRenderData"  style="width: 200px">
           <el-option v-for="item in isdels" :key="item.value" :label="item.label" :value="item.value">
             <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
             <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
           </el-option>
         </el-select>
       </el-col>
-      <el-col :span="4" >
+      <el-col :span="8" >
         <el-button @click="add()" >添加课程</el-button>
         <el-button @click="dels()" >删除课程</el-button>
       </el-col>

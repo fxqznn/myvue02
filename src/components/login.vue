@@ -86,6 +86,8 @@
 
                 }else if(this.$store.state.user.role == 2) {
 
+                  this.$router.push({path: "/mainFrame"})
+
                 } else if (res.data.role==3){
                   axios.get("getByUser/"+this.$store.state.user.uid).then(res =>{
                     this.$store.dispatch("student/setStudent",res.data);

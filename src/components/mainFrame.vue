@@ -16,7 +16,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </el-header>
-    <el-container>
+    <el-container style="overflow-y: hidden">
       <el-aside  style="width: 20%; height: 90%" >
         <el-menu>
           <navigation-item v-for="(menu,i) in menus" :key="i" :item="menu"/>

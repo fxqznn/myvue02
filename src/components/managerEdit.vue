@@ -93,7 +93,7 @@
             <el-input
               type="textarea"
               :rows="4"
-              v-model="textarea"
+              v-model="textarea0"
               @blur="addAppraise(0)">
             </el-input>
           </td>
@@ -151,7 +151,7 @@
             <el-input
               type="textarea"
               :rows="4"
-              v-model="textarea"
+              v-model="textarea1"
               @blur="addAppraise(1)"
             >
             </el-input>
@@ -210,7 +210,7 @@
             <el-input
               type="textarea"
               :rows="4"
-              v-model="textarea"
+              v-model="textarea2"
               @blur="addAppraise(2)"
             >
             </el-input>
@@ -269,7 +269,7 @@
             <el-input
               type="textarea"
               :rows="4"
-              v-model="textarea"
+              v-model="textarea3"
               @blur="addAppraise(3)"
             >
             </el-input>
@@ -312,7 +312,11 @@
             },
             ename1:"",
             score1:"",
-            textarea:"",
+            textarea0:"",
+            textarea1:"",
+            textarea2:"",
+            textarea3:"",
+
           }
       },
       methods:{
@@ -338,12 +342,36 @@
                 this.$message.error("更新失败")
               }
             })
-          }
+          },
+          getApp0(){
+            axios.get("http://localhost:8081/getApp?sid="+this.student.sid+"&&type=0").then(res=>{
+              this.textarea0=res.data;
+            })
+          },
+          getApp1(){
+            axios.get("http://localhost:8081/getApp?sid="+this.student.sid+"&&type=1").then(res=>{
+              this.textarea1=res.data;
+            })
+          },
+          getApp2(){
+            axios.get("http://localhost:8081/getApp?sid="+this.student.sid+"&&type=2").then(res=>{
+              this.textarea2=res.data;
+            })
+          },
+          getApp3(){
+            axios.get("http://localhost:8081/getApp?sid="+this.student.sid+"&&type=3").then(res=>{
+              this.textarea3=res.data;
+            })
+          },
       },
       mounted() {
             this.eid = this.$route.params.eid;
             this.ename1 = this.$route.params.ename;
             this.showInfo();
+            this.getApp0();
+            this.getApp1();
+            this.getApp2();
+            this.getApp3();
             this.getEmp();
             this.getAllScores();
 

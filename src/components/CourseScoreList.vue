@@ -1,7 +1,12 @@
 <template>
   <div>
-    <br>
-    <br>
+    <table width="1000px">
+      <tr>
+        <td colspan="7" align="center"><h4>培训学校评价</h4></td>
+      </tr>
+      <tr>
+        <td height="118px">培训学校</td>
+        <td colspan="6" rowspan="2">
     <el-table style="width: 100%" border :data="tableData" >
       <el-table-column
         align="center"
@@ -11,30 +16,11 @@
       <el-table-column
         align="center"
         prop="ename"
-        label="工号">
+        label="评价人">
       </el-table-column>
       <el-table-column
         align="center"
-        prop="eid"
-        label="工号">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="ename"
-        label="姓名">
-        <template slot-scope="scope">
-          <a href="">{{scope.row.ename}}</a>
-        </template>
-
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="job"
-        label="职位">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="成绩">
+        label="培训期间测试成绩">
         <template v-for="(item,index) in tableHead">
           <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
           </el-table-column>
@@ -48,8 +34,17 @@
           {{scope.row.avg || "尚未评分"}}
         </template>
       </el-table-column>
-
     </el-table>
+        </td>
+      </tr>
+      <tr>
+        <td>学习评价</td>
+      </tr>
+      <tr>
+        <td height="150px">评价(包括主要优点及缺陷)</td>
+        <td colspan="6">{{appraise.content}}</td>
+      </tr>
+    </table>
   </div>
 </template>
 
@@ -60,52 +55,47 @@
     name: "CourseScoreList",
     data() {
       return {
-        CourseData: [],//从后台获取数据
-        appraise:""
+        tableHead: [],
+        tableData: [],
+        appraise:{content:""}
       }
     },
     methods: {
-      getAllCourseScore: function () {//获取全部员工
-        axios.get("http://localhost:8081/getCourses/"+this.$store.state.student.sid).then(res => {
-          this.CourseData = res.data;
+      showJudge(row,column){
+        const score = row[column.property];
+        if (score == undefined){
+          return "未评分";
+        }else{
+          return score;
+        }
+      },
+      getAllCourses: function () {//获取全部员工
+        axios.get("getStudentCourses/"+this.$store.state.student.sid).then(res => {
+          this.tableHead = res.data;
         })
       },
-      getAverage: function (param) {
-        const {columns, data} = param;
-        const avgs = [];
-        columns.forEach((column, index) => {
-          if (index === 0) {
-            avgs[index] = '平均分';
-            return;
-          }
-          const values = data.map(item => Number(item[column.property]));
-          if (!values.every(value => isNaN(value))) {
-            avgs[index] = values.reduce((prev, curr) => {
-              const value = Number(curr);
-              if (!isNaN(value)) {
-                return prev + curr;
-              } else {
-                return prev / avgs.length;
-              }
-            }, 0);
-          } else {
-            avgs[index] = 'N/A';
-          }
-        });
-        return avgs;
+      showScores() {
+        axios.get("getScoreCourses/" + this.$store.state.student.sid).then(res => {
+          this.tableData = res.data;
+        })
       },
       getAppraise:function () {
-        axios.get("http://localhost:8081/getAppraise/"+this.$store.state.student.sid+"/-1").then(res => {
-          this.appraise = res.data.content;
+        axios.get("getAppraise/"+this.$store.state.student.sid+"/-1").then(res => {
+          this.appraise = res.data;
         })
       }
     },
     mounted() {//编译后去获取数据
-      this.getAllCourseScore();
+      this.getAllCourses();
+      this.showScores();
+      this.getAppraise();
     }
   }
 </script>
 
 <style scoped>
-
+  table,tr,td{
+    border: 1px solid;
+    border-collapse: collapse;
+  }
 </style>

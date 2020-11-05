@@ -11,6 +11,8 @@ import StudentList from '@/components/StudentList';
 
 import axios from 'axios'
 import managerEdit from "../components/managerEdit";
+import StudentDetails from "../components/StudentDetails";
+import AbilitiesScoreList from "../components/AbilitiesScoreList";
 
 
 axios.defaults.baseURL = 'http://localhost:8081/'
@@ -31,7 +33,14 @@ export default new Router({
       component: mainFrame,
       children:[
         {path:'changePass',name:'changePass',component:changePass},
-        {path:'userManage',name:'userManage',component:userManage}
+        {path:'userManage',name:'userManage',component:userManage},
+        {path:'StudentDetails',
+          name:'StudentDetails',
+          component:StudentDetails,
+          children: [
+            {path:'CourseScoreList',name:'CourseScoreList',component:CourseScoreList},
+            {path:'AbilitiesScoreList',name:'AbilitiesScoreList',component:AbilitiesScoreList}
+          ]}
       ]
     },
     {

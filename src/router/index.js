@@ -36,11 +36,12 @@ export default new Router({
       name: 'mainFrame',
       component: mainFrame,
       children:[
+        {path: '/managerEdit/:eid/:ename', name: 'managerEdit', component: managerEdit},
+        {path: '/managerEdge', name: 'managerEdge', component: managerEdge},
         {path:'changePass',name:'changePass',component:changePass},
         {path:'userManage',name:'userManage',component:userManage},
         {path:'empManage',name:'empManage',component:empManage},
         {path:'studentManage',name:'studentManage',component:studentManage},
-        {path:'managerEdit/:sid',name:'managerEdit',component:managerEdit},
         {path: 'StudentList', name: 'StudentList', component: StudentList},
         {path: 'studentMsg/:sid', name: 'studentMsg', component: studentMsg},
         {path:'StudentDetails',
@@ -52,21 +53,13 @@ export default new Router({
           ]}
       ]
     },
-    {
-      path: '/managerEdge',
-      name: 'managerEdge',
-      component: managerEdge
-    },
+
     {
       path: '/StudentList',
       name: 'StudentList',
       component: StudentList
     },
-    {
-      path: '/managerEdit/:eid',
-      name: 'managerEdit',
-      component: managerEdit
-    },
+
     {
       path: '/studentMsg/:sid',
       name: 'studentMsg',

@@ -1,6 +1,6 @@
 <template>
     <div>
-      <br>
+
       <el-row :gutter="20">
 
         <el-col :span="4" offset="8">
@@ -29,7 +29,7 @@
           prop="eid"
           label="工号">
           <template slot-scope="scope">
-            <router-link :to="'/managerEdit/'+scope.row.eid">{{scope.row.eid}}</router-link>
+            <router-link :to="'/managerEdit/'+scope.row.eid+'/'+ename1">{{scope.row.eid}}</router-link>
           </template>
         </el-table-column>
         <el-table-column
@@ -99,7 +99,7 @@
         currentPage: 1,
         total: 20,
         pageSize: 5,
-        uname: "100001",
+        uname:100001 ,
         value: "0",
         ename: "",
         tableHead: [],
@@ -151,10 +151,11 @@
   },
     mounted() {
       //编译后去获取数据
+      this.getName();
       this.showManager();
       this.getAllScores();
       this.showScores();
-      this.getName();
+
     }
   }
 </script>

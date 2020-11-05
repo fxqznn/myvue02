@@ -5,9 +5,10 @@
         <td colspan="7" align="center"><h4>{{this.year}}工作评价</h4></td>
       </tr>
       <tr>
-        <td height="118px">项目</td>
+        <td height="140px">项目</td>
         <td colspan="6" rowspan="2">
-          <el-table style="width: 100%" border :data="tableData" >
+          <el-table style="width: 100%" border :data="tableData" :row-style="{height:'60px'}"
+                    :cell-style="{padding:'0px'}" :header-row-style="{'height': '70px'}">
             <el-table-column
               align="center"
               prop="dname"
@@ -67,6 +68,9 @@
           year:""
         }
       },
+    watch:{
+          "$route":'routerChange'
+    },
       methods: {
         showJudge(row,column){
           const score = row[column.property];
@@ -101,6 +105,13 @@
           }else if (this.type==3){
             this.year = "第三年";
           }
+        },
+        routerChange:function () {
+          this.type=this.$route.params.type;
+          this.getAllCourses();
+          this.showScores();
+          this.getAppraise();
+          this.showYear();
         }
       },
       mounted() {//编译后去获取数据
@@ -117,14 +128,5 @@
     border: 1px solid;
     border-collapse: collapse;
   }
-  .el-table__header tr,
-  .el-table__header th {
-    padding: 0;
-    height: 40px;
-  }
-  .el-table__body tr,
-  .el-table__body td {
-    padding: 0;
-    height: 40px;
-  }
+
 </style>

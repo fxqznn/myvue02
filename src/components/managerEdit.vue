@@ -93,7 +93,8 @@
             <el-input
               type="textarea"
               :rows="4"
-              v-model="textarea">
+              v-model="textarea"
+              @blur="addAppraise(0)">
             </el-input>
           </td>
         </tr>
@@ -150,7 +151,9 @@
             <el-input
               type="textarea"
               :rows="4"
-              v-model="textarea">
+              v-model="textarea"
+              @blur="addAppraise(1)"
+            >
             </el-input>
           </td>
         </tr>
@@ -207,7 +210,9 @@
             <el-input
               type="textarea"
               :rows="4"
-              v-model="textarea">
+              v-model="textarea"
+              @blur="addAppraise(2)"
+            >
             </el-input>
           </td>
         </tr>
@@ -264,7 +269,9 @@
             <el-input
               type="textarea"
               :rows="4"
-              v-model="textarea">
+              v-model="textarea"
+              @blur="addAppraise(3)"
+            >
             </el-input>
           </td>
         </tr>
@@ -284,6 +291,7 @@
             type:0,
             table1Data:[],
             student:{
+              sid:"",
               sname:"",
               sex:"",
               birthday:"",
@@ -303,7 +311,6 @@
               job:"",
             },
             ename1:"",
-            sid:0,
             score1:"",
             textarea:"",
           }
@@ -317,6 +324,19 @@
           getEmp(){
             axios.get("http://localhost:8081/getManager?eid="+this.eid).then(res=>{
               this.emp = res.data;
+            })
+          },
+          addAppraise(type){
+            axios.get("http://localhost:8081/updateApp?sid="+this.student.sid+"&&type="+type+"&&content="+this.textarea).then(res=>{
+
+              if (res.data==1){
+                this.$message({
+                  message: '更新评价成功',
+                  type: 'success'
+                });
+              }else{
+                this.$message.error("更新失败")
+              }
             })
           }
       },

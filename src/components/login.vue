@@ -79,11 +79,11 @@
                 this.$store.dispatch("user/setUser", this.ruleForm.uname);
                 this.$store.dispatch("user/setPerm", res.data.role);
 
-                if(this.$store.user.role == 0){
+                if(this.$store.state.user.role == 0){
                   this.$router.push({path:"/mainFrame/userManage"})
-                }else if(this.$store.user.role == 1){
+                }else if(this.$store.state.user.role == 1){
 
-                }else if(this.$store.user.role == 2) {
+                }else if(this.$store.state.user.role == 2) {
 
                 } else if (res.data.role==3){
                   axios.get("getByUser/"+this.$store.state.user.uid).then(res =>{

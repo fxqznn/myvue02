@@ -103,7 +103,7 @@
           <el-row>
             <el-col :span="12" :offset="6">
               <el-form-item label="学号" label-width="50px">
-                <el-input v-model="editData.sid" readonly=""></el-input>
+                <el-input v-model="editData.sid" readonly></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -220,7 +220,7 @@
       },
 
       add : function () {
-        this.add = { sname:'', tid:0};
+        this.addData = { sname:'', tid:0};
         this.addVisiable = true;
       },
       cancelAdd : function () {
@@ -265,7 +265,14 @@
           });
           saveData.push({sname:dataitem.sname, tid:tid});
         });
-        axios.post('addStudents',qs.stringify({students:JSON.stringify(saveData)},{indices:false})).then(res => {
+        axios({
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          method: 'post',
+          url: 'addStudents',
+          data: JSON.stringify(saveData)
+        }).then(res => {
           if(res.data == "success"){
             this.$message({
               message:'添加成功',

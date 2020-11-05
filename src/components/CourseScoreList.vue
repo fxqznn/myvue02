@@ -5,9 +5,10 @@
         <td colspan="7" align="center"><h4>培训学校评价</h4></td>
       </tr>
       <tr>
-        <td height="118px">培训学校</td>
+        <td height="140px">培训学校</td>
         <td colspan="6" rowspan="2">
-    <el-table style="width: 100%" border :data="tableData" >
+    <el-table style="width: 100%" border :data="tableData" :row-style="{height:'60px'}"
+              :cell-style="{padding:'0px'}" :header-row-style="{'height': '70px'}">
       <el-table-column
         align="center"
         prop="tname"

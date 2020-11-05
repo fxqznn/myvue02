@@ -48,7 +48,7 @@ export default new Router({
           component:StudentDetails,
           children: [
             {path:'CourseScoreList',name:'CourseScoreList',component:CourseScoreList},
-            {path:'AbilitiesScoreList',name:'AbilitiesScoreList',component:AbilitiesScoreList}
+            {path:'AbilitiesScoreList/:type',name:'AbilitiesScoreList',component:AbilitiesScoreList}
           ]}
       ]
     },

@@ -23,4 +23,7 @@
     height: 100%;
     width: 100%;
   }
+  body .el-table th.gutter{
+    display: table-cell!important;
+  }
 </style>

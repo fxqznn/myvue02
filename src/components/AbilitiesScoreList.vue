@@ -2,16 +2,21 @@
   <div>
     <table width="1000px">
       <tr>
-        <td colspan="7" align="center"><h4>培训学校评价</h4></td>
+        <td colspan="7" align="center"><h4>{{this.year}}工作评价</h4></td>
       </tr>
       <tr>
-        <td height="118px">培训学校</td>
+        <td height="118px">项目</td>
         <td colspan="6" rowspan="2">
           <el-table style="width: 100%" border :data="tableData" >
             <el-table-column
               align="center"
-              prop="tname"
-              label="学期">
+              prop="dname"
+              label="员工部门">
+            </el-table-column>
+            <el-table-column
+              align="center"
+              prop="job"
+              label="员工职务">
             </el-table-column>
             <el-table-column
               align="center"
@@ -20,7 +25,7 @@
             </el-table-column>
             <el-table-column
               align="center"
-              label="培训期间测试成绩">
+              label="评价分项">
               <template v-for="(item,index) in tableHead">
                 <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
                 </el-table-column>
@@ -38,7 +43,7 @@
         </td>
       </tr>
       <tr>
-        <td>学习评价</td>
+        <td>工作评价</td>
       </tr>
       <tr>
         <td height="150px">评价(包括主要优点及缺陷)</td>
@@ -49,11 +54,77 @@
 </template>
 
 <script>
-    export default {
-        name: "AbilitiesScoreList"
+  import axios from 'axios';
+
+  export default {
+        name: "AbilitiesScoreList",
+      data() {
+        return {
+          tableHead: [],
+          tableData: [],
+          appraise:{content:""},
+          type:this.$route.params.type,
+          year:""
+        }
+      },
+      methods: {
+        showJudge(row,column){
+          const score = row[column.property];
+          if (score == undefined){
+            return "未评分";
+          }else{
+            return score;
+          }
+        },
+        getAllCourses: function () {//获取全部员工
+          axios.get("getAllEntity?eid="+this.$store.state.user.uname).then(res => {
+            this.tableHead = res.data;
+          })
+        },
+        showScores() {
+          axios.get("getScoreAbilities/" + this.$store.state.student.sid+"/"+this.type).then(res => {
+            this.tableData = res.data;
+          })
+        },
+        getAppraise:function () {
+          axios.get("getAppraise/"+this.$store.state.student.sid+"/"+this.type).then(res => {
+            this.appraise = res.data;
+          })
+        },
+        showYear:function () {
+          if (this.type==0){
+            this.year = "转正";
+          } else if (this.type==1){
+            this.year = "第一年";
+          } else if (this.type==2){
+            this.year = "第二年";
+          }else if (this.type==3){
+            this.year = "第三年";
+          }
+        }
+      },
+      mounted() {//编译后去获取数据
+        this.getAllCourses();
+        this.showScores();
+        this.getAppraise();
+        this.showYear();
+      }
     }
 </script>
 
 <style scoped>
-
+  table,tr,td{
+    border: 1px solid;
+    border-collapse: collapse;
+  }
+  .el-table__header tr,
+  .el-table__header th {
+    padding: 0;
+    height: 40px;
+  }
+  .el-table__body tr,
+  .el-table__body td {
+    padding: 0;
+    height: 40px;
+  }
 </style>

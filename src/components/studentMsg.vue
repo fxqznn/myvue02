@@ -1,8 +1,11 @@
 <template>
   <div>
+
     <table>
+
       <tr>
-        <td colspan="7"> <h2>金桥学员成长跟踪表</h2></td>
+        <td colspan="7"><span style="font-size: 20px">金桥学员成长跟踪表</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <el-link @click="returnStudentList">返回学生列表页面</el-link></td>
       </tr>
       <tr >
         <td>姓名</td>
@@ -112,6 +115,9 @@
         } else {
           return data;
         }
+      },
+      returnStudentList:function(){
+        this.$router.push("/mainFrame/StudentList")
       },
       getAllCourse(){
         axios.get("getCoursesTerm?tid=" + this.tid).then(res => {

@@ -1,16 +1,17 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import mainFrame from '@/components/mainFrame';
-import login from '@/components/login'
+import login from '@/components/login';
 import managerEdge from "../components/managerEdge";
 import changePass from '@/components/changePass';
 import CourseScoreList from '@/components/CourseScoreList';
-import userManage from '@/components/userManage'
+import userManage from '@/components/userManage';
 import StudentList from '@/components/StudentList';
-import studentMsg from '@/components/studentMsg'
-import empManage from '@/components/empManage'
-import courseManage from '@/components/courseManage'
-import studentManage from '@/components/studentManage'
+import studentMsg from '@/components/studentMsg';
+import empManage from '@/components/empManage';
+import courseManage from '@/components/courseManage';
+import studentManage from '@/components/studentManage';
+import termManage from '@/components/termManage';
 
 
 import axios from 'axios'
@@ -19,8 +20,8 @@ import StudentDetails from "../components/StudentDetails";
 import AbilitiesScoreList from "../components/AbilitiesScoreList";
 
 
-axios.defaults.baseURL = 'http://localhost:8081/'
-Vue.prototype.axios = axios
+axios.defaults.baseURL = 'http://localhost:8081/';
+Vue.prototype.axios = axios;
 
 Vue.use(Router);
 
@@ -42,6 +43,8 @@ export default new Router({
         {path:'userManage',name:'userManage',component:userManage},
         {path:'empManage',name:'empManage',component:empManage},
         {path:'studentManage',name:'studentManage',component:studentManage},
+        {path:'courseManage',name:'courseManage',component:courseManage},
+        {path:'termManage',name:'termManage',component:termManage},
         {path: 'StudentList', name: 'StudentList', component: StudentList},
         {path: 'studentMsg/:sid/:tid', name: 'studentMsg', component: studentMsg},
         {path:'StudentDetails',

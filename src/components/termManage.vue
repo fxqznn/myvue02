@@ -2,36 +2,31 @@
   <div>
     <el-row>
       <el-col :span="16">
-        <el-input placeholder="请输入课程名称" v-model="cname" style="width: 200px">
+        <el-input placeholder="请输入学期名称" v-model="tname" style="width: 300px">
           <el-button slot="append" @click="tableRenderData">查询</el-button>
         </el-input>
-        <el-select v-model="type" @change="tableRenderData"  style="width: 200px">
-          <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
-            <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
-            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
-          </el-option>
-        </el-select>
-        <el-select v-model="isdel" @change="tableRenderData"  style="width: 200px">
-          <el-option v-for="item in isdels" :key="item.value" :label="item.label" :value="item.value">
+        <el-select v-model="eid" @change="tableRenderData">
+          <el-option v-for="item in teachers" :key="item.value" :label="item.label" :value="item.value">
             <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
             <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
           </el-option>
         </el-select>
       </el-col>
       <el-col :span="8" >
-        <el-button @click="add()" >添加课程</el-button>
-        <el-button @click="dels()" >删除课程</el-button>
+        <el-button @click="add()" >添加学期</el-button>
+        <el-button @click="dels()" >删除学期</el-button>
       </el-col>
     </el-row>
 
     <br />
 
     <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="600"
-              :default-sort="{prop:'cid',order:'ascending'}"  @selection-change="handleSelectionChange">
+              :default-sort="{prop:'tid',order:'ascending'}"  @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection"></el-table-column>
-      <el-table-column fixed prop="cid" label="编号"></el-table-column>
-      <el-table-column fixed prop="cname" label="名称"></el-table-column>
-      <el-table-column fixed="right" prop="type" label="类型" :formatter="typeFormat"></el-table-column>
+      <el-table-column fixed prop="tid" label="编号"></el-table-column>
+      <el-table-column fixed prop="tname" label="名称"></el-table-column>
+      <el-table-column prop="date" label="开始时间"></el-table-column>
+      <el-table-column fixed="right" prop="eid" label="授课老师" :formatter="eidFormat"></el-table-column>
       <el-table-column fixed="right" label="操作">
         <template slot-scope="scope">
           <el-button @click="handleDelete(scope.$index, scope.row)" type="text" size="small">删除</el-button>
@@ -44,20 +39,27 @@
                    :current-page="current" :page-sizes="[5, 10, 15, 20, 25, 30]" :page-size="size"
                    layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
 
-    <el-dialog title="添加课程" :visible.sync="addVisiable" width="50%" :center="dialogCenter">
+    <el-dialog title="添加学期" :visible.sync="addVisiable" width="100%" :center="dialogCenter">
       <el-form>
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="名称" label-width="50px">
-              <el-input v-model="addData.cname"></el-input>
+              <el-input v-model="addData.tname"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12" :offset="6">
-            <el-form-item label="类型" label-width="50px">
-              <el-select v-model="addData.type">
-                <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
+            <el-form-item label="开始时间" label-width="50px">
+              <el-input type="tdate" v-model="addData.tdate"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12" :offset="6">
+            <el-form-item label="授课老师" label-width="50px">
+              <el-select v-model="addData.eid">
+                <el-option v-for="item in teachers" :key="item.value" :label="item.label" :value="item.value">
                   <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
                 </el-option>
@@ -66,13 +68,16 @@
           </el-col>
         </el-row>
       </el-form>
+      <el-table ref="multipleTable" :data="addData.courses" border style="width: 100%" max-height="600"
+                :default-sort="{prop:'cid',order:'ascending'}">
+      </el-table>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancelAdd()">取 消</el-button>
         <el-button @click="addConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog title="删除课程" :visible.sync="delsVisiable" width="25%" :center="dialogCenter">
+    <el-dialog title="删除学期" :visible.sync="delsVisiable" width="25%" :center="dialogCenter">
       <p><strong>确认删除所有选中的数据吗？</strong></p>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancelDels()">取 消</el-button>
@@ -80,7 +85,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="删除课程" :visible.sync="delVisiable" width="25%" :center="dialogCenter">
+    <el-dialog title="删除学期" :visible.sync="delVisiable" width="25%" :center="dialogCenter">
       <p><strong>确认删除吗？</strong></p>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancelDel()">取 消</el-button>
@@ -88,36 +93,34 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="修改课程信息" :visible.sync="editVisiable" width="50%" :center="dialogCenter">
+    <el-dialog title="修改学期信息" :visible.sync="editVisiable" width="100%" :center="dialogCenter">
       <div slot="footer" class="dialog-footer">
         <el-form>
           <el-row>
             <el-col :span="12" :offset="6">
               <el-form-item label="编号" label-width="50px">
-                <el-input v-model="editData.cid" readonly></el-input>
+                <el-input v-model="editData.term.tid" readonly></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12" :offset="6">
               <el-form-item label="名称" label-width="50px">
-                <el-input v-model="editData.cname"></el-input>
+                <el-input v-model="editData.term.tname"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12" :offset="6">
-              <el-form-item label="类型" label-width="50px">
-                <el-select v-model="editData.type">
-                  <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
-                    <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
-                    <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
-                  </el-option>
-                </el-select>
+              <el-form-item label="开始时间" label-width="50px">
+                <el-input type="tdate" v-model="addData.date"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
+        <el-table ref="multipleTable" :data="tableData_forAdd" border style="width: 100%" max-height="600"
+                  :default-sort="{prop:'tid',order:'ascending'}"  @selection-change="handleSelectionChange">
+        </el-table>
         <el-button @click="cancelEdit()">取 消</el-button>
         <el-button @click="eidtConfirm()">确 定</el-button>
       </div>
@@ -132,16 +135,14 @@
   import XLSX from 'xlsx';
 
   export default {
-    name: "courseManage",
+    name: "termManage",
     data(){
       return {
         dialogCenter: true,
 
-        cname:'',
-        types:[{value:0,label:'课程'},{value:1,label:'能力'}],
-        type:0,
-        isdel:0,
-        isdels:[{value:0,label:'存在'},{value:1,label:'已删除'}],
+        tname:'',
+        teachers:[],
+        eid:0,
 
         total:0,
         size:5,
@@ -150,7 +151,7 @@
         multipleSelection:[],
 
         addVisiable:false,
-        addData:{ cname:'', type:0},
+        addData:{},
         delsVisiable:false,
         delsData:[],
         editVisiable:false,
@@ -161,27 +162,36 @@
     },
     methods:{
       tableRenderData : function () {
-        axios.get('getAllCourse?current=' + this.current + '&size=' + this.size +
-          '&cname=' + this.cname + '&type=' + this.type + '&isdel=' + this.isdel).then(res => {
+        axios.get('getAllTerm?current=' + this.current + '&size=' + this.size +
+          '&tname=' + this.tname + '&eid=' + this.eid).then(res => {
           this.tableData = res.data.records;
           this.current = res.data.current;
           this.size = res.data.size;
           this.total = res.data.total;
         })
       },
+      teacherRenderData : function() {
+        var teacher_tem = [{value:0,label:'请选择老师',isdel:0}];
+        axios.get('getEmpsByRole?role=1').then(res => {
+          res.data.forEach(function (item, index) {
+            teacher_tem.push({value:item.eid, label:item.ename,isdel:item.isdel});
+          })
+        });
+        this.teachers = teacher_tem;
+      },
+      eidFormat : function(row, column) {
+        var ename_tem = '';
+        this.teachers.forEach(function (item, value) {
+          if(item.value == row.eid){
+            ename_tem = item.label;
+          }
+        });
+        return ename_tem;
+      },
+
       handleSelectionChange : function (val) {
         this.multipleSelection = val;
       },
-      typeFormat : function(row, column) {
-        var type_tem = '';
-        this.types.forEach(function (item, value) {
-          if(item.value == row.type){
-            type_tem = item.label;
-          }
-        });
-        return type_tem;
-      },
-
       handleSizeChange : function(val) {
         this.size = val;
         this.tableRenderData();
@@ -192,15 +202,17 @@
       },
 
       add : function () {
-        this.addData.cname = '';
-        this.addData.type = this.type;
+        this.addData = {tname:'',tdate:null, eid:0, courses:[], checkedCourses:[]};
+        axios.get('getCoursesForTermAdd').then(res => {
+          this.addData.courses = res.data;
+        });
         this.addVisiable = true;
       },
       cancelAdd : function () {
         this.addVisiable = false;
       },
       addConfirm : function () {
-        axios.post('addCourse',qs.stringify(this.addData)).then(res => {
+        axios.post('addTerm',qs.stringify({term:this.addData, courses:JSON.stringify(this.selected)})).then(res => {
           if(res.data == "success"){
             this.$message({
               message:'添加成功',
@@ -217,7 +229,7 @@
       dels : function () {
         this.delsData = [];
         if(this.multipleSelection.length == 0){
-          this.$message("请选择课程进行删除")
+          this.$message("请选择学期进行删除")
         } else {
           this.delsVisiable = true;
           this.delsData = this.multipleSelection;
@@ -227,11 +239,11 @@
         this.delsVisiable = false;
       },
       delsConfirm : function () {
-        var cids = [];
+        var tids = [];
         this.delsData.forEach(function (item, index) {
-          cids.push(item.cid);
+          tids.push(item.tid);
         });
-        axios.post('delCoursesByIds',qs.stringify({cids:cids},{indices:false})).then(res => {
+        axios.post('delTermsByIds',qs.stringify({tids:tids},{indices:false})).then(res => {
           if(res.data == "success"){
             this.$message({
               message:'删除成功',
@@ -247,18 +259,20 @@
 
       handleDelete : function (index, row) {
         this.delVisiable = true;
-        this.delData = row.cid;
+        this.delData = row.tid;
       },
       cancelDel : function () {
         this.delVisiable = false;
       },
       delConfirm : function () {
-        axios.get('delCourseById?cid=' + this.delData).then(res => {
+        axios.get('delTermById?tid=' + this.delData).then(res => {
           if(res.data == "success"){
             this.$message({
               message:'删除成功',
               type:'success'
             });
+          } else if (res.data == 'notdel'){
+            this.$message('学期内存在学生不能删除');
           } else {
             this.$message.error('服务器响应失败');
           }
@@ -269,7 +283,7 @@
 
       handleEidt : function (index, row) {
         this.editData = {};
-        axios.get('getCourseById?cid=' + row.cid).then(res => {
+        axios.get('getTermById?tid=' + row.tid).then(res => {
           this.editData = res.data;
         });
         this.editVisiable = true;
@@ -278,7 +292,9 @@
         this.editVisiable = false;
       },
       eidtConfirm : function () {
-        axios.post('editCourse',qs.stringify(this.editData)).then(res => {
+        axios.post('editCourse',
+          qs.stringify({term:this.editData.term,
+            checkCourses:JSON.stringify(this.editData.checkedCourses)})).then(res => {
           if(res.data == "success"){
             this.$message({
               message:'修改成功',
@@ -295,6 +311,7 @@
     },
     mounted() {
       this.tableRenderData();
+      this.teacherRenderData();
     }
   }
 </script>

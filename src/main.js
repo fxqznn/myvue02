@@ -7,12 +7,12 @@ import axios from 'axios'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import store from './vuex/store';
-
+import htmlToPdf from '@/components/utils/htmlToPdf'
 axios.defaults.baseURL='http://localhost:8081/'
 Vue.prototype.axios = axios
 
 Vue.use(ElementUI);
-
+Vue.use(htmlToPdf)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

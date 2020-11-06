@@ -1,9 +1,9 @@
 <template>
 
     <div>
-      <div>
 
-      </div>
+      <el-button  @click="goback" icon="el-icon-back" >返回上一级</el-button>
+      <br><br>
       <table width="80%">
         <tr>
           <td colspan="10"> <h2>金桥学员成长跟踪表</h2></td>
@@ -94,7 +94,7 @@
               type="textarea"
               :rows="4"
               v-model="textarea0"
-              @blur="addAppraise(0)">
+              @blur="addAppraise(0,textarea0)">
             </el-input>
           </td>
         </tr>
@@ -152,7 +152,7 @@
               type="textarea"
               :rows="4"
               v-model="textarea1"
-              @blur="addAppraise(1)"
+              @blur="addAppraise(1,textarea1)"
             >
             </el-input>
           </td>
@@ -211,7 +211,7 @@
               type="textarea"
               :rows="4"
               v-model="textarea2"
-              @blur="addAppraise(2)"
+              @blur="addAppraise(2,textarea2)"
             >
             </el-input>
           </td>
@@ -270,7 +270,7 @@
               type="textarea"
               :rows="4"
               v-model="textarea3"
-              @blur="addAppraise(3)"
+              @blur="addAppraise(3,textarea3)"
             >
             </el-input>
           </td>
@@ -291,7 +291,7 @@
             type:0,
             table1Data:[],
             student:{
-              sid:"",
+              sid:0,
               sname:"",
               sex:"",
               birthday:"",
@@ -316,13 +316,13 @@
             textarea1:"",
             textarea2:"",
             textarea3:"",
-
           }
       },
       methods:{
           showInfo(){
             axios.get("http://localhost:8081/getStudent?eid="+this.eid).then(res=>{
               this.student =res.data;
+              alert(this.student.sid);
             })
           },
           getEmp(){
@@ -330,8 +330,11 @@
               this.emp = res.data;
             })
           },
-          addAppraise(type){
-            axios.get("http://localhost:8081/updateApp?sid="+this.student.sid+"&&type="+type+"&&content="+this.textarea).then(res=>{
+        goback(){
+            this.$router.go(-1);
+        },
+          addAppraise(type,textarea){
+            axios.get("http://localhost:8081/updateApp?sid="+this.student.sid+"&&type="+type+"&&content="+textarea).then(res=>{
 
               if (res.data==1){
                 this.$message({
@@ -344,22 +347,22 @@
             })
           },
           getApp0(){
-            axios.get("http://localhost:8081/getApp?sid="+this.student.sid+"&&type=0").then(res=>{
+            axios.get("http://localhost:8081/getApp?sid="+this.student.sid+"&&type="+0).then(res=>{
               this.textarea0=res.data;
             })
           },
           getApp1(){
-            axios.get("http://localhost:8081/getApp?sid="+this.student.sid+"&&type=1").then(res=>{
+            axios.get("http://localhost:8081/getApp?sid="+this.student.sid+"&&type="+1).then(res=>{
               this.textarea1=res.data;
             })
           },
           getApp2(){
-            axios.get("http://localhost:8081/getApp?sid="+this.student.sid+"&&type=2").then(res=>{
+            axios.get("http://localhost:8081/getApp?sid="+this.student.sid+"&&type="+2).then(res=>{
               this.textarea2=res.data;
             })
           },
           getApp3(){
-            axios.get("http://localhost:8081/getApp?sid="+this.student.sid+"&&type=3").then(res=>{
+            axios.get("http://localhost:8081/getApp?sid="+this.student.sid+"&&type="+3).then(res=>{
               this.textarea3=res.data;
             })
           },
@@ -373,7 +376,6 @@
             this.getApp2();
             this.getApp3();
             this.getEmp();
-            this.getAllScores();
 
       }
     }

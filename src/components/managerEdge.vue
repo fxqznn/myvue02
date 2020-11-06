@@ -23,7 +23,7 @@
         <span>部门：{{dname}}  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  &nbsp; &nbsp;&nbsp;&nbsp;       评价人：{{ename1}}</span>
       <br>
       <br>
-      <el-table style="width: 100%" border :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+      <el-table stripe style="width: 100%" border :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         empty-text="没有这个人哟，再核对一下啊，亲！">
         <el-table-column
           align="center"

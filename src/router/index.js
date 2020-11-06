@@ -43,7 +43,7 @@ export default new Router({
         {path:'empManage',name:'empManage',component:empManage},
         {path:'studentManage',name:'studentManage',component:studentManage},
         {path: 'StudentList', name: 'StudentList', component: StudentList},
-        {path: 'studentMsg/:sid', name: 'studentMsg', component: studentMsg},
+        {path: 'studentMsg/:sid/:tid', name: 'studentMsg', component: studentMsg},
         {path:'StudentDetails',
           name:'StudentDetails',
           component:StudentDetails,
@@ -53,17 +53,6 @@ export default new Router({
           ]}
       ]
     },
-
-    {
-      path: '/StudentList',
-      name: 'StudentList',
-      component: StudentList
-    },
-
-    {
-      path: '/studentMsg/:sid',
-      name: 'studentMsg',
-      component: studentMsg
-    }
+    {path: '/studentMsg/:sid/:tid', name: 'studentMsg', component: studentMsg},
   ]
 })

@@ -85,7 +85,7 @@
         if(this.$store.state.user.role == 0){
           this.$router.push('/mainFrame/userManage')
         } else if (this.$store.state.user.role == 1) {
-
+          this.$router.push("/mainFrame/StudentList");
         } else if(this.$store.state.user.role == 2) {
 
         } else {

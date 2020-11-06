@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table width="1000px">
+    <table style="width: 100%;height: 100%">
       <tr>
         <td colspan="7" align="center"><h4>{{this.year}}工作评价</h4></td>
       </tr>
@@ -47,7 +47,7 @@
         <td>工作评价</td>
       </tr>
       <tr>
-        <td height="150px">评价(包括主要优点及缺陷)</td>
+        <td height="100px">评价(包括主要优点及缺陷)</td>
         <td colspan="6">{{appraise.content}}</td>
       </tr>
     </table>

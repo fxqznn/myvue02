@@ -1,5 +1,5 @@
 <template>
-  <el-container id="all" style="width: 100%;height: 100%">
+  <el-container id="all" style="width: 100%;height: 100%;overflow: hidden">
     <el-header  style="text-align: right;height: 10%">
       <el-dropdown style="margin-top:1%">
         <el-button>

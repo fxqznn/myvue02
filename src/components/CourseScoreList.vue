@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <table width="1000px">
+  <div >
+    <table style="width: 100%;height: 100%">
       <tr>
         <td colspan="7" align="center"><h4>培训学校评价</h4></td>
       </tr>
       <tr>
-        <td height="140px">培训学校</td>
+        <td height="140px" width="200px">培训学校</td>
         <td colspan="6" rowspan="2">
     <el-table style="width: 100%" border :data="tableData" :row-style="{height:'60px'}"
               :cell-style="{padding:'0px'}" :header-row-style="{'height': '70px'}">
@@ -42,7 +42,7 @@
         <td>学习评价</td>
       </tr>
       <tr>
-        <td height="150px">评价(包括主要优点及缺陷)</td>
+        <td height="100px">评价(包括主要优点及缺陷)</td>
         <td colspan="6">{{appraise.content}}</td>
       </tr>
     </table>

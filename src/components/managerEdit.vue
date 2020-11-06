@@ -69,22 +69,22 @@
           <td>{{emp.job}}</td>
           <td>{{ename1}}</td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score0.s1"></el-input>
           </td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score0.s2"></el-input>
           </td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score0.s3"></el-input>
           </td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score0.s4"></el-input>
           </td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score0.s5"></el-input>
           </td>
           <td>
-            <el-input v-model="score1" ></el-input>
+            <el-input v-model="avg0" ></el-input>
           </td>
         </tr>
         <tr>
@@ -127,22 +127,22 @@
           <td>{{emp.job}}</td>
           <td>{{ename1}}</td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score1.s1"></el-input>
           </td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score1.s2"></el-input>
           </td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score1.s3"></el-input>
           </td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score1.s4"></el-input>
           </td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score1.s5"></el-input>
           </td>
           <td>
-            <el-input v-model="score1" ></el-input>
+            <el-input v-model="avg1" ></el-input>
           </td>
         </tr>
         <tr>
@@ -186,22 +186,22 @@
           <td>{{emp.job}}</td>
           <td>{{ename1}}</td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score2.s1"></el-input>
           </td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score2.s2"></el-input>
           </td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score2.s3"></el-input>
           </td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score2.s4"></el-input>
           </td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score2.s5"></el-input>
           </td>
           <td>
-            <el-input v-model="score1" ></el-input>
+            <el-input v-model="avg2" ></el-input>
           </td>
         </tr>
         <tr>
@@ -245,22 +245,22 @@
           <td>{{emp.job}}</td>
           <td>{{ename1}}</td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score3.s1"></el-input>
           </td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score3.s2"></el-input>
           </td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score3.s3"></el-input>
           </td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score3.s4"></el-input>
           </td>
           <td>
-            <el-input v-model="score1"></el-input>
+            <el-input v-model="score3.s5"></el-input>
           </td>
           <td>
-            <el-input v-model="score1" ></el-input>
+            <el-input v-model="avg3" ></el-input>
           </td>
         </tr>
         <tr>
@@ -310,8 +310,39 @@
               dname:"",
               job:"",
             },
+            avg0:0,
+            avg1:0,
+            avg2:0,
+            avg3:0,
+            score0:{
+              s1:0,
+              s2:0,
+              s3:0,
+              s4:0,
+              s5:0
+            },
+            score1:{
+              s1:0,
+              s2:0,
+              s3:0,
+              s4:0,
+              s5:0
+            },
+            score2:{
+              s1:0,
+              s2:0,
+              s3:0,
+              s4:0,
+              s5:0
+            },
+            score3:{
+              s1:0,
+              s2:0,
+              s3:0,
+              s4:0,
+              s5:0
+            },
             ename1:"",
-            score1:"",
             textarea0:"",
             textarea1:"",
             textarea2:"",
@@ -322,7 +353,6 @@
           showInfo(){
             axios.get("http://localhost:8081/getStudent?eid="+this.eid).then(res=>{
               this.student =res.data;
-              alert(this.student.sid);
             })
           },
           getEmp(){
@@ -330,52 +360,83 @@
               this.emp = res.data;
             })
           },
-        goback(){
-            this.$router.go(-1);
-        },
+          getAvg(){
+              this.avg0=(this.score0.s1+this.score0.s2+this.score0.s3+this.score0.s4+this.score0.s5)/5;
+          },
+          goback(){
+              this.$router.go(-1);
+          },
           addAppraise(type,textarea){
-            axios.get("http://localhost:8081/updateApp?sid="+this.student.sid+"&&type="+type+"&&content="+textarea).then(res=>{
+            if(!textarea==""){
+              axios.get("http://localhost:8081/updateApp?sid="+this.student.sid+"&&type="+type+"&&content="+textarea).then(res=>{
+                if (res.data==1){
+                  this.$message({
+                    message: '更新评价成功',
+                    type: 'success'
+                  });
+                }else{
+                  this.$message.error("更新失败")
+                }
+              })
+            }
 
-              if (res.data==1){
-                this.$message({
-                  message: '更新评价成功',
-                  type: 'success'
-                });
-              }else{
-                this.$message.error("更新失败")
+          },
+          getApp0(){
+            axios.get("http://localhost:8081/getApp?eid="+this.eid+"&&type="+0).then(res=>{
+              this.textarea0=res.data;
+              if (this.textarea0==""){
+                axios.get("http://localhost:8081/addApp?eid="+this.eid+"&&type="+0).then(res=>{
+
+                })
               }
             })
           },
-          getApp0(){
-            axios.get("http://localhost:8081/getApp?sid="+this.student.sid+"&&type="+0).then(res=>{
-              this.textarea0=res.data;
-            })
-          },
           getApp1(){
-            axios.get("http://localhost:8081/getApp?sid="+this.student.sid+"&&type="+1).then(res=>{
+            axios.get("http://localhost:8081/getApp?eid="+this.eid+"&&type="+1).then(res=>{
               this.textarea1=res.data;
+              if (this.textarea1==""){
+                axios.get("http://localhost:8081/addApp?eid="+this.eid+"&&type="+1).then(res=>{
+
+                })
+              }
             })
           },
           getApp2(){
-            axios.get("http://localhost:8081/getApp?sid="+this.student.sid+"&&type="+2).then(res=>{
+            axios.get("http://localhost:8081/getApp?eid="+this.eid+"&&type="+2).then(res=>{
               this.textarea2=res.data;
+              if (this.textarea2==""){
+                axios.get("http://localhost:8081/addApp?eid="+this.eid+"&&type="+2).then(res=>{
+
+                })
+              }
             })
           },
           getApp3(){
-            axios.get("http://localhost:8081/getApp?sid="+this.student.sid+"&&type="+3).then(res=>{
+            axios.get("http://localhost:8081/getApp?eid="+this.eid+"&&type="+3).then(res=>{
               this.textarea3=res.data;
+              if (this.textarea3==""){
+                axios.get("http://localhost:8081/addApp?eid="+this.eid+"&&type="+3).then(res=>{
+
+                })
+              }
             })
           },
       },
-      mounted() {
-            this.eid = this.$route.params.eid;
-            this.ename1 = this.$route.params.ename;
-            this.showInfo();
-            this.getApp0();
-            this.getApp1();
-            this.getApp2();
-            this.getApp3();
-            this.getEmp();
+      beforeMount() {
+
+      },
+      mounted(){
+        this.eid = this.$route.params.eid;
+        this.ename1 = this.$route.params.ename;
+        this.showInfo();
+        this.getApp0();
+        this.getApp1();
+        this.getApp2();
+        this.getApp3();
+        this.getEmp();
+        this.getAvg();
+      },
+      updated() {
 
       }
     }
@@ -385,11 +446,13 @@
   table{
     border: solid 2px black;
     border-collapse: collapse;
+
   }
   tr,td{
     font-size: 13px;
     border: solid 1px black;
     border-collapse: collapse;
+    text-align: center;
   }
 
 </style>

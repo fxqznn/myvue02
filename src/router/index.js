@@ -18,6 +18,7 @@ import axios from 'axios'
 import managerEdit from "../components/managerEdit";
 import StudentDetails from "../components/StudentDetails";
 import AbilitiesScoreList from "../components/AbilitiesScoreList";
+import abilityChange from "../components/abilityChange";
 
 
 axios.defaults.baseURL = 'http://localhost:8081/';
@@ -40,6 +41,7 @@ export default new Router({
         {path: '/managerEdit/:eid/:ename', name: 'managerEdit', component: managerEdit},
         {path: '/managerEdge', name: 'managerEdge', component: managerEdge},
         {path:'changePass',name:'changePass',component:changePass},
+        {path: '/abilityChange', name: 'abilityChange', component: abilityChange},
         {path:'userManage',name:'userManage',component:userManage},
         {path:'empManage',name:'empManage',component:empManage},
         {path:'studentManage',name:'studentManage',component:studentManage},

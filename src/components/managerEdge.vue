@@ -110,7 +110,7 @@
     methods: {
       showJudge(row,column){
         const score = row[column.property];
-        if (score == undefined){
+        if (score == 0){
             return "未评分";
         }else{
           return score;

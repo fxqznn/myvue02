@@ -1,6 +1,7 @@
 <template>
   <el-container id="all" style="width: 100%;height: 100%;overflow: hidden">
     <el-header  style="text-align: right;height: 10%">
+      <span>跟踪系统</span>
       <el-dropdown style="margin-top:1%">
         <el-button>
           <i class="el-icon-user"></i>

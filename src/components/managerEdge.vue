@@ -45,7 +45,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="成绩">
+          label="评价">
           <template v-for="(item,index) in tableHead">
             <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
             </el-table-column>
@@ -100,7 +100,7 @@
         currentPage: 1,
         total: 20,
         pageSize: 5,
-        uname:100001 ,
+        name:null,
         value: "0",
         ename: "",
         tableHead: [],
@@ -130,29 +130,34 @@
       },
 
     getName: function () {
+
       this.name = this.$store.state.user.uname;
+
     },
     getAllScores() {
-      axios.get("http://localhost:8081/getAllEntity?eid=" + this.uname ).then(res => {
+      axios.get("http://localhost:8081/getAllEntity?eid=" + this.name ).then(res => {
 
         this.tableHead = res.data;
       })
     },
     showScores() {
-      axios.get("http://localhost:8081/showAbilityScore?eid=" + this.uname + "&&type=" + this.value + "&&ename=" + this.ename).then(res => {
+      axios.get("http://localhost:8081/showAbilityScore?eid=" + this.name + "&&type=" + this.value + "&&ename=" + this.ename).then(res => {
         this.tableData = res.data;
       })
     },
       showManager(){
-        axios.get("http://localhost:8081/getManager?eid="+this.uname).then(res=>{
+        axios.get("http://localhost:8081/getManager?eid="+this.name).then(res=>{
           this.dname= res.data.dname;
           this.ename1 = res.data.ename;
         })
       }
   },
+    beforeMount(){
+      this.getName();
+    },
     mounted() {
       //编译后去获取数据
-      this.getName();
+
       this.showManager();
       this.getAllScores();
       this.showScores();

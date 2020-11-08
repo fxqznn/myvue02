@@ -16,7 +16,7 @@
       </span>
       <template v-for="child in item.children">
         <navigation-item v-if="child.children && child.children.length>0" :key="child.id" :item="child"/>
-        <el-menu-item v-else :key="child.id" :index="child.path" @click="handleRoute(child)">
+        <el-menu-item v-else :key="child.id" :index="child.path" @click="handleRoute(child)" style="background-color: darkslategray">
           <i :class="child.iconCls"></i>
           {{child.nameZh}}
         </el-menu-item>

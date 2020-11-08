@@ -13,6 +13,8 @@ import courseManage from '@/components/courseManage';
 import studentManage from '@/components/studentManage';
 import termManage from '@/components/termManage';
 import termCourse from '@/components/termCourse'
+import menuManage from '@/components/menuManage';
+import deptManage from '@/components/deptManage'
 
 
 import axios from 'axios'
@@ -31,8 +33,8 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "login",
-      component: login
+      name: "termManage",
+      component: termManage
     },
     {
       path: '/mainFrame',
@@ -48,6 +50,8 @@ export default new Router({
         {path:'studentManage',name:'studentManage',component:studentManage},
         {path:'courseManage',name:'courseManage',component:courseManage},
         {path:'termManage',name:'termManage',component:termManage},
+        {path:'menuManage',name:'menuManage',component:menuManage},
+        {path:'deptManage',name:'deptManage',component:deptManage},
         {path: 'StudentList', name: 'StudentList', component: StudentList},
         {path: 'studentMsg/:sid/:tid', name: 'studentMsg', component: studentMsg},
         {path: 'termCourse', name: 'termCourse', component: termCourse},

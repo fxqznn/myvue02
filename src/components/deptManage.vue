@@ -1,37 +1,43 @@
 <template>
   <div>
+
     <el-row>
       <el-col :span="16">
-        <el-input placeholder="请输入学期名称" v-model="tname" style="width: 300px">
+        <el-input placeholder="请输入部门名称" v-model="dname" style="width: 200px">
           <el-button slot="append" @click="tableRenderData">查询</el-button>
         </el-input>
-        <el-select v-model="eid" @change="tableRenderData">
-          <el-option v-for="item in teachers" :key="item.value" :label="item.label" :value="item.value">
+        <el-select v-model="isdel" @change="tableRenderData" style="width: 200px">
+          <el-option v-for="item in status" :key="item.value" :label="item.label" :value="item.value">
+            <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
+          </el-option>
+        </el-select>
+        <el-select v-model="eid" @change="tableRenderData" style="width: 200px">
+          <el-option v-for="item in managers" :key="item.value" :label="item.label" :value="item.value">
             <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
             <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
           </el-option>
         </el-select>
       </el-col>
       <el-col :span="8" >
-        <el-button @click="add()" >添加学期</el-button>
-        <el-button @click="dels()" >删除学期</el-button>
+        <el-button @click="add()" >添加部门</el-button>
+        <el-button @click="dels()" >删除部门</el-button>
       </el-col>
     </el-row>
 
     <br />
 
     <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="380"
-              :default-sort="{prop:'tid',order:'ascending'}"  @selection-change="handleSelectionChange">
+              :default-sort="{prop:'did',order:'ascending'}"  @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection"></el-table-column>
-      <el-table-column fixed prop="tid" label="编号"></el-table-column>
-      <el-table-column fixed prop="tname" label="名称"></el-table-column>
-      <el-table-column prop="tdate" label="开始时间"></el-table-column>
-      <el-table-column fixed="right" prop="eid" label="授课老师" :formatter="eidFormat"></el-table-column>
+      <el-table-column fixed prop="did" label="编号"></el-table-column>
+      <el-table-column fixed prop="dname" label="名称"></el-table-column>
+      <el-table-column fixed="right" prop="eid" label="经理" :formatter="eidFormat"></el-table-column>
       <el-table-column fixed="right" label="操作">
         <template slot-scope="scope">
           <el-button @click="handleDelete(scope.$index, scope.row)" type="text" size="small">删除</el-button>
           <el-button @click="handleEidt(scope.$index, scope.row)" type="text" size="small">修改信息</el-button>
-          <el-button @click="handleChecked(scope.$index, scope.row)" type="text" size="small">选课</el-button>
+          <el-button @click="handleChecked(scope.$index, scope.row)" type="text" size="small">选择评价项</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -40,28 +46,20 @@
                    :current-page="current" :page-sizes="[5, 10, 15, 20, 25, 30]" :page-size="size"
                    layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
 
-    <el-dialog title="添加学期" :visible.sync="addVisiable" width="50%" :center="dialogCenter">
+    <el-dialog title="添加部门" :visible.sync="addVisiable" width="50%" :center="dialogCenter">
       <el-form>
         <el-row>
           <el-col :span="12" :offset="6">
-            <el-form-item label="学期名称" label-width="100px">
-              <el-input v-model="addData.tname"></el-input>
+            <el-form-item label="部门名称" label-width="100px">
+              <el-input v-model="addData.dname"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12" :offset="6">
-            <el-form-item label="开始时间" label-width="100px">
-              <el-date-picker v-model="addData.tdate" type="date" placeholder="选择日期"
-                              format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"></el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12" :offset="6">
-            <el-form-item label="授课老师" label-width="100px">
-              <el-select v-model="addData.eid">
-                <el-option v-for="item in teachers" :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+            <el-form-item label="部门经理" label-width="100px">
+              <el-select v-model="addData.dheader">
+                <el-option v-for="item in managers" :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
                   <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
                 </el-option>
@@ -76,7 +74,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="删除学期" :visible.sync="delsVisiable" width="25%" :center="dialogCenter">
+    <el-dialog title="删除部门" :visible.sync="delsVisiable" width="25%" :center="dialogCenter">
       <p><strong>确认删除所有选中的数据吗？</strong></p>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancelDels()">取 消</el-button>
@@ -84,7 +82,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="删除学期" :visible.sync="delVisiable" width="25%" :center="dialogCenter">
+    <el-dialog title="删除部门" :visible.sync="delVisiable" width="25%" :center="dialogCenter">
       <p><strong>确认删除吗？</strong></p>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancelDel()">取 消</el-button>
@@ -92,34 +90,27 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="修改学期信息" :visible.sync="editVisiable" width="50%" :center="dialogCenter">
+    <el-dialog title="修改部门信息" :visible.sync="editVisiable" width="50%" :center="dialogCenter">
       <el-form>
         <el-row>
           <el-col :span="12" :offset="6">
-            <el-form-item label="学期编号" label-width="100px">
-              <el-input v-model="editData.tid" readonly></el-input>
+            <el-form-item label="部门编号" label-width="100px">
+              <el-input v-model="editData.did" readonly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12" :offset="6">
-            <el-form-item label="学期名称" label-width="100px">
-              <el-input v-model="editData.tname"></el-input>
+            <el-form-item label="部门名称" label-width="100px">
+              <el-input v-model="editData.dname"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12" :offset="6">
-            <el-form-item label="开始时间" label-width="100px">
-              <el-date-picker v-model="addData.tdate" type="date" placeholder="选择日期"></el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12" :offset="6">
-            <el-form-item label="授课老师" label-width="100px">
-              <el-select v-model="editData.eid">
-                <el-option v-for="item in teachers" :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+            <el-form-item label="部门经理" label-width="100px">
+              <el-select v-model="editData.dheader">
+                <el-option v-for="item in managers" :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
                   <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
                 </el-option>
@@ -134,7 +125,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="选课" :visible.sync="checkedVisiable" width="50%" :center="dialogCenter">
+    <el-dialog title="选择评价项" :visible.sync="checkedVisiable" width="50%" :center="dialogCenter">
       <el-table ref="editTable" :data="checkedData" border style="width: 100%" max-height="380"
                 :default-sort="{prop:'cid',order:'ascending'}" >
         <el-table-column fixed prop="cid" label="编号"></el-table-column>
@@ -157,13 +148,15 @@
   import qs from 'qs';
 
   export default {
-    name: "termManage",
+    name: "deptManage",
     data(){
-      return {
+      return{
         dialogCenter: true,
 
-        tname:'',
-        teachers:[],
+        dname:'',
+        status:[{value:0,label:'存在'},{value:1,label:'已删除'}],
+        isdel:0,
+        managers:[],
         eid:0,
 
         total:0,
@@ -182,36 +175,36 @@
         delData:0,
         checkedVisiable:false,
         checkedData:[],
-        checkedTermId:0
+        checkedDeptId:0
       }
     },
     methods:{
       tableRenderData : function () {
-        axios.get('getAllTerm?current=' + this.current + '&size=' + this.size +
-          '&tname=' + this.tname + '&eid=' + this.eid).then(res => {
+        axios.get('getAllDept?current=' + this.current + '&size=' + this.size +
+          '&dname=' + this.dname + '&isdel=' + this.isdel + '&eid=' + this.eid).then(res => {
           this.tableData = res.data.records;
           this.current = res.data.current;
           this.size = res.data.size;
           this.total = res.data.total;
         })
       },
-      teacherRenderData : function() {
-        var teacher_tem = [{value:0,label:'请选择老师',disabled:false}];
-        axios.get('getEmpsByRole?role=1').then(res => {
+      managerRenderData : function() {
+        var manager_tem = [{value:0,label:'请选择经理',disabled:false}];
+        axios.get('getEmpsByRole?role=2').then(res => {
           res.data.forEach(function (item, index) {
             if(item.isdel == 1){
-              teacher_tem.push({value:item.eid, label:item.ename,disabled:true});
+              manager_tem.push({value:item.eid, label:item.ename,disabled:true});
             } else {
-              teacher_tem.push({value:item.eid, label:item.ename,disabled:false});
+              manager_tem.push({value:item.eid, label:item.ename,disabled:false});
             }
           })
         });
-        this.teachers = teacher_tem;
+        this.managers = manager_tem;
       },
       eidFormat : function(row, column) {
         var ename_tem = '';
-        this.teachers.forEach(function (item, value) {
-          if(item.value == row.eid){
+        this.managers.forEach(function (item, value) {
+          if(item.value == row.dheader){
             ename_tem = item.label;
           }
         });
@@ -231,14 +224,14 @@
       },
 
       add : function () {
-        this.addData = {tname:'',tdate:'', eid:0};
+        this.addData = {dname:'',dheader:0};
         this.addVisiable = true;
       },
       cancelAdd : function () {
         this.addVisiable = false;
       },
       addConfirm : function () {
-        axios.post('addTerm',qs.stringify(this.addData)).then(res => {
+        axios.post('addDept',qs.stringify(this.addData)).then(res => {
           if(res.data == "success"){
             this.$message({
               message:'添加成功',
@@ -255,7 +248,7 @@
       dels : function () {
         this.delsData = [];
         if(this.multipleSelection.length == 0){
-          this.$message("请选择学期进行删除")
+          this.$message("请选择部门进行删除")
         } else {
           this.delsVisiable = true;
           this.delsData = this.multipleSelection;
@@ -265,11 +258,11 @@
         this.delsVisiable = false;
       },
       delsConfirm : function () {
-        var tids = [];
+        var dids = [];
         this.delsData.forEach(function (item, index) {
-          tids.push(item.tid);
+          dids.push(item.did);
         });
-        axios.post('delTermsByIds',qs.stringify({tids:tids},{indices:false})).then(res => {
+        axios.post('delDeptsByIds',qs.stringify({dids:dids},{indices:false})).then(res => {
           if(res.data == "success"){
             this.$message({
               message:'删除成功',
@@ -285,20 +278,18 @@
 
       handleDelete : function (index, row) {
         this.delVisiable = true;
-        this.delData = row.tid;
+        this.delData = row.did;
       },
       cancelDel : function () {
         this.delVisiable = false;
       },
       delConfirm : function () {
-        axios.get('delTermById?tid=' + this.delData).then(res => {
+        axios.get('delDeptById?did=' + this.delData).then(res => {
           if(res.data == "success"){
             this.$message({
               message:'删除成功',
               type:'success'
             });
-          } else if (res.data == 'notdel'){
-            this.$message('学期内存在学生不能删除');
           } else {
             this.$message.error('服务器响应失败');
           }
@@ -308,7 +299,8 @@
       },
 
       handleEidt : function (index, row) {
-        axios.get('getTermById?tid=' + row.tid).then(res => {
+        debugger
+        axios.get('getDeptById?did=' + row.did).then(res => {
           this.editData = res.data;
         });
         this.editVisiable = true;
@@ -317,7 +309,7 @@
         this.editVisiable = false;
       },
       eidtConfirm : function () {
-        axios.post('editTerm',qs.stringify(this.editData)).then(res => {
+        axios.post('editDept',qs.stringify(this.editData)).then(res => {
           if(res.data == "success"){
             this.$message({
               message:'修改成功',
@@ -332,21 +324,17 @@
       },
 
       handleChecked : function (index,row) {
-        if(row.isdel == "已删除"){
-          this.$message("课程已经删除");
-          return false;
-        }
-        this.checkedTermId = row.tid;
-        this.checkedTableDataRender(row.tid);
+        this.checkedDeptId = row.did;
+        this.checkedTableDataRender(row.did);
         this.checkedVisiable = true;
       },
-      checkedTableDataRender : function (tid) {
-        axios.get('getCoursesForTerm?tid=' + tid ).then(res => {
+      checkedTableDataRender : function (did) {
+        axios.get('getCoursesForDept?did=' + did ).then(res => {
           this.checkedData = res.data;
         })
       },
       cancalChecked : function (index, row) {
-        axios.get('delTermCourse?tid=' + this.checkedTermId + '&cid=' + row.cid).then(res => {
+        axios.get('delDeptCourse?did=' + this.checkedDeptId + '&cid=' + row.cid).then(res => {
           if(res.data == "success"){
             this.$message({
               message:'取消选课成功',
@@ -359,7 +347,7 @@
         this.checkedTableDataRender(this.checkedTermId);
       },
       Checked : function (index, row) {
-        axios.post('addTermCourse',qs.stringify({tid:this.checkedTermId,cid:row.cid})).then(res => {
+        axios.post('addDeptCourse',qs.stringify({did:this.checkedDeptId,cid:row.cid})).then(res => {
           if(res.data == "success"){
             this.$message({
               message:'选课成功',
@@ -374,7 +362,7 @@
     },
     mounted() {
       this.tableRenderData();
-      this.teacherRenderData();
+      this.managerRenderData();
     }
   }
 </script>

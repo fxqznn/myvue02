@@ -26,7 +26,7 @@
 
     <br />
 
-    <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="600"
+    <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="380"
               :default-sort="{prop:'cid',order:'ascending'}"  @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection"></el-table-column>
       <el-table-column fixed prop="cid" label="编号"></el-table-column>

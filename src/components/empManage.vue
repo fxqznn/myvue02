@@ -26,7 +26,7 @@
 
     <br/>
 
-    <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="600"
+    <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="380"
               :default-sort="{prop:'eid',order:'ascending'}"  @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection"></el-table-column>
       <el-table-column fixed prop="eid" label="工号"></el-table-column>
@@ -224,6 +224,7 @@
       },
       delConfirm : function() {
         if(this.delCascade){
+          debugger
           axios.get('delEmpByIdCascade?eid=' + this.delEmp_eid).then(res => {
             if(res.data == "success"){
               this.$message({

@@ -20,7 +20,7 @@
 
     <br/>
 
-    <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="600"
+    <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="380"
               :default-sort="{prop:'uid',order:'ascending'}"  @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection"></el-table-column>
       <el-table-column fixed prop="uid" label="编号"></el-table-column>
@@ -170,6 +170,7 @@
       addUser:function(){
         this.userAddVisible = true;
       },
+
       deleteUsers: function(){
         if(this.multipleSelection.length == 0){
           this.$message({
@@ -234,6 +235,7 @@
         this.delRowData = {};
         this.delCascade = true;
         this.tableRenderData();
+        this.delMsgVisible = false;
       },
       tableRenderData:function () {
         axios.get('getAllUser?current=' + this.current + '&size=' + this.size
@@ -254,7 +256,8 @@
           } else {
             this.message.error('服务器响应失败')
           }
-        })
+        });
+        this.tableRenderData();
       },
       addConfirm: function () {
         if(this.user.name == '' || this.user.role == -1) {
@@ -320,6 +323,7 @@
         this.delRowsData = [];
         this.delCascade = true;
         this.tableRenderData();
+        this.delUsersVisible = false;
       },
       roleFormat:function (row, column) {
         if(row.role == 0){

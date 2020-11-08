@@ -1,28 +1,30 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="6" :offset="8">
+      <el-col :span="12" :offset="6">
         <div style="padding-top: 20px">
           <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
                    class="demo-ruleForm">
-            <el-form-item label="新密码：" prop="newPass">
-              <el-col :span="20" :offset="1">
+            <el-form-item label= "新密码：" prop="newPass">
+              <el-col :span="18">
                 <el-input :type="passw" v-model="ruleForm.newPass" autocomplete="off" @change="setPass()">
                   <i slot="suffix" :class="icon" @click="showPass"></i>
                 </el-input>
               </el-col>
             </el-form-item>
             <el-form-item label="确认密码：" prop="checkPass">
-              <el-col :span="20" :offset="1">
+              <el-col :span="18">
                 <el-input :type="passw" v-model="ruleForm.checkPass" autocomplete="off">
                   <i slot="suffix" :class="icon" @click="showPass"></i>
                 </el-input>
               </el-col>
             </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-              <el-button @click="resetForm('ruleForm')">重置</el-button>
-            </el-form-item>
+            <el-col :span="18">
+              <el-form-item>
+                <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+                <el-button @click="resetForm('ruleForm')">重置</el-button>
+              </el-form-item>
+            </el-col>
           </el-form>
         </div>
       </el-col>

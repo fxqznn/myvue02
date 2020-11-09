@@ -6,7 +6,7 @@
     <table width="80%">
       <tr>
         <td colspan="7">
-              <h2>金桥学员成长跟踪表</h2>
+          <h2>金桥学员成长跟踪表</h2>
         </td>
       </tr>
       <tr >
@@ -44,7 +44,7 @@
       </tr>
       <tr>
         <td colspan="7" align="center" height="40px">
-              <h3>培训学校评价</h3>
+          <h3>培训学校评价</h3>
         </td>
       </tr>
       <tr>
@@ -93,7 +93,7 @@
     data(){
       return{
         htmlTitle: 'StudentMsg',
-        appraise:"",
+        appraise:"未评价",
         tabName:"学习评价",
         student:{},
         tableHead:[],
@@ -159,8 +159,11 @@
         })
       },
       getAppraise:function(){
-        axios.get('getAppraise/' + this.sid +'/-1').then(res =>{
+        axios.get('getAppraise/' + this.sid +'/-1'+ '/' + this.eid).then(res =>{
           this.appraise = res.data.content;
+          if (res.data == null && res.data.content == ""){
+            this.appraise = "未评价"
+          }
         })
       },
       getAllCourse(){

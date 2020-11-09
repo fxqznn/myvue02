@@ -50,7 +50,7 @@
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="名称" label-width="50px">
-              <el-input v-model="addData.cname"></el-input>
+              <el-input v-model="addData.cname" @blur="checkNameAdd"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -102,7 +102,7 @@
           <el-row>
             <el-col :span="12" :offset="6">
               <el-form-item label="名称" label-width="50px">
-                <el-input v-model="editData.cname"></el-input>
+                <el-input v-model="editData.cname" @blur="checkNameEdit"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -200,26 +200,36 @@
       cancelAdd : function () {
         this.addVisiable = false;
       },
+      checkNameAdd : function () {
+        if(this.addData.cname == ""){
+          this.$message('课程名不能为空');
+          return false;
+        } else {
+          return true;
+        }
+      },
       addConfirm : function () {
-        axios.get('selectForAdd?name=' + this.addData.cname).then(responce => {
-          if(responce.data == "no"){
-            this.$message("该课程名已经存在");
-            return false;
-          }else {
-            axios.post('addCourse',qs.stringify(this.addData)).then(res => {
-              if(res.data == "success"){
-                this.$message({
-                  message:'添加成功',
-                  type:'success'
-                });
-              } else {
-                this.$message.error('服务器响应失败');
-              }
-            });
-            this.addVisiable = false;
-            this.tableRenderData();
-          }
-        });
+        if(this.checkNameAdd() == true){
+          axios.get('selectForAdd?name=' + this.addData.cname).then(responce => {
+            if(responce.data == "no"){
+              this.$message("该课程名已经存在");
+              return false;
+            }else {
+              axios.post('addCourse',qs.stringify(this.addData)).then(res => {
+                if(res.data == "success"){
+                  this.$message({
+                    message:'添加成功',
+                    type:'success'
+                  });
+                } else {
+                  this.$message.error('服务器响应失败');
+                }
+              });
+              this.addVisiable = false;
+              this.tableRenderData();
+            }
+          });
+        }
       },
 
       dels : function () {
@@ -285,19 +295,36 @@
       cancelEdit : function () {
         this.editVisiable = false;
       },
+      checkNameEdit : function () {
+        if(this.editData.cname == ""){
+          this.$message('课程名不能为空');
+          return false;
+        } else {
+          return true;
+        }
+      },
       eidtConfirm : function () {
-        axios.post('editCourse',qs.stringify(this.editData)).then(res => {
-          if(res.data == "success"){
-            this.$message({
-              message:'修改成功',
-              type:'success'
-            });
-          } else {
-            this.$message.error('服务器响应失败');
-          }
-        });
-        this.editVisiable = false;
-        this.tableRenderData();
+        if(this.checkNameEdit() == true){
+          axios.get('selectForAdd?name=' + this.addData.cname).then(responce => {
+            if(responce.data == "no"){
+              this.$message("该课程名已经存在");
+              return false;
+            }else {
+              axios.post('editCourse',qs.stringify(this.editData)).then(res => {
+                if(res.data == "success"){
+                  this.$message({
+                    message:'修改成功',
+                    type:'success'
+                  });
+                } else {
+                  this.$message.error('服务器响应失败');
+                }
+              });
+              this.editVisiable = false;
+              this.tableRenderData();
+            }
+          });
+        }
       },
 
     },

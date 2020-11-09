@@ -45,7 +45,7 @@
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="姓名" label-width="50px">
-              <el-input v-model="addData.sname"></el-input>
+              <el-input v-model="addData.sname" @blur="checkNameAdd"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -113,7 +113,7 @@
           <el-row>
             <el-col :span="12" :offset="6">
               <el-form-item label="姓名" label-width="50px">
-                <el-input v-model="editData.sname"></el-input>
+                <el-input v-model="editData.sname" @blur="checkNameEdit"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -229,19 +229,29 @@
       cancelAdd : function () {
         this.addVisiable = false;
       },
+      checkNameAdd : function () {
+        if(this.addData.sname == ""){
+          this.$message('姓名不能为空');
+          return false;
+        } else {
+          return true;
+        }
+      },
       addConfirm : function () {
-        axios.post('addStudent',qs.stringify(this.addData)).then(res => {
-          if(res.data == "success"){
-            this.$message({
-              message:'添加成功',
-              type:'success'
-            });
-          } else {
-            this.$message.error('服务器响应失败');
-          }
-        });
-        this.addVisiable = false;
-        this.tableRenderData();
+        if(this.checkNameAdd() == true){
+          axios.post('addStudent',qs.stringify(this.addData)).then(res => {
+            if(res.data == "success"){
+              this.$message({
+                message:'添加成功',
+                type:'success'
+              });
+            } else {
+              this.$message.error('服务器响应失败');
+            }
+          });
+          this.addVisiable = false;
+          this.tableRenderData();
+        }
       },
 
       adds : function() {
@@ -352,19 +362,29 @@
       cancelEdit : function () {
         this.editVisiable = false;
       },
+      checkNameEdit : function() {
+        if(this.editData.sname == ""){
+          this.$message('姓名不能为空');
+          return false;
+        } else {
+          return true;
+        }
+      },
       eidtConfirm : function () {
-        axios.post('updateSelf',qs.stringify(this.editData)).then(res => {
-          if(res.data == "修改信息成功"){
-            this.$message({
-              message:'修改成功',
-              type:'success'
-            });
-          } else {
-            this.$message.error('服务器响应失败');
-          }
-        });
-        this.editVisiable = false;
-        this.tableRenderData();
+        if(this.checkNameEdit() == true){
+          axios.post('updateSelf',qs.stringify(this.editData)).then(res => {
+            if(res.data == "修改信息成功"){
+              this.$message({
+                message:'修改成功',
+                type:'success'
+              });
+            } else {
+              this.$message.error('服务器响应失败');
+            }
+          });
+          this.editVisiable = false;
+          this.tableRenderData();
+        }
       },
 
       httpRequest(e) {

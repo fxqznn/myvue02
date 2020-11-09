@@ -7,277 +7,282 @@
 
       <br><br>
       <div id="pdfDom">
-        <table width="80%" id="scoreList">
-          <tr>
-            <td colspan="10"> <h2>金桥学员成长跟踪表</h2></td>
-          </tr>
-          <tr >
-            <td height="40px" >姓名</td>
-            <td >{{student.sname}}</td>
-            <td>性别</td>
-            <td>{{student.sex}}</td>
-            <td colspan="2">民族</td>
-            <td colspan="2">{{student.nation}}</td>
-            <td rowspan="4" colspan="2" width="40px"><img :src="'http://localhost:8081/'+student.pic"></td>
-          </tr>
-          <tr>
-            <td height="40px">出生年月</td>
-            <td>{{student.birthday}}</td>
-            <td >籍贯</td>
-            <td >{{student.address}}</td>
-            <td colspan="2">婚否</td>
-            <td colspan="2"><span>{{student.marry ==0? "未婚":"已婚"}}</span></td>
-          </tr>
-          <tr>
-            <td height="40px">联系电话</td>
-            <td colspan="2">{{student.phone}}</td>
-            <td>身份证号码</td>
-            <td colspan="4">{{student.cardid}}</td>
-          </tr>
-          <tr>
-            <td height="40px">毕业学校</td>
-            <td colspan="2">{{student.school}}</td>
-            <td>专业</td>
-            <td colspan="4" >{{student.major}}</td>
-          </tr>
-          <tr>
-            <td height="40px">备注</td>
-            <td colspan="9">{{student.info}}</td>
-          </tr>
-          <tr>
-            <td colspan="10" height="40px">
-              <h3>转正工作评价</h3>
-            </td>
-          </tr>
-          <tr>
-            <td height="40px">项目</td>
-            <td >员工部门</td>
-            <td  >员工职务</td>
-            <td >评价人</td>
-            <td colspan="6" rowspan="2">
-              <el-table :data="table0Data">
-                <el-table-column
-                  align="center"
-                  label="评价">
-                  <template v-for="(item,index) in tableHead">
-                    <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
-                      <template slot-scope="scope">
-                        <el-input  v-model="scope.row[scope.column.property]" @blur="scoreEdit0([scope.column.label],scope.row[scope.column.property])"></el-input>
+        <el-row >
+          <el-col  :offset="2"> <div  >
+            <table width="80%" id="scoreList">
+              <tr>
+                <td colspan="10"> <h2>金桥学员成长跟踪表</h2></td>
+              </tr>
+              <tr >
+                <td >姓名</td>
+                <td >{{student.sname}}</td>
+                <td >性别</td>
+                <td >{{student.sex}}</td>
+                <td colspan="2" >民族</td>
+                <td colspan="2" >{{student.nation}}</td>
+                <td rowspan="4" colspan="2"><img :src="'http://localhost:8081/'+student.pic" style="width: 2.5cm;height: 3.5cm"></td>
+              </tr>
+              <tr>
+                <td >出生年月</td>
+                <td>{{student.birthday}}</td>
+                <td >籍贯</td>
+                <td >{{student.address}}</td>
+                <td colspan="2">婚否</td>
+                <td colspan="2"><span>{{student.marry ==0? "未婚":"已婚"}}</span></td>
+              </tr>
+              <tr>
+                <td >联系电话</td>
+                <td colspan="2">{{student.phone}}</td>
+                <td>身份证号码</td>
+                <td colspan="4">{{student.cardid}}</td>
+              </tr>
+              <tr>
+                <td >毕业学校</td>
+                <td colspan="2">{{student.school}}</td>
+                <td>专业</td>
+                <td colspan="4" >{{student.major}}</td>
+              </tr>
+              <tr>
+                <td height="40px">备注</td>
+                <td colspan="9">{{student.info}}</td>
+              </tr>
+              <tr>
+                <td colspan="10" height="40px">
+                  <h3>转正工作评价</h3>
+                </td>
+              </tr>
+              <tr>
+                <td height="40px">项目</td>
+                <td >员工部门</td>
+                <td  >员工职务</td>
+                <td >评价人</td>
+                <td colspan="6" rowspan="2">
+                  <el-table :data="table0Data">
+                    <el-table-column
+                      align="center"
+                      label="评价">
+                      <template v-for="(item,index) in tableHead">
+                        <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
+                          <template slot-scope="scope">
+                            <el-input class="paperview-input-text" v-model="scope.row[scope.column.property]" @blur="scoreEdit0([scope.column.label],scope.row[scope.column.property])"></el-input>
+                          </template>
+                        </el-table-column>
                       </template>
                     </el-table-column>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  align="center"
-                  prop="avg"
-                  label="整体评价分数(平均分)">
-                  <template slot-scope="scope">
-                    {{scope.row.avg || "尚未评分"}}
-                  </template>
-                </el-table-column>
-              </el-table>
-            </td>
-
-          </tr>
-
-          <tr>
-            <td height="40px">工作评价</td>
-            <td>{{emp.dname}}</td>
-            <td>{{emp.job}}</td>
-            <td>{{ename1}}</td>
-
-          </tr>
-          <tr>
-            <td width="60px" >评价(包括主要优点及缺陷)</td>
-            <td colspan="9">
-              <el-input
-                type="textarea"
-                :rows="4"
-                v-model="textarea0"
-                @blur="addAppraise(0,textarea0)">
-              </el-input>
-            </td>
-          </tr>
-
-          <tr>
-            <td colspan="10" height="40px">
-              <h3>第一年工作评价</h3>
-            </td>
-          </tr>
-          <tr>
-            <td height="40px">项目</td>
-            <td >员工部门</td>
-            <td  >员工职务</td>
-            <td >评价人</td>
-            <td colspan="6" rowspan="2">
-              <el-table :data="table1Data">
-                <el-table-column
-                  align="center"
-                  label="评价">
-                  <template v-for="(item,index) in tableHead">
-                    <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
+                    <el-table-column
+                      align="center"
+                      prop="avg"
+                      label="整体评价分数(平均分)">
                       <template slot-scope="scope">
-                        <el-input  v-model="scope.row[scope.column.property]" @blur="scoreEdit1([scope.column.label],scope.row[scope.column.property])"></el-input>
+                        {{scope.row.avg || "尚未评分"}}
                       </template>
                     </el-table-column>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  align="center"
-                  prop="avg"
-                  label="整体评价分数(平均分)">
-                  <template slot-scope="scope">
-                    {{scope.row.avg || "尚未评分"}}
-                  </template>
-                </el-table-column>
-              </el-table>
-            </td>
+                  </el-table>
+                </td>
 
-          </tr>
+              </tr>
 
-          <tr>
-            <td height="40px">工作评价</td>
-            <td>{{emp.dname}}</td>
-            <td>{{emp.job}}</td>
-            <td>{{ename1}}</td>
+              <tr>
+                <td height="40px">工作评价</td>
+                <td>{{emp.dname}}</td>
+                <td>{{emp.job}}</td>
+                <td>{{ename1}}</td>
 
-          </tr>
-          <tr>
-            <td width="60px" >评价(包括主要优点及缺陷)</td>
-            <td colspan="9">
-              <el-input
-                type="textarea"
-                :rows="4"
-                v-model="textarea1"
-                @blur="addAppraise(1,textarea1)"
-              >
-              </el-input>
-            </td>
-          </tr>
+              </tr>
+              <tr>
+                <td width="60px" >评价(包括主要优点及缺陷)</td>
+                <td colspan="9">
+                  <el-input
+                    type="textarea"
+                    :rows="4"
+                    v-model="textarea0"
+                    @blur="addAppraise(0,textarea0)">
+                  </el-input>
+                </td>
+              </tr>
 
-          <tr>
-            <td colspan="10" height="40px">
-              <h3>第二年工作评价</h3>
-            </td>
-          </tr>
-          <tr>
-            <td height="40px">项目</td>
-            <td >员工部门</td>
-            <td  >员工职务</td>
-            <td >评价人</td>
-            <td colspan="6" rowspan="2">
-              <el-table :data="table2Data">
-                <el-table-column
-                  align="center"
-                  label="评价">
-                  <template v-for="(item,index) in tableHead">
-                    <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
-                      <template slot-scope="scope">
-                        <el-input  v-model="scope.row[scope.column.property]" @blur="scoreEdit2([scope.column.label],scope.row[scope.column.property])"></el-input>
+              <tr>
+                <td colspan="10" height="40px">
+                  <h3>第一年工作评价</h3>
+                </td>
+              </tr>
+              <tr>
+                <td height="40px">项目</td>
+                <td >员工部门</td>
+                <td  >员工职务</td>
+                <td >评价人</td>
+                <td colspan="6" rowspan="2">
+                  <el-table :data="table1Data">
+                    <el-table-column
+                      align="center"
+                      label="评价">
+                      <template v-for="(item,index) in tableHead">
+                        <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
+                          <template slot-scope="scope">
+                            <el-input class="paperview-input-text" v-model="scope.row[scope.column.property]" @blur="scoreEdit1([scope.column.label],scope.row[scope.column.property])"></el-input>
+                          </template>
+                        </el-table-column>
                       </template>
                     </el-table-column>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  align="center"
-                  prop="avg"
-                  label="整体评价分数(平均分)">
-                  <template slot-scope="scope">
-                    {{scope.row.avg || "尚未评分"}}
-                  </template>
-                </el-table-column>
-              </el-table>
-            </td>
-
-          </tr>
-
-          <tr>
-            <td height="40px">工作评价</td>
-            <td>{{emp.dname}}</td>
-            <td>{{emp.job}}</td>
-            <td>{{ename1}}</td>
-
-          </tr>
-          <tr>
-            <td width="60px" >评价(包括主要优点及缺陷)</td>
-            <td colspan="9">
-              <el-input
-                type="textarea"
-                :rows="4"
-                v-model="textarea2"
-                @blur="addAppraise(2,textarea2)"
-              >
-              </el-input>
-            </td>
-          </tr>
-
-          <tr>
-            <td colspan="10" height="40px">
-              <h3>第三年工作评价</h3>
-            </td>
-          </tr>
-          <tr>
-            <td height="40px">项目</td>
-            <td >员工部门</td>
-            <td  >员工职务</td>
-            <td >评价人</td>
-            <td colspan="6" rowspan="2">
-              <el-table :data="table3Data" >
-                <el-table-column
-                  align="center"
-                  label="评价">
-                  <template v-for="(item,index) in tableHead">
-                    <el-table-column  :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
+                    <el-table-column
+                      align="center"
+                      prop="avg"
+                      label="整体评价分数(平均分)">
                       <template slot-scope="scope">
-                        <el-input v-model="scope.row[scope.column.property]" @blur="scoreEdit3([scope.column.label],scope.row[scope.column.property])" ></el-input>
+                        {{scope.row.avg || "尚未评分"}}
                       </template>
                     </el-table-column>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  align="center"
-                  prop="avg"
-                  label="整体评价分数(平均分)">
-                  <template slot-scope="scope">
-                    {{scope.row.avg || "尚未评分"}}
-                  </template>
-                </el-table-column>
-              </el-table>
-            </td>
-          </tr>
-          <tr>
-            <td height="40px">工作评价</td>
-            <td>{{emp.dname}}</td>
-            <td>{{emp.job}}</td>
-            <td>{{ename1}}</td>
-          </tr>
-          <tr>
-            <td width="60px" >评价(包括主要优点及缺陷)</td>
-            <td colspan="9">
-              <el-input
-                type="textarea"
-                :rows="4"
-                v-model="textarea3"
-                @blur="addAppraise(3,textarea3)"
-              >
-              </el-input>
-            </td>
-          </tr>
-        </table>
+                  </el-table>
+                </td>
+
+              </tr>
+
+              <tr>
+                <td height="40px">工作评价</td>
+                <td>{{emp.dname}}</td>
+                <td>{{emp.job}}</td>
+                <td>{{ename1}}</td>
+
+              </tr>
+              <tr>
+                <td width="60px" >评价(包括主要优点及缺陷)</td>
+                <td colspan="9">
+                  <el-input
+                    type="textarea"
+                    :rows="4"
+                    v-model="textarea1"
+                    @blur="addAppraise(1,textarea1)"
+                  >
+                  </el-input>
+                </td>
+              </tr>
+
+              <tr>
+                <td colspan="10" height="40px">
+                  <h3>第二年工作评价</h3>
+                </td>
+              </tr>
+              <tr>
+                <td height="40px">项目</td>
+                <td >员工部门</td>
+                <td  >员工职务</td>
+                <td >评价人</td>
+                <td colspan="6" rowspan="2">
+                  <el-table :data="table2Data">
+                    <el-table-column
+                      align="center"
+                      label="评价">
+                      <template v-for="(item,index) in tableHead">
+                        <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
+                          <template slot-scope="scope">
+                            <el-input class="paperview-input-text" v-model="scope.row[scope.column.property]" @blur="scoreEdit2([scope.column.label],scope.row[scope.column.property])"></el-input>
+                          </template>
+                        </el-table-column>
+                      </template>
+                    </el-table-column>
+                    <el-table-column
+                      align="center"
+                      prop="avg"
+                      label="整体评价分数(平均分)">
+                      <template slot-scope="scope">
+                        {{scope.row.avg || "尚未评分"}}
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </td>
+
+              </tr>
+
+              <tr>
+                <td height="40px">工作评价</td>
+                <td>{{emp.dname}}</td>
+                <td>{{emp.job}}</td>
+                <td>{{ename1}}</td>
+
+              </tr>
+              <tr>
+                <td width="60px" >评价(包括主要优点及缺陷)</td>
+                <td colspan="9">
+                  <el-input
+                    type="textarea"
+                    :rows="4"
+                    v-model="textarea2"
+                    @blur="addAppraise(2,textarea2)"
+                  >
+                  </el-input>
+                </td>
+              </tr>
+
+              <tr>
+                <td colspan="10" height="40px">
+                  <h3>第三年工作评价</h3>
+                </td>
+              </tr>
+              <tr>
+                <td height="40px">项目</td>
+                <td >员工部门</td>
+                <td  >员工职务</td>
+                <td >评价人</td>
+                <td colspan="6" rowspan="2">
+                  <el-table :data="table3Data" >
+                    <el-table-column
+                      align="center"
+                      label="评价">
+                      <template v-for="(item,index) in tableHead">
+                        <el-table-column  :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
+                          <template slot-scope="scope">
+                            <el-input class="paperview-input-text" v-model="scope.row[scope.column.property]" @blur="scoreEdit3([scope.column.label],scope.row[scope.column.property])" ></el-input>
+                          </template>
+                        </el-table-column>
+                      </template>
+                    </el-table-column>
+                    <el-table-column
+                      align="center"
+                      prop="avg"
+                      label="整体评价分数(平均分)">
+                      <template slot-scope="scope">
+                        {{scope.row.avg || "尚未评分"}}
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </td>
+              </tr>
+              <tr>
+                <td height="40px">工作评价</td>
+                <td>{{emp.dname}}</td>
+                <td>{{emp.job}}</td>
+                <td>{{ename1}}</td>
+              </tr>
+              <tr>
+                <td width="60px" >评价(包括主要优点及缺陷)</td>
+                <td colspan="9">
+                  <el-input
+                    type="textarea"
+                    :rows="4"
+                    v-model="textarea3"
+                    @blur="addAppraise(3,textarea3)"
+                  >
+                  </el-input>
+                </td>
+              </tr>
+            </table>
+          </div></el-col>
+        </el-row>
       </div>
+
+
+
     </div>
 
 </template>
 
 <script>
-  import FileSaver from 'file-saver'
-  import XLSX from 'xlsx'
+
   import axios from 'axios';
     export default {
         name: "managerEdit",
       data(){
           return{
-
             name:0,
             type:0,
             tableHead:[],
@@ -497,12 +502,20 @@
   table{
     border: solid 2px black;
     border-collapse: collapse;
-
   }
   tr,td{
     font-size: 13px;
     border: solid 1px black;
     border-collapse: collapse;
+    text-align: center;
+  }
+  .paperview-input-text >>> .el-input__inner {
+    -webkit-appearance: none;
+    background-color: #FFF;
+    background-image: none;
+    border-radius: 4px;
+    border: 0px;
+    width: 100%;
     text-align: center;
   }
 

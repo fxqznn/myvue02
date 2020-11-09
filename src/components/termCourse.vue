@@ -6,9 +6,9 @@
           <el-button slot="append" @click="tableRenderData">查询</el-button>
         </el-input>
         <el-select v-model="termCourse" placeholder="请选择已有课程">
-            <el-option v-for="item in termCourses" :key="item.cid" :label="item.cname" :value="item.cid">
-            </el-option>
-          </el-select>
+          <el-option v-for="item in termCourses" :key="item.cid" :label="item.cname" :value="item.cid">
+          </el-option>
+        </el-select>
         <el-button @click="addTermCourse()" >添加课程</el-button>
       </el-col>
       <el-col :span="8" >
@@ -19,7 +19,7 @@
 
     <br />
 
-    <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="420"
+    <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="600"
               :default-sort="{prop:'cid',order:'ascending'}"  @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection"></el-table-column>
       <el-table-column fixed prop="cid" label="编号"></el-table-column>
@@ -35,8 +35,7 @@
 
     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                    :current-page="current" :page-sizes="[5, 10, 15, 20, 25, 30]" :page-size="size"
-                   layout="total, sizes, prev, pager, next, jumper" :total="total"
-                   align="center"></el-pagination>
+                   layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
 
     <el-dialog title="添加课程" :visible.sync="addVisiable" width="50%" :center="dialogCenter">
       <el-form>

@@ -63,7 +63,7 @@
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="姓名" label-width="50px">
-              <el-input v-model="user.name"></el-input>
+              <el-input v-model="user.name" @blur="checkUserName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -71,7 +71,7 @@
           <el-col :span="12" :offset="6">
             <el-form-item label="角色" label-width="50px">
               <el-select v-model="user.role">
-                <el-option v-for="item in roles" :key="item.value" :label="item.label" :value="item.value">
+                <el-option v-for="item in roles_Add_Edit" :key="item.value" :label="item.label" :value="item.value">
                   <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
                 </el-option>
@@ -99,7 +99,7 @@
           <el-col :span="12" :offset="6">
             <el-form-item label="角色" label-width="50px">
               <el-select v-model="editRowData.role">
-                <el-option v-for="item in roles" :key="item.value" :label="item.label" :value="item.value">
+                <el-option v-for="item in roles_Add_Edit" :key="item.value" :label="item.label" :value="item.value">
                   <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
                 </el-option>
@@ -134,6 +134,11 @@
         delCascade:true,
         role:-1,
         roles:[{value:-1,label:'请选择角色'},
+          {value:0,label:'管理员'},
+          {value:1,label:'教师'},
+          {value:2,label:'部门经理'},
+          {value:3,label:'学生'}],
+        roles_Add_Edit:[
           {value:0,label:'管理员'},
           {value:1,label:'教师'},
           {value:2,label:'部门经理'},
@@ -203,6 +208,7 @@
           this.editRowData = res.data;
         })
       },
+
       cancelDel: function(){
         this.delMsgVisible = false;
         this.delRowData = {};
@@ -238,6 +244,7 @@
         this.tableRenderData();
         this.delMsgVisible = false;
       },
+
       tableRenderData:function () {
         axios.get('getAllUser?current=' + this.current + '&size=' + this.size
           + '&role=' + this.role + "&uname=" + this.uname).then(res => {
@@ -260,12 +267,18 @@
         });
         this.tableRenderData();
       },
+
+      checkUserName : function(){
+        if(this.user.name == "") {
+          this.$message('姓名不能为空');
+          return false;
+        }else {
+          return true;
+        }
+      },
       addConfirm: function () {
-        if(this.user.name == '' || this.user.role == -1) {
-          this.$message({
-            message:'请输入姓名和角色',
-            type:'warning'
-          })
+        if(this.checkUserName() == false){
+
         } else {
           axios.get('addUser?name=' + this.user.name + '&role=' + this.user.role).then(res => {
             if(res.data == "success"){
@@ -276,18 +289,19 @@
             }else {
               this.$message.error('服务器响应失败');
             }
-          })
+          });
+          this.userAddVisible = false;
+          this.user.name = '';
+          this.user.role = 3;
+          this.tableRenderData();
         }
-        this.userAddVisible = false;
-        this.user.name = '';
-        this.user.role = 3;
-        this.tableRenderData();
       },
       cancelAdd:function () {
         this.userAddVisible = false;
         this.user.name = '';
         this.user.role = 3;
       },
+
       cancelDelUsers: function () {
         this.delRowsData = [];
         this.delUsersVisible = false;
@@ -326,6 +340,7 @@
         this.tableRenderData();
         this.delUsersVisible = false;
       },
+
       roleFormat:function (row, column) {
         if(row.role == 0){
           return '管理员';

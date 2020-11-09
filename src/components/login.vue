@@ -21,6 +21,7 @@
               <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
               <el-button @click="resetForm('ruleForm')">重置</el-button>
             </el-form-item>
+            <br>
           </el-form>
         </div>
       </el-col>
@@ -85,19 +86,18 @@
                   this.$router.push({path: "/mainFrame"})
                 }else if(this.$store.state.user.role == 1){
                   this.$router.push({path: "/mainFrame"})
-                }else if(this.$store.state.user.role == 2) {
+                }else if(res.data.role == 2) {
 
                   this.$router.push({path: "/mainFrame"})
 
                 } else if (res.data.role==3){
                   axios.get("getByUser/"+this.$store.state.user.uid).then(res =>{
-                    debugger
                     this.$store.dispatch("student/setStudent",res.data);
                     this.$router.push({path: "/mainFrame"})
                   })
                 }
               }else {
-               this.$message("用户名或密码错误")
+               this.$message.error("用户名或密码错误")
               }
             })
           }

@@ -2,21 +2,22 @@
   <div>
     <el-button  @click="returnStudentList" icon="el-icon-back" >返回上一级</el-button>
     <el-button icon="el-icon-document" @click="getPdf()">导出表格</el-button>
+    <div id="pdfDom">
     <br><br><br>
-    <table width="80%">
+    <table width="70%">
       <tr>
         <td colspan="7">
           <h2>金桥学员成长跟踪表</h2>
         </td>
       </tr>
-      <tr >
+      <tr>
         <td height="40px">姓名</td>
         <td>{{student.sname}}</td>
         <td>性别</td>
         <td>{{student.sex}}</td>
         <td>民族</td>
-        <td >{{student.nation}}</td>
-        <td rowspan="4" width="150px"><img :src="'http://localhost:8081/'+student.pic"></td>
+        <td>{{student.nation}}</td>
+        <td rowspan="4" width="150px"><img :src="'http://localhost:8081/'+student.pic" style="width:2.5cm;height: 3.5cm"></td>
       </tr>
       <tr>
         <td height="40px">出生年月</td>
@@ -57,7 +58,7 @@
               <template v-for="(item,index) in tableHead">
                 <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">{{item.cid}}
                   <template slot-scope="scope">
-                    <el-input  v-model="scope.row[scope.column.property]" @blur="scoreEdit([scope.column.label],scope.row[scope.column.property])"></el-input>
+                    <el-input class="paperview-input-text" v-model="scope.row[scope.column.property]" @blur="scoreEdit([scope.column.label],scope.row[scope.column.property])"></el-input>
                   </template>
                 </el-table-column>
               </template>
@@ -81,6 +82,7 @@
         </td>
       </tr>
     </table>
+  </div>
   </div>
 
 </template>
@@ -214,6 +216,15 @@
     font-size: 15px;
     border: solid 1px black;
     border-collapse: collapse;
+    text-align: center;
+  }
+  .paperview-input-text >>> .el-input__inner {
+    -webkit-appearance: none;
+    background-color: #FFF;
+    background-image: none;
+    border-radius: 4px;
+    border: 0px;
+    width: 100%;
     text-align: center;
   }
 </style>

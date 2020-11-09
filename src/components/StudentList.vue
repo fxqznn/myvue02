@@ -61,14 +61,6 @@
         prop="s5"
         label="综合评价(优缺点)">
       </el-table-column>
-      <el-table-column
-        fixed="right"
-        label="操作">
-        <template slot-scope="scope">
-          <el-button @click="handleClick" type="text" size="small">查看</el-button>
-          <el-button type="text" size="small">编辑</el-button>
-        </template>
-      </el-table-column>
     </el-table>
     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                    :current-page="current" :page-sizes="[5, 10, 15, 20, 25, 30]" :page-size="size"
@@ -152,6 +144,7 @@
             }
           });
           this.term = max;
+          this.tableRenderData()
         })
       },
       getAllCourse(){
@@ -168,11 +161,6 @@
           this.size = res.data.size;
           this.total = res.data.total;
         });
-      },
-      stuMsgShow:function(){
-        axios.get('').then(res=>{
-          this.dialogTableData = res.data;
-        })
       },
       //每页条数改变时触发 选择一页显示多少行
       handleSizeChange(val) {
@@ -201,11 +189,6 @@
           return data;
         }
       },
-
-      //查看学员个人信息及评价
-      handleClick:function(index,row){
-        this.dialogTableVisible = true;
-      }
     },
 
     mounted() {

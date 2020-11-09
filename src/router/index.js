@@ -53,6 +53,7 @@ export default new Router({
         {path:'menuManage',name:'menuManage',component:menuManage},
         {path:'deptManage',name:'deptManage',component:deptManage},
         {path: 'StudentList', name: 'StudentList', component: StudentList},
+        {path: '/studentMsg/:sid/:tid', name: 'studentMsg', component: studentMsg},
         {path: 'termCourse', name: 'termCourse', component: termCourse},
         {path:'StudentDetails',
           name:'StudentDetails',
@@ -62,8 +63,6 @@ export default new Router({
             {path:'AbilitiesScoreList/:type',name:'AbilitiesScoreList',component:AbilitiesScoreList}
           ]}
       ]
-    },
-    {path: '/studentMsg/:sid/:tid', name: 'studentMsg', component: studentMsg},
-    {path: '/termCourse', name: 'termCourse', component: termCourse},
+    }
   ]
 })

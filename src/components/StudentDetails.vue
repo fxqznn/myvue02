@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table width="1000px">
+    <table width="1000px" align="center">
       <tr>
         <td colspan="7"> <h2>金桥学员成长跟踪表</h2></td>
       </tr>
@@ -12,7 +12,7 @@
           <el-radio v-model="student.sex" label="女">女</el-radio></td>
         <td>民族</td>
         <td width="150px"><el-input v-model="student.nation" @blur="verifyNation"></el-input></td>
-        <td rowspan="4" width="3cm" height="4cm" align="center">
+        <td rowspan="4" style="width: 3cm;height: 4cm" align="center">
           <el-upload
             class="avatar-uploader"
             action="http://localhost:8081/upload"
@@ -242,6 +242,7 @@
   table,tr,td{
     border: 1px solid;
     border-collapse: collapse;
+    text-align:center
   }
   .el-input{
     border:0px

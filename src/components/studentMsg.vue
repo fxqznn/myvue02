@@ -4,8 +4,16 @@
     <table>
 
       <tr>
-        <td colspan="7"><span style="font-size: 20px">金桥学员成长跟踪表</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <el-link @click="returnStudentList">返回学生列表页面</el-link></td>
+        <td colspan="7">
+          <el-row>
+            <el-col :span="8" :offset="5">
+              <h2>金桥学员成长跟踪表</h2>
+            </el-col>
+            <el-col :span="6" :offset="4">
+              <el-link @click="returnStudentList">返回学生列表页面</el-link>
+            </el-col>
+          </el-row>
+        </td>
       </tr>
       <tr >
         <td>姓名</td>
@@ -14,7 +22,7 @@
         <td>{{student.sex}}</td>
         <td>民族</td>
         <td >{{student.nation}}</td>
-        <td rowspan="4" width="80px"><img :src=student.pic></td>
+        <td rowspan="4" width="80px"><img :src="'http://localhost:8081/'+student.pic"></td>
       </tr>
       <tr>
         <td >出生年月</td>
@@ -42,19 +50,29 @@
       </tr>
       <tr>
         <td colspan="7">
-          <h3>培训学校评价</h3>
 
+          <el-row>
+            <el-col :span="5" :offset="7">
+              <h3>培训学校评价</h3>
+            </el-col>
+            <el-col :span="4" :offset="4">
+              <el-button type="success" size="mini" @click="dialogFormVisible = true">编辑</el-button>
+            </el-col>
+          </el-row>
         </td>
       </tr>
       <tr>
         <td colspan="7">
-          <el-table :data="tableData">
+          <el-table :data="tableData" @cell-click="toggle">
             <el-table-column align="center" prop="tabName" label="培训学校">{{this.tabName}}</el-table-column>
             <el-table-column align="center" prop="tname" label="班期"></el-table-column>
             <el-table-column align="center" prop="ename" label="评价人"></el-table-column>
             <el-table-column align="center" label="成绩">
               <template v-for="(item,index) in tableHead">
-                <el-table-column :prop="item.cid" :label="item.cname" :formatter="scoreShow" align="center">
+                <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">{{item.cid}}
+                  <template slot-scope="scope">
+                    <el-input  v-model="scope.row[scope.column.property]" @blur="scoreEdit([scope.column.label],scope.row[scope.column.property])"></el-input>
+                  </template>
                 </el-table-column>
               </template>
             </el-table-column>
@@ -69,7 +87,11 @@
           评价(包括主要优点及缺陷)
         </td>
         <td colspan="6">
-          <el-input type="textarea" :rows="5" v-model="appraise"></el-input>
+          <el-input
+            type="textarea"
+            :rows="4"
+            v-model="appraise"
+            @blur="addAppraise(-1,appraise)"/>
         </td>
       </tr>
     </table>
@@ -79,18 +101,33 @@
 
 <script>
   import axios from 'axios';
+  import qs from 'qs'
   export default {
     name: "studentMsg",
     data(){
       return{
-        appraise:"学校评价",
+        appraise:"",
         tabName:"学习评价",
         student:{},
         tableHead:[],
         tableData:[],
         sid:0,
-        eid:this.$store.state.uid,
-        tid:0
+        eid:this.$store.state.user.uid,
+        tid:0,
+        dialogTableVisible: false,
+        dialogFormVisible: false,
+        form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        },
+        formLabelWidth: '120px'
+
       }
     },
     methods:{
@@ -119,21 +156,58 @@
       returnStudentList:function(){
         this.$router.push("/mainFrame/StudentList")
       },
+
+      scoreEdit(cname,score){
+        axios.post("updateStudentScore02?cname="
+          +cname+"&&score="+score+"&&sid="+this.sid+"&&eid="+this.eid).then(res => {
+          if (res.data=="success"){
+            this.tableRenderData();
+            this.averageShow();
+            this.scoreShow();
+            this.$message.success("成功更新评分信息");
+          } else{
+            this.$message.error("更新评分失败");
+          }
+        })
+      },
+      getAppraise:function(){
+        axios.get('getAppraise/' + this.sid +'/-1').then(res =>{
+          this.appraise = res.data.content;
+        })
+      },
       getAllCourse(){
         axios.get("getCoursesTerm?tid=" + this.tid).then(res => {
           this.tableHead = res.data;
         })
       },
       tableRenderData:function () {
+        this.getAppraise();
+
         axios.get("getStudentScoresBySid?sid=" + this.sid + "&tid=" + this.tid).then(res => {
           this.tableData = res.data;
         });
+      },
+      addAppraise(type,appraise) {
+        if (!appraise == "") {
+          axios.get("updateApp?sid=" + this.student.sid + "&&type=" + type + "&&content=" + appraise).then(res => {
+            if (res.data == 1) {
+              this.$message({
+                message: '更新评价成功',
+                type: 'success'
+              });
+            } else {
+              this.$message.error("更新失败")
+            }
+          })
+        }
       }
+
     },
     mounted() {
       this.sid = this.$route.params.sid;
       this.tid = this.$route.params.tid;
       this.showInfo();
+      this.getAppraise();
       this.getAllCourse();
       this.tableRenderData();
     }

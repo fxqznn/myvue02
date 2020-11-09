@@ -12,6 +12,7 @@ import empManage from '@/components/empManage';
 import courseManage from '@/components/courseManage';
 import studentManage from '@/components/studentManage';
 import termManage from '@/components/termManage';
+import termCourse from '@/components/termCourse'
 import menuManage from '@/components/menuManage';
 import deptManage from '@/components/deptManage'
 
@@ -52,7 +53,7 @@ export default new Router({
         {path:'menuManage',name:'menuManage',component:menuManage},
         {path:'deptManage',name:'deptManage',component:deptManage},
         {path: 'StudentList', name: 'StudentList', component: StudentList},
-        {path: 'studentMsg/:sid/:tid', name: 'studentMsg', component: studentMsg},
+        {path: 'termCourse', name: 'termCourse', component: termCourse},
         {path:'StudentDetails',
           name:'StudentDetails',
           component:StudentDetails,
@@ -63,5 +64,6 @@ export default new Router({
       ]
     },
     {path: '/studentMsg/:sid/:tid', name: 'studentMsg', component: studentMsg},
+    {path: '/termCourse', name: 'termCourse', component: termCourse},
   ]
 })

@@ -135,7 +135,7 @@
         current: 1,
         size: 5,
         total: 0,
-        eid:3,
+        eid:this.$store.state.user.uid,
         tableHead:[],
         tableData:[],
         dialogTableData:[]

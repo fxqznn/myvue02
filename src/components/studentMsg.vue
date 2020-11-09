@@ -1,31 +1,25 @@
 <template>
   <div>
-
-    <table>
-
+    <el-button  @click="returnStudentList" icon="el-icon-back" >返回上一级</el-button>
+    <el-button icon="el-icon-document" @click="getPdf()">导出表格</el-button>
+    <br><br><br>
+    <table width="80%">
       <tr>
         <td colspan="7">
-          <el-row>
-            <el-col :span="8" :offset="5">
               <h2>金桥学员成长跟踪表</h2>
-            </el-col>
-            <el-col :span="6" :offset="4">
-              <el-link @click="returnStudentList">返回学生列表页面</el-link>
-            </el-col>
-          </el-row>
         </td>
       </tr>
       <tr >
-        <td>姓名</td>
+        <td height="40px">姓名</td>
         <td>{{student.sname}}</td>
         <td>性别</td>
         <td>{{student.sex}}</td>
         <td>民族</td>
         <td >{{student.nation}}</td>
-        <td rowspan="4" width="80px"><img :src="'http://localhost:8081/'+student.pic"></td>
+        <td rowspan="4" width="150px"><img :src="'http://localhost:8081/'+student.pic"></td>
       </tr>
       <tr>
-        <td >出生年月</td>
+        <td height="40px">出生年月</td>
         <td>{{student.birthday}}</td>
         <td >籍贯</td>
         <td>{{student.address}}</td>
@@ -33,32 +27,24 @@
         <td><span>{{student.marry ==0? "未婚":"已婚"}}</span></td>
       </tr>
       <tr>
-        <td>联系电话</td>
+        <td height="40px">联系电话</td>
         <td colspan="2">{{student.phone}}</td>
         <td>身份证号码</td>
         <td colspan="2">{{student.cardid}}</td>
       </tr>
       <tr>
-        <td>毕业学校</td>
+        <td height="40px">毕业学校</td>
         <td colspan="2">{{student.school}}</td>
         <td>专业</td>
         <td colspan="2">{{student.major}}</td>
       </tr>
       <tr>
-        <td>备注</td>
+        <td height="40px">备注</td>
         <td colspan="6">{{student.info}}</td>
       </tr>
       <tr>
-        <td colspan="7">
-
-          <el-row>
-            <el-col :span="5" :offset="7">
+        <td colspan="7" align="center" height="40px">
               <h3>培训学校评价</h3>
-            </el-col>
-            <el-col :span="4" :offset="4">
-              <el-button type="success" size="mini" @click="dialogFormVisible = true">编辑</el-button>
-            </el-col>
-          </el-row>
         </td>
       </tr>
       <tr>
@@ -106,6 +92,7 @@
     name: "studentMsg",
     data(){
       return{
+        htmlTitle: 'StudentMsg',
         appraise:"",
         tabName:"学习评价",
         student:{},
@@ -161,10 +148,11 @@
         axios.post("updateStudentScore02?cname="
           +cname+"&&score="+score+"&&sid="+this.sid+"&&eid="+this.eid).then(res => {
           if (res.data=="success"){
+            this.$message.success("成功更新评分信息");
             this.tableRenderData();
             this.averageShow();
             this.scoreShow();
-            this.$message.success("成功更新评分信息");
+
           } else{
             this.$message.error("更新评分失败");
           }
@@ -220,8 +208,9 @@
     border-collapse: collapse;
   }
   tr,td{
-    font-size: 13px;
+    font-size: 15px;
     border: solid 1px black;
     border-collapse: collapse;
+    text-align: center;
   }
 </style>

@@ -85,9 +85,10 @@
             if (valid) {
               axios.get("changePass/" + this.uid + "/" + this.pwd).then(res => {
                 if (res.data == "success") {
-                  this.$message("修改密码成功")
+                  this.$message.success("修改密码成功")
+                  this.$router.push("/")
                 } else {
-                  this.$message("修改密码失败")
+                  this.$message.error("修改密码失败")
                 }
               })
             }

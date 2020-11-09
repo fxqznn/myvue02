@@ -239,8 +239,10 @@
                     <el-table-column
                       align="center"
                       prop="avg"
-                      label="整体评价分数(平均分)"
-                      :formatter="showJudge1">
+                      label="整体评价分数(平均分)">
+                      <template slot-scope="scope">
+                        {{scope.row.avg || "尚未评分"}}
+                      </template>
                     </el-table-column>
                   </el-table>
                 </td>
@@ -317,14 +319,6 @@
           }
       },
       methods:{
-        showJudge1(row,column){
-          const avg = row[column.property];
-          if (avg == NaN){
-            return "尚未评分";
-          }else{
-            return avg;
-          }
-        },
         getName: function () {
           this.name = this.$store.state.user.uname;
         },

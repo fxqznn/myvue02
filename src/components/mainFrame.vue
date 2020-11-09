@@ -1,9 +1,12 @@
 <template>
   <el-container id="all" style="width: 100%;height: 100%;overflow: hidden">
-    <el-header  style="text-align: right;height: 10%">
-      <span>跟踪系统</span>
-      <el-dropdown style="margin-top:1%">
-        <el-button>
+    <el-header  style="height: 10% ;background-color: aliceblue">
+      <div style="display: inline-block">
+        <img src="../assets/jxd.jpg" style="vertical-align: middle" height="50px">
+        <span style="font-weight: bolder;font-size: 25px">金桥学员跟踪系统</span>
+      </div>
+      <el-dropdown style="margin-top:1%;float: right">
+        <el-button >
           <i class="el-icon-user"></i>
           <span v-text="name" style="font-size: 15px"></span>
         </el-button>
@@ -17,14 +20,14 @@
         </el-dropdown-menu>
       </el-dropdown>
     </el-header>
-    <el-container style="overflow-y: hidden">
-      <el-aside  style="width: 20%; height: 90%" >
-        <el-menu>
+    <el-container style="overflow-y: hidden;">
+      <el-aside  style="width: 20%; height: 100%;background-color: aliceblue "  >
+        <el-menu style="background-color: aliceblue">
           <navigation-item v-for="(menu,i) in menus" :key="i" :item="menu"/>
         </el-menu>
       </el-aside>
       <el-container>
-        <el-main  style="width: 80%; height: 90%" >
+        <el-main  style="width: 80%; height: 100%" >
           <router-view/>
         </el-main>
       </el-container>
@@ -84,7 +87,7 @@
         this.$router.push('/')
       }else {
         if(this.$store.state.user.role == 0){
-          this.$router.push('/mainFrame/userManage')
+          this.$router.push('/userManage')
         } else if (this.$store.state.user.role == 1) {
           this.$router.push("/mainFrame/StudentList");
         } else if(this.$store.state.user.role == 2) {

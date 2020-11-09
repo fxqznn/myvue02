@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="16">
+      <el-col :span="15" :offset="1">
         <el-input placeholder="请输入课程名称" v-model="cname" style="width: 200px">
           <el-button slot="append" @click="tableRenderData">查询</el-button>
         </el-input>
@@ -26,7 +26,7 @@
 
     <br />
 
-    <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="380"
+    <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="420"
               :default-sort="{prop:'cid',order:'ascending'}"  @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection"></el-table-column>
       <el-table-column fixed prop="cid" label="编号"></el-table-column>
@@ -42,7 +42,8 @@
 
     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                    :current-page="current" :page-sizes="[5, 10, 15, 20, 25, 30]" :page-size="size"
-                   layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
+                   layout="total, sizes, prev, pager, next, jumper" :total="total"
+                    align="center"></el-pagination>
 
     <el-dialog title="添加课程" :visible.sync="addVisiable" width="50%" :center="dialogCenter">
       <el-form>

@@ -17,8 +17,8 @@
                 </el-input>
               </el-col>
             </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+            <el-form-item style="margin-left: 40px">
+              <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
               <el-button @click="resetForm('ruleForm')">重置</el-button>
             </el-form-item>
           </el-form>
@@ -80,8 +80,9 @@
                 this.$store.dispatch("user/setId", res.data.uid);
                 this.$store.dispatch("user/setUser", this.ruleForm.uname);
                 this.$store.dispatch("user/setPerm", res.data.role);
-                if(this.$store.state.user.role == 0){
 
+                if(this.$store.state.user.role == 0){
+                  this.$router.push({path: "/mainFrame"})
                 }else if(this.$store.state.user.role == 1){
                   this.$router.push({path: "/mainFrame"})
                 }else if(this.$store.state.user.role == 2) {

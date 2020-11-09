@@ -19,7 +19,7 @@
     <br />
 
     <el-table ref="multipleTable" :data="tableData.slice((current-1)*size,current*size)"
-              border style="width: 100%" max-height="380"
+              border style="width: 100%" max-height="420"
               :default-sort="{prop:'mid',order:'ascending'}"  @selection-change="handleSelectionChange"
               row-key="mid" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
       <el-table-column fixed type="selection"></el-table-column>
@@ -38,7 +38,8 @@
 
 `    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                     :current-page="current" :page-sizes="[5, 10, 15, 20, 25, 30]" :page-size="size"
-                    layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
+                    layout="total, sizes, prev, pager, next, jumper" :total="total"
+                    align="center"></el-pagination>
 
     <el-dialog title="添加菜单" :visible.sync="addVisiable" width="50%" :center="dialogCenter">
       <el-form>

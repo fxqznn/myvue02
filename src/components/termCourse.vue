@@ -5,12 +5,11 @@
         <el-input placeholder="请输入课程名称" v-model="cname" style="width: 200px">
           <el-button slot="append" @click="tableRenderData">查询</el-button>
         </el-input>
-        <el-select v-model="termCourses" placeholder="请选择已有课程添加">
-            <el-option v-for="item in termCourses" :key="item.value" :label="item.label" :value="item.value">
-
+        <el-select v-model="termCourse" placeholder="请选择已有课程">
+            <el-option v-for="item in termCourses" :key="item.cid" :label="item.cname" :value="item.cid">
             </el-option>
           </el-select>
-        <el-button @click="addTermCourse" >添加课程</el-button>
+        <el-button @click="addTermCourse()" >添加课程</el-button>
       </el-col>
       <el-col :span="8" >
         <el-button @click="add()" >添加课程</el-button>
@@ -44,18 +43,6 @@
           <el-col :span="12" :offset="6">
             <el-form-item label="名称" label-width="50px">
               <el-input v-model="addData.cname"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12" :offset="6">
-            <el-form-item label="类型" label-width="50px">
-              <el-select v-model="addData.type">
-                <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
-                  <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
-                  <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
-                </el-option>
-              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -111,20 +98,19 @@
 <script>
   import axios from 'axios';
   import qs from 'qs';
-  import XLSX from 'xlsx';
 
   export default {
     name: "courseManage",
     data(){
       return {
         dialogCenter: true,
+        termCourse:"",
         termCourses:[],
         cname:'',
         types:[{value:0,label:'课程'}],
         type:0,
         isdel:0,
         isdels:[{value:0,label:'存在'}],
-
         total:0,
         size:5,
         current:1,
@@ -132,19 +118,40 @@
         multipleSelection:[],
 
         addVisiable:false,
-        addData:{ cname:'', type:0},
+        addData:{cname:'', type:0},
         delsVisiable:false,
         delsData:[],
         editVisiable:false,
         editData:{},
         delVisiable:false,
-        delData:0
+        delData:0,
+        eid:this.$store.state.user.uid,
       }
     },
     methods:{
+      getTermCourses:function(){
+        axios.get('getTermCourses').then(res =>{
+          this.termCourses = res.data
+        })
+      },
+      addTermCourse:function(){
+        axios.get('insertTermCourse?eid=' + this.eid +'&cid=' + this.termCourse).then( res => {
+          if(res.data == "success"){
+            this.tableRenderData();
+            this.$message({
+              message:'添加成功',
+              type:'success'
+            });
+          } else if (res.data == "exist") {
+            this.$message.error('该课程已存在');
+          } else {
+            this.$message.error("服务器响应失败");
+          }
+        });
+
+      },
       tableRenderData : function () {
-        axios.get('getAllCourse?current=' + this.current + '&size=' + this.size +
-          '&cname=' + this.cname + '&type=' + this.type + '&isdel=' + this.isdel).then(res => {
+        axios.get('getCourseTermByEid?current=' + this.current + '&size=' + this.size +'&eid=' + this.eid+'&cname=' + this.cname).then(res => {
           this.tableData = res.data.records;
           this.current = res.data.current;
           this.size = res.data.size;
@@ -182,8 +189,9 @@
         this.addVisiable = false;
       },
       addConfirm : function () {
-        axios.post('addCourse',qs.stringify(this.addData)).then(res => {
+        axios.get('insertCourseAndTermCourse?cname='+this.addData.cname+'&eid='+this.eid).then(res => {
           if(res.data == "success"){
+            this.tableRenderData();
             this.$message({
               message:'添加成功',
               type:'success'
@@ -193,7 +201,6 @@
           }
         });
         this.addVisiable = false;
-        this.tableRenderData();
       },
 
       dels : function () {
@@ -213,8 +220,10 @@
         this.delsData.forEach(function (item, index) {
           cids.push(item.cid);
         });
-        axios.post('delCoursesByIds',qs.stringify({cids:cids},{indices:false})).then(res => {
+        cids.push(this.eid);
+        axios.post('delTermCoursesByIds',qs.stringify({cids:cids},{indices:false})).then(res => {
           if(res.data == "success"){
+            this.tableRenderData();
             this.$message({
               message:'删除成功',
               type:'success'
@@ -224,7 +233,7 @@
           }
         });
         this.delsVisiable = false;
-        this.tableRenderData();
+
       },
 
       handleDelete : function (index, row) {
@@ -235,8 +244,9 @@
         this.delVisiable = false;
       },
       delConfirm : function () {
-        axios.get('delCourseById?cid=' + this.delData).then(res => {
+        axios.get('delTermCoursesById?cid=' + this.delData+'&eid=' + this.eid).then(res => {
           if(res.data == "success"){
+            this.tableRenderData();
             this.$message({
               message:'删除成功',
               type:'success'
@@ -246,7 +256,6 @@
           }
         });
         this.delVisiable = false;
-        this.tableRenderData();
       },
 
       handleEidt : function (index, row) {
@@ -262,6 +271,7 @@
       eidtConfirm : function () {
         axios.post('editCourse',qs.stringify(this.editData)).then(res => {
           if(res.data == "success"){
+            this.tableRenderData();
             this.$message({
               message:'修改成功',
               type:'success'
@@ -271,7 +281,7 @@
           }
         });
         this.editVisiable = false;
-        this.tableRenderData();
+
       },
 
     },
@@ -279,6 +289,7 @@
       this.sid = this.$route.params.sid;
       this.tid = this.$route.params.tid;
       this.tableRenderData();
+      this.getTermCourses()
     }
   }
 </script>

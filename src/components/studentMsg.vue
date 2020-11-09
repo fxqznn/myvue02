@@ -69,7 +69,10 @@
             <el-table-column align="center" prop="ename" label="评价人"></el-table-column>
             <el-table-column align="center" label="成绩">
               <template v-for="(item,index) in tableHead">
-                <el-table-column :prop="item.cid" :label="item.cname" :formatter="scoreShow" align="center">
+                <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">{{item.cid}}
+                  <template slot-scope="scope">
+                    <el-input  v-model="scope.row[scope.column.property]" @blur="scoreEdit([scope.column.label],scope.row[scope.column.property])"></el-input>
+                  </template>
                 </el-table-column>
               </template>
             </el-table-column>
@@ -84,44 +87,21 @@
           评价(包括主要优点及缺陷)
         </td>
         <td colspan="6">
-          <el-input type="textarea" :rows="3" v-model="appraise" placeholder="请输入评价信息"></el-input>
+          <el-input
+            type="textarea"
+            :rows="4"
+            v-model="appraise"
+            @blur="addAppraise(-1,appraise)"/>
         </td>
       </tr>
     </table>
-    <el-dialog title="录入学生成绩" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-row>
-          <el-col :span="4">
-            <h3>学生编号：{{student.sid}}</h3>
-          </el-col>
-          <el-col :span="4">
-            <h3>学生姓名：{{student.sname}}</h3>
-          </el-col>
-        </el-row>
-        <el-form-item label="学生姓名" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="活动名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="活动区域" :label-width="formLabelWidth">
-          <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-      </div>
-    </el-dialog>
   </div>
 
 </template>
 
 <script>
   import axios from 'axios';
+  import qs from 'qs'
   export default {
     name: "studentMsg",
     data(){
@@ -132,9 +112,8 @@
         tableHead:[],
         tableData:[],
         sid:0,
-        eid:this.$store.state.uid,
+        eid:this.$store.state.user.uid,
         tid:0,
-        appData:{sid:this.sid,conent:this.appraise,type:-1},
         dialogTableVisible: false,
         dialogFormVisible: false,
         form: {
@@ -148,6 +127,7 @@
           desc: ''
         },
         formLabelWidth: '120px'
+
       }
     },
     methods:{
@@ -176,24 +156,23 @@
       returnStudentList:function(){
         this.$router.push("/mainFrame/StudentList")
       },
-      editStudentScore(){
 
+      scoreEdit(cname,score){
+        axios.post("updateStudentScore02?cname="
+          +cname+"&&score="+score+"&&sid="+this.sid+"&&eid="+this.eid).then(res => {
+          if (res.data=="success"){
+            this.tableRenderData();
+            this.averageShow();
+            this.scoreShow();
+            this.$message.success("成功更新评分信息");
+          } else{
+            this.$message.error("更新评分失败");
+          }
+        })
       },
       getAppraise:function(){
         axios.get('getAppraise/' + this.sid +'/-1').then(res =>{
-          this.appraise = res.data;
-        })
-      },
-      updateAppraise:function(){
-        axios.post('updateApp',qs.stringify(this.appData)).then(res => {
-          if(res.data > 0){
-            this.$message({
-              message:'添加成功',
-              type:'success'
-            });
-          } else {
-            this.$message.error('服务器响应失败');
-          }
+          this.appraise = res.data.content;
         })
       },
       getAllCourse(){
@@ -203,10 +182,26 @@
       },
       tableRenderData:function () {
         this.getAppraise();
+
         axios.get("getStudentScoresBySid?sid=" + this.sid + "&tid=" + this.tid).then(res => {
           this.tableData = res.data;
         });
+      },
+      addAppraise(type,appraise) {
+        if (!appraise == "") {
+          axios.get("updateApp?sid=" + this.student.sid + "&&type=" + type + "&&content=" + appraise).then(res => {
+            if (res.data == 1) {
+              this.$message({
+                message: '更新评价成功',
+                type: 'success'
+              });
+            } else {
+              this.$message.error("更新失败")
+            }
+          })
+        }
       }
+
     },
     mounted() {
       this.sid = this.$route.params.sid;

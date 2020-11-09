@@ -33,8 +33,8 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "termManage",
-      component: termManage
+      name: "login",
+      component: login
     },
     {
       path: '/mainFrame',
@@ -53,7 +53,6 @@ export default new Router({
         {path:'menuManage',name:'menuManage',component:menuManage},
         {path:'deptManage',name:'deptManage',component:deptManage},
         {path: 'StudentList', name: 'StudentList', component: StudentList},
-        {path: 'studentMsg/:sid/:tid', name: 'studentMsg', component: studentMsg},
         {path: 'termCourse', name: 'termCourse', component: termCourse},
         {path:'StudentDetails',
           name:'StudentDetails',

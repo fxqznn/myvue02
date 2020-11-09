@@ -57,8 +57,8 @@ export default new Router({
         {path: 'termCourse', name: 'termCourse', component: termCourse},
         {path:'/StudentDetails', name:'StudentDetails', component:StudentDetails,
           children: [
-            {path:'CourseScoreList',name:'CourseScoreList',component:CourseScoreList},
-            {path:'AbilitiesScoreList/:type',name:'AbilitiesScoreList',component:AbilitiesScoreList}
+            {path:'/CourseScoreList',name:'CourseScoreList',component:CourseScoreList},
+            {path:'/AbilitiesScoreList/:type',name:'AbilitiesScoreList',component:AbilitiesScoreList}
           ]}
       ]
     }

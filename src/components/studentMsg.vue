@@ -2,21 +2,22 @@
   <div>
     <el-button  @click="returnStudentList" icon="el-icon-back" >返回上一级</el-button>
     <el-button icon="el-icon-document" @click="getPdf()">导出表格</el-button>
+    <div id="pdfDom">
     <br><br><br>
-    <table width="80%">
+    <table width="70%">
       <tr>
         <td colspan="7">
-              <h2>金桥学员成长跟踪表</h2>
+          <h2>金桥学员成长跟踪表</h2>
         </td>
       </tr>
-      <tr >
+      <tr>
         <td height="40px">姓名</td>
         <td>{{student.sname}}</td>
         <td>性别</td>
         <td>{{student.sex}}</td>
         <td>民族</td>
-        <td >{{student.nation}}</td>
-        <td rowspan="4" width="150px"><img :src="'http://localhost:8081/'+student.pic"></td>
+        <td>{{student.nation}}</td>
+        <td rowspan="4" width="150px"><img :src="'http://localhost:8081/'+student.pic" style="width:2.5cm;height: 3.5cm"></td>
       </tr>
       <tr>
         <td height="40px">出生年月</td>
@@ -44,7 +45,7 @@
       </tr>
       <tr>
         <td colspan="7" align="center" height="40px">
-              <h3>培训学校评价</h3>
+          <h3>培训学校评价</h3>
         </td>
       </tr>
       <tr>
@@ -57,7 +58,7 @@
               <template v-for="(item,index) in tableHead">
                 <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">{{item.cid}}
                   <template slot-scope="scope">
-                    <el-input  v-model="scope.row[scope.column.property]" @blur="scoreEdit([scope.column.label],scope.row[scope.column.property])"></el-input>
+                    <el-input class="paperview-input-text" v-model="scope.row[scope.column.property]" @blur="scoreEdit([scope.column.label],scope.row[scope.column.property])"></el-input>
                   </template>
                 </el-table-column>
               </template>
@@ -82,6 +83,7 @@
       </tr>
     </table>
   </div>
+  </div>
 
 </template>
 
@@ -93,7 +95,7 @@
     data(){
       return{
         htmlTitle: 'StudentMsg',
-        appraise:"",
+        appraise:"未评价",
         tabName:"学习评价",
         student:{},
         tableHead:[],
@@ -159,8 +161,11 @@
         })
       },
       getAppraise:function(){
-        axios.get('getAppraise/' + this.sid +'/-1').then(res =>{
+        axios.get('getAppraise/' + this.sid +'/-1'+ '/' + this.eid).then(res =>{
           this.appraise = res.data.content;
+          if (res.data == null && res.data.content == ""){
+            this.appraise = "未评价"
+          }
         })
       },
       getAllCourse(){
@@ -211,6 +216,15 @@
     font-size: 15px;
     border: solid 1px black;
     border-collapse: collapse;
+    text-align: center;
+  }
+  .paperview-input-text >>> .el-input__inner {
+    -webkit-appearance: none;
+    background-color: #FFF;
+    background-image: none;
+    border-radius: 4px;
+    border: 0px;
+    width: 100%;
     text-align: center;
   }
 </style>

@@ -46,7 +46,7 @@
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="中文名称" label-width="100px">
-              <el-input v-model="addData.nameZh"></el-input>
+              <el-input v-model="addData.nameZh" @blur="checkNameAdd"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -60,21 +60,21 @@
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="请求路径" label-width="100px">
-              <el-input v-model="addData.path"></el-input>
+              <el-input v-model="addData.path" @blur="checkPathAdd"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="组件名称" label-width="100px">
-              <el-input v-model="addData.component"></el-input>
+              <el-input v-model="addData.component" @blur="checkComponentAdd"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="父组件编号" label-width="100px">
-              <el-input v-model="addData.parentId"></el-input>
+              <el-input v-model="addData.parentId" @blur="checkParentIdAdd"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -113,7 +113,7 @@
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="中文名称" label-width="100px">
-              <el-input v-model="editData.nameZh"></el-input>
+              <el-input v-model="editData.nameZh" @blur="checkNameEdit"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -127,21 +127,21 @@
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="请求路径" label-width="100px">
-              <el-input v-model="editData.path"></el-input>
+              <el-input v-model="editData.path" @blur="checkPathEdit"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="组件名称" label-width="100px">
-              <el-input v-model="editData.component"></el-input>
+              <el-input v-model="editData.component" @blur="checkComponentEdit"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="父组件编号" label-width="100px">
-              <el-input v-model="editData.parentId"></el-input>
+              <el-input v-model="editData.parentId" @blur="checkParentIdEdit"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -239,19 +239,54 @@
         cancelAdd : function () {
           this.addVisiable = false;
         },
+        checkNameAdd : function() {
+          if(this.addData.nameZh == ""){
+            this.$message('名称不能为空');
+            return false;
+          } else {
+            return true;
+          }
+        },
+        checkPathAdd : function() {
+          if(this.addData.path == ""){
+            this.$message('路径不能为空');
+            return false;
+          } else {
+            return true;
+          }
+        },
+        checkComponentAdd : function() {
+          if(this.addData.component == ""){
+            this.$message('组件不能为空');
+            return false;
+          } else {
+            return true;
+          }
+        },
+        checkParentIdAdd : function() {
+          if(this.addData.parentId == ""){
+            this.$message('父组件不能为空');
+            return false;
+          } else {
+            return true;
+          }
+        },
         addConfirm : function () {
-          axios.post('addMenu',qs.stringify(this.addData)).then(res => {
-            if(res.data == "success"){
-              this.$message({
-                message:'添加成功',
-                type:'success'
-              });
-            } else {
-              this.$message.error('服务器响应失败');
-            }
-          });
-          this.addVisiable = false;
-          this.tableRenderData();
+          if(this.checkNameAdd() == true && this.checkPathAdd() == true &&
+          this.checkComponentAdd() == true && this.checkParentIdAdd() == true){
+            axios.post('addMenu',qs.stringify(this.addData)).then(res => {
+              if(res.data == "success"){
+                this.$message({
+                  message:'添加成功',
+                  type:'success'
+                });
+              } else {
+                this.$message.error('服务器响应失败');
+              }
+            });
+            this.addVisiable = false;
+            this.tableRenderData();
+          }
         },
 
         dels : function () {
@@ -313,22 +348,57 @@
           });
           this.editVisiable = true;
         },
+        checkNameEdit : function () {
+          if(this.editData.nameZh == ""){
+            this.$message('名称不能为空');
+            return false;
+          } else {
+            return true;
+          }
+        },
+        checkPathEdit : function () {
+          if(this.editData.path == ""){
+            this.$message('路径不能为空');
+            return false;
+          } else {
+            return true;
+          }
+        },
+        checkComponentEdit : function () {
+          if(this.editData.component == ""){
+            this.$message('组件不能为空');
+            return false;
+          } else {
+            return true;
+          }
+        },
+        checkParentIdEdit : function () {
+          if(this.editData.parentId == ""){
+            this.$message('父组件不能为空');
+            return false;
+          } else {
+            return true;
+          }
+        },
         cancelEdit : function () {
           this.editVisiable = false;
         },
         eidtConfirm : function () {
-          axios.post('editMenu',qs.stringify(this.editData)).then(res => {
-            if(res.data == "success"){
-              this.$message({
-                message:'修改成功',
-                type:'success'
-              });
-            } else {
-              this.$message.error('服务器响应失败');
-            }
-          });
-          this.editVisiable = false;
-          this.tableRenderData();
+          if(this.checkNameEdit() == true && this.checkPathEdit() == true &&
+          this.checkComponentEdit() == true && this.checkParentIdEdit() == true){
+            axios.post('editMenu',qs.stringify(this.editData)).then(res => {
+              if(res.data == "success"){
+                this.$message({
+                  message:'修改成功',
+                  type:'success'
+                });
+              } else {
+                this.$message.error('服务器响应失败');
+              }
+            });
+            this.editVisiable = false;
+            this.tableRenderData();
+          }
         },
       },
       mounted() {

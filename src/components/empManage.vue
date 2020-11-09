@@ -51,7 +51,7 @@
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="姓名" label-width="50px">
-              <el-input v-model="emp.ename"></el-input>
+              <el-input v-model="emp.ename" @blur="checkNameAdd"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -123,7 +123,7 @@
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="姓名" label-width="50px">
-              <el-input v-model="empForEdit.ename"></el-input>
+              <el-input v-model="empForEdit.ename" @blur="checkNameEdit"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -271,21 +271,31 @@
       cancelEdit : function() {
         this.editEmpVisible = false;
       },
+      checkNameEdit : function () {
+        if(this.empForEdit.ename == ""){
+          this.$message('姓名不能为空');
+          return false;
+        } else {
+          return true;
+        }
+      },
       eidtConfirm : function() {
-        axios.post('editEmp',qs.stringify({eid:this.empForEdit.eid,
-          ename:this.empForEdit.ename, job:this.empForEdit.job,
-          did:this.empForEdit.did})).then(res => {
-          if(res.data == "success"){
-            this.$message({
-              message:'修改成功',
-              type:'success'
-            });
-          } else {
-            this.$message.error('服务器响应失败');
-          }
-        });
-        this.editEmpVisible = false;
-        this.tableRenderData();
+        if(this.checkNameEdit() == true){
+          axios.post('editEmp',qs.stringify({eid:this.empForEdit.eid,
+            ename:this.empForEdit.ename, job:this.empForEdit.job,
+            did:this.empForEdit.did})).then(res => {
+            if(res.data == "success"){
+              this.$message({
+                message:'修改成功',
+                type:'success'
+              });
+            } else {
+              this.$message.error('服务器响应失败');
+            }
+          });
+          this.editEmpVisible = false;
+          this.tableRenderData();
+        }
       },
       addEmp : function () {
         axios.get('getAllDeptForEmp').then(res => {
@@ -304,20 +314,30 @@
       cancelAdd : function() {
         this.addEmpVisiable = false;
       },
+      checkNameAdd : function () {
+        if(this.emp.ename == ""){
+          this.$message('姓名不能为空');
+          return false;
+        } else {
+          return true;
+        }
+      },
       addConfirm : function() {
-        axios.post('addEmp',qs.stringify({ename:this.emp.ename,
-          did:this.emp.did, job:this.emp.job, role:this.role})).then(res => {
-          if(res.data == "success"){
-            this.$message({
-              message:'添加成功',
-              type:'success'
-            });
-          } else {
-            this.$message.error('服务器响应失败');
-          }
-        });
-        this.addEmpVisiable = false;
-        this.tableRenderData();
+        if(this.checkNameAdd() == true){
+          axios.post('addEmp',qs.stringify({ename:this.emp.ename,
+            did:this.emp.did, job:this.emp.job, role:this.role})).then(res => {
+            if(res.data == "success"){
+              this.$message({
+                message:'添加成功',
+                type:'success'
+              });
+            } else {
+              this.$message.error('服务器响应失败');
+            }
+          });
+          this.addEmpVisiable = false;
+          this.tableRenderData();
+        }
       },
       handleSelectionChange: function(val) {
         this.multipleSelection =  val;

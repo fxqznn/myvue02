@@ -89,11 +89,11 @@
         if(this.$store.state.user.role == 0){
           this.$router.push('/userManage')
         } else if (this.$store.state.user.role == 1) {
-          this.$router.push("/mainFrame/StudentList");
+          this.$router.push("/StudentList");
         } else if(this.$store.state.user.role == 2) {
 
         } else {
-
+          this.$router.push("/StudentDetails")
         }
       }
     }

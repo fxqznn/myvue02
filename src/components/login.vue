@@ -85,7 +85,7 @@
                   this.$router.push({path: "/mainFrame"})
                 }else if(this.$store.state.user.role == 1){
                   this.$router.push({path: "/mainFrame"})
-                }else if(this.$store.state.user.role == 2) {
+                }else if(res.data.role == 2) {
 
                   this.$router.push({path: "/mainFrame"})
 

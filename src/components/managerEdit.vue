@@ -14,16 +14,16 @@
                 <td colspan="10"> <h2>金桥学员成长跟踪表</h2></td>
               </tr>
               <tr >
-                <td height="40px" >姓名</td>
+                <td >姓名</td>
                 <td >{{student.sname}}</td>
-                <td>性别</td>
-                <td>{{student.sex}}</td>
-                <td colspan="2">民族</td>
-                <td colspan="2">{{student.nation}}</td>
-                <td rowspan="4" colspan="2" width="40px"><img :src="'http://localhost:8081/'+student.pic"></td>
+                <td >性别</td>
+                <td >{{student.sex}}</td>
+                <td colspan="2" >民族</td>
+                <td colspan="2" >{{student.nation}}</td>
+                <td rowspan="4" colspan="2"><img :src="'http://localhost:8081/'+student.pic" style="width: 2.5cm;height: 3.5cm"></td>
               </tr>
               <tr>
-                <td height="40px">出生年月</td>
+                <td >出生年月</td>
                 <td>{{student.birthday}}</td>
                 <td >籍贯</td>
                 <td >{{student.address}}</td>
@@ -31,13 +31,13 @@
                 <td colspan="2"><span>{{student.marry ==0? "未婚":"已婚"}}</span></td>
               </tr>
               <tr>
-                <td height="40px">联系电话</td>
+                <td >联系电话</td>
                 <td colspan="2">{{student.phone}}</td>
                 <td>身份证号码</td>
                 <td colspan="4">{{student.cardid}}</td>
               </tr>
               <tr>
-                <td height="40px">毕业学校</td>
+                <td >毕业学校</td>
                 <td colspan="2">{{student.school}}</td>
                 <td>专业</td>
                 <td colspan="4" >{{student.major}}</td>
@@ -239,10 +239,8 @@
                     <el-table-column
                       align="center"
                       prop="avg"
-                      label="整体评价分数(平均分)">
-                      <template slot-scope="scope">
-                        {{scope.row.avg || "尚未评分"}}
-                      </template>
+                      label="整体评价分数(平均分)"
+                      :formatter="showJudge1">
                     </el-table-column>
                   </el-table>
                 </td>
@@ -319,6 +317,14 @@
           }
       },
       methods:{
+        showJudge1(row,column){
+          const avg = row[column.property];
+          if (avg == NaN){
+            return "尚未评分";
+          }else{
+            return avg;
+          }
+        },
         getName: function () {
           this.name = this.$store.state.user.uname;
         },
@@ -502,7 +508,6 @@
   table{
     border: solid 2px black;
     border-collapse: collapse;
-
   }
   tr,td{
     font-size: 13px;

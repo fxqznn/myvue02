@@ -200,18 +200,25 @@
         this.addVisiable = false;
       },
       addConfirm : function () {
-        axios.post('addCourse',qs.stringify(this.addData)).then(res => {
-          if(res.data == "success"){
-            this.$message({
-              message:'添加成功',
-              type:'success'
+        axios.get('selectForAdd?name=' + this.addData.cname).then(responce => {
+          if(responce.data == "no"){
+            this.$message("该课程名已经存在");
+            return false;
+          }else {
+            axios.post('addCourse',qs.stringify(this.addData)).then(res => {
+              if(res.data == "success"){
+                this.$message({
+                  message:'添加成功',
+                  type:'success'
+                });
+              } else {
+                this.$message.error('服务器响应失败');
+              }
             });
-          } else {
-            this.$message.error('服务器响应失败');
+            this.addVisiable = false;
+            this.tableRenderData();
           }
         });
-        this.addVisiable = false;
-        this.tableRenderData();
       },
 
       dels : function () {

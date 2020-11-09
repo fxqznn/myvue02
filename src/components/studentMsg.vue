@@ -22,7 +22,7 @@
         <td>{{student.sex}}</td>
         <td>民族</td>
         <td >{{student.nation}}</td>
-        <td rowspan="4" width="80px"><img :src=student.pic></td>
+        <td rowspan="4" width="80px"><img :src="'http://localhost:8081/'+student.pic"></td>
       </tr>
       <tr>
         <td >出生年月</td>

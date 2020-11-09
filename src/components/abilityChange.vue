@@ -1,6 +1,6 @@
 <template>
     <div>
-      <el-select v-model="value" placeholder="请选择">
+      <el-select v-model="value" placeholder="请选择要添加的评分项">
         <el-option
           v-for="item in options"
           :key="item.cid"

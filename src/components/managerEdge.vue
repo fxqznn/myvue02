@@ -24,7 +24,7 @@
       <br>
       <br>
       <el-table stripe style="width: 100%" border :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-        empty-text="没有这个人哟，再核对一下啊，亲！">
+        empty-text="当前部门还没有员工哦">
         <el-table-column
           align="center"
           prop="eid"
@@ -54,10 +54,8 @@
         <el-table-column
           align="center"
           prop="avg"
-          label="整体评价分数(平均分)">
-            <template slot-scope="scope">
-              {{scope.row.avg || "尚未评分"}}
-            </template>
+          label="整体评价分数(平均分)"
+          :formatter="showJudge1">
         </el-table-column>
 
       </el-table>
@@ -114,6 +112,14 @@
             return "未评分";
         }else{
           return score;
+        }
+      },
+      showJudge1(row,column){
+        const avg = row[column.property];
+        if (avg ==0){
+          return "尚未评分";
+        }else{
+          return avg;
         }
       },
 

@@ -27,7 +27,7 @@
         </el-menu>
       </el-aside>
       <el-container>
-        <el-main  style="width: 80%; height: 100%" >
+        <el-main  style="width: 80%; height: 100%;overflow-x: hidden;" >
           <router-view/>
         </el-main>
       </el-container>
@@ -91,9 +91,9 @@
         } else if (this.$store.state.user.role == 1) {
           this.$router.push("/mainFrame/StudentList");
         } else if(this.$store.state.user.role == 2) {
-
+          this.$router.push("/managerEdge");
         } else {
-
+          this.$router.push("/StudentDetails");
         }
       }
     }

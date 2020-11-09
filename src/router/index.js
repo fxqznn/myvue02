@@ -43,7 +43,7 @@ export default new Router({
       children:[
         {path: '/managerEdit/:eid/:ename', name: 'managerEdit', component: managerEdit},
         {path: '/managerEdge', name: 'managerEdge', component: managerEdge},
-        {path:'/changePass',name:'changePass',component:changePass},
+        {path:'changePass',name:'changePass',component:changePass},
         {path: '/abilityChange', name: 'abilityChange', component: abilityChange},
         {path:'/userManage',name:'userManage',component:userManage},
         {path:'/empManage',name:'empManage',component:empManage},

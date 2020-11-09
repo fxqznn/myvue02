@@ -93,7 +93,7 @@
                   axios.get("getByUser/"+this.$store.state.user.uid).then(res =>{
                     debugger
                     this.$store.dispatch("student/setStudent",res.data);
-                    this.$router.push({path: "/mainFrame/StudentDetails"})
+                    this.$router.push({path: "/StudentDetails"})
                   })
                 }
               }else {

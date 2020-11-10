@@ -11,7 +11,7 @@
         </el-select>
       </el-col>
       <el-col :span="8" >
-        <el-button @click="add()" >添加菜单</el-button>
+        <el-button @click="add()" type="primary">添加菜单</el-button>
         <el-button @click="dels()" >删除菜单</el-button>
       </el-col>
     </el-row>
@@ -103,8 +103,8 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="addConfirm()"  type="primary">确 定</el-button>
         <el-button @click="cancelAdd()">取 消</el-button>
-        <el-button @click="addConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -158,24 +158,24 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="eidtConfirm()"  type="primary">确 定</el-button>
         <el-button @click="cancelEdit()">取 消</el-button>
-        <el-button @click="eidtConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
     <el-dialog title="删除菜单" :visible.sync="delsVisiable" width="25%" :center="dialogCenter">
       <p><strong>确认删除所有选中的数据吗？</strong></p>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="delsConfirm()"  type="primary">确 定</el-button>
         <el-button @click="cancelDels()">取 消</el-button>
-        <el-button @click="delsConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
     <el-dialog title="删除菜单" :visible.sync="delVisiable" width="25%" :center="dialogCenter">
       <p><strong>确认删除吗？</strong></p>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="delConfirm()"  type="primary">确 定</el-button>
         <el-button @click="cancelDel()">取 消</el-button>
-        <el-button @click="delConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 

@@ -19,7 +19,7 @@
         </el-select>
       </el-col>
       <el-col :span="8" >
-        <el-button @click="add()" >添加课程</el-button>
+        <el-button @click="add()" type="primary">添加课程</el-button>
         <el-button @click="dels()" >删除课程</el-button>
       </el-col>
     </el-row>
@@ -50,14 +50,14 @@
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="名称" label-width="50px">
-              <el-input v-model="addData.cname" @blur="checkNameAdd"></el-input>
+              <el-input v-model="addData.cname" @blur="checkNameAdd" style="width: 300px;"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="类型" label-width="50px">
-              <el-select v-model="addData.type">
+              <el-select v-model="addData.type" style="width: 300px;">
                 <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
                   <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
@@ -68,48 +68,47 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="addConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelAdd()">取 消</el-button>
-        <el-button @click="addConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
     <el-dialog title="删除课程" :visible.sync="delsVisiable" width="25%" :center="dialogCenter">
       <p><strong>确认删除所有选中的数据吗？</strong></p>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="delsConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelDels()">取 消</el-button>
-        <el-button @click="delsConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
     <el-dialog title="删除课程" :visible.sync="delVisiable" width="25%" :center="dialogCenter">
       <p><strong>确认删除吗？</strong></p>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="delConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelDel()">取 消</el-button>
-        <el-button @click="delConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
     <el-dialog title="修改课程信息" :visible.sync="editVisiable" width="50%" :center="dialogCenter">
-      <div slot="footer" class="dialog-footer">
         <el-form>
           <el-row>
             <el-col :span="12" :offset="6">
               <el-form-item label="编号" label-width="50px">
-                <el-input v-model="editData.cid" readonly></el-input>
+                <el-input v-model="editData.cid" readonly style="width: 300px;"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12" :offset="6">
               <el-form-item label="名称" label-width="50px">
-                <el-input v-model="editData.cname" @blur="checkNameEdit"></el-input>
+                <el-input v-model="editData.cname" @blur="checkNameEdit" style="width: 300px;"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12" :offset="6">
               <el-form-item label="类型" label-width="50px">
-                <el-select v-model="editData.type">
+                <el-select v-model="editData.type" style="width: 300px;">
                   <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
                     <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                     <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
@@ -119,8 +118,9 @@
             </el-col>
           </el-row>
         </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="eidtConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelEdit()">取 消</el-button>
-        <el-button @click="eidtConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 

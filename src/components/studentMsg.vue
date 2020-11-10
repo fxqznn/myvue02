@@ -101,7 +101,7 @@
         tableHead:[],
         tableData:[],
         sid:0,
-        eid:this.$store.state.user.uid,
+        eid:this.$store.state.user.uname,
         tid:0,
         dialogTableVisible: false,
         dialogFormVisible: false,
@@ -143,7 +143,7 @@
         }
       },
       returnStudentList:function(){
-        this.$router.push("/mainFrame/StudentList")
+        this.$router.push("/StudentList")
       },
 
       scoreEdit(cname,score){

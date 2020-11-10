@@ -125,7 +125,7 @@
         editData:{},
         delVisiable:false,
         delData:0,
-        eid:this.$store.state.user.uid,
+        eid:this.$store.state.user.uname,
       }
     },
     methods:{

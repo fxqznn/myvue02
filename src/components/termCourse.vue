@@ -1,19 +1,20 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="16">
+      <el-col :span="3">
+        <h2>{{term.tname}}</h2>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="13" :offset="3">
         <el-input placeholder="请输入课程名称" v-model="cname" style="width: 200px">
           <el-button slot="append" @click="tableRenderData">查询</el-button>
         </el-input>
-        <el-select v-model="termCourse" placeholder="请选择已有课程">
-          <el-option v-for="item in termCourses" :key="item.cid" :label="item.cname" :value="item.cid">
-          </el-option>
-        </el-select>
-        <el-button @click="addTermCourse()" >添加课程</el-button>
+
       </el-col>
       <el-col :span="8" >
-        <el-button @click="add()" >添加课程</el-button>
-        <el-button @click="dels()" >删除课程</el-button>
+        <el-button @click="add()" type="primary">添加课程</el-button>
+        <el-button @click="dels()" type="danger">删除课程</el-button>
       </el-col>
     </el-row>
 
@@ -40,32 +41,43 @@
     <el-dialog title="添加课程" :visible.sync="addVisiable" width="50%" :center="dialogCenter">
       <el-form>
         <el-row>
-          <el-col :span="12" :offset="6">
-            <el-form-item label="名称" label-width="50px">
-              <el-input v-model="addData.cname"></el-input>
+          <el-col :span="18" :offset="4">
+            <el-form-item label="添加新课程名称" label-width="150px">
+              <el-input v-model="addData.cname" style="width: 250px"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="18" :offset="4">
+            <el-form-item label="选择已有课程" label-width="150px">
+              <el-select v-model="termCourse" placeholder="请选择已有课程" style="width: 250px">
+                <el-option   v-for="item in termCourses" :key="item.cid" :label="item.cname" :value="item.cid">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="addConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelAdd()">取 消</el-button>
-        <el-button @click="addConfirm()">确 定</el-button>
+
       </div>
     </el-dialog>
 
     <el-dialog title="删除课程" :visible.sync="delsVisiable" width="25%" :center="dialogCenter">
       <p><strong>确认删除所有选中的数据吗？</strong></p>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="delsConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelDels()">取 消</el-button>
-        <el-button @click="delsConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
     <el-dialog title="删除课程" :visible.sync="delVisiable" width="25%" :center="dialogCenter">
       <p><strong>确认删除吗？</strong></p>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="delConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelDel()">取 消</el-button>
-        <el-button @click="delConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -87,8 +99,8 @@
             </el-col>
           </el-row>
         </el-form>
+        <el-button @click="eidtConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelEdit()">取 消</el-button>
-        <el-button @click="eidtConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -106,6 +118,7 @@
         dialogCenter: true,
         termCourse:"",
         termCourses:[],
+        term:{},
         cname:'',
         types:[{value:0,label:'课程'}],
         type:0,
@@ -125,10 +138,15 @@
         editData:{},
         delVisiable:false,
         delData:0,
-        eid:this.$store.state.user.uid,
+        eid:this.$store.state.user.uname,
       }
     },
     methods:{
+      getNewTerm:function(){
+        axios.get('getTerm?eid=' + this.eid).then( res => {
+          this.term = res.data;
+        })
+      },
       getTermCourses:function(){
         axios.get('getTermCourses').then(res =>{
           this.termCourses = res.data
@@ -187,19 +205,42 @@
       },
       cancelAdd : function () {
         this.addVisiable = false;
+        this.termCourse = '';
       },
       addConfirm : function () {
-        axios.get('insertCourseAndTermCourse?cname='+this.addData.cname+'&eid='+this.eid).then(res => {
-          if(res.data == "success"){
-            this.tableRenderData();
-            this.$message({
-              message:'添加成功',
-              type:'success'
+        if (this.addData.cname != '' && this.termCourse == ''){
+          axios.get('insertCourseAndTermCourse?cname='+this.addData.cname+'&eid='+this.eid).then(res => {
+            if(res.data == "success"){
+              this.tableRenderData();
+              this.$message({
+                message:'添加成功',
+                type:'success'
+              });
+            } else {
+              this.$message.error('服务器响应失败');
+            }
+          });
+        } else if (this.addData.cname == '' && this.termCourse != ''){
+          this.addTermCourse();
+          this.termCourse = '';
+        } else if (this.addData.cname != '' && this.termCourse != '') {
+           axios.get('insertCourseAndTermCourse?cname='+this.addData.cname+'&eid='+this.eid).then(res => {
+              if(res.data == "success"){
+                this.tableRenderData();
+                this.$message({
+                  message:'新课程添加成功',
+                  type:'success'
+                });
+              } else {
+                this.$message.error('服务器响应失败');
+              }
             });
-          } else {
-            this.$message.error('服务器响应失败');
-          }
-        });
+          this.addTermCourse();
+          this.termCourse = '';
+        } else {
+          this.$message('添加课程不能为空');
+        }
+
         this.addVisiable = false;
       },
 
@@ -289,7 +330,8 @@
       this.sid = this.$route.params.sid;
       this.tid = this.$route.params.tid;
       this.tableRenderData();
-      this.getTermCourses()
+      this.getTermCourses();
+      this.getNewTerm();
     }
   }
 </script>

@@ -52,9 +52,9 @@ export default new Router({
         {path:'/termManage',name:'termManage',component:termManage},
         {path:'/menuManage',name:'menuManage',component:menuManage},
         {path:'/deptManage',name:'deptManage',component:deptManage},
-        {path: 'StudentList', name: 'StudentList', component: StudentList},
+        {path: '/StudentList', name: 'StudentList', component: StudentList},
         {path: '/studentMsg/:sid/:tid', name: 'studentMsg', component: studentMsg},
-        {path: 'termCourse', name: 'termCourse', component: termCourse},
+        {path: '/termCourse', name: 'termCourse', component: termCourse},
         {path:'/StudentDetails', name:'StudentDetails', component:StudentDetails,
           children: [
             {path:'/CourseScoreList',name:'CourseScoreList',component:CourseScoreList},

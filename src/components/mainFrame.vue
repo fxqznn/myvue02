@@ -93,7 +93,7 @@
         } else if(this.$store.state.user.role == 2) {
 
         } else {
-          this.$router.push("/StudentDetails")
+          this.$router.push("/StudentDetails");
         }
       }
     }

@@ -15,9 +15,9 @@
               </tr>
               <tr >
                 <td >姓名</td>
-                <td >{{student.sname}}</td>
-                <td >性别</td>
-                <td >{{student.sex}}</td>
+                <td width="70px">{{student.sname}}</td>
+                <td width="70px">性别</td>
+                <td width="70px">{{student.sex}}</td>
                 <td colspan="2" >民族</td>
                 <td colspan="2" >{{student.nation}}</td>
                 <td rowspan="4" colspan="2"><img :src="'http://localhost:8081/'+student.pic" style="width: 2.5cm;height: 3.5cm"></td>
@@ -64,7 +64,12 @@
                       <template v-for="(item,index) in tableHead">
                         <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
                           <template slot-scope="scope">
-                            <el-input class="paperview-input-text" v-model="scope.row[scope.column.property]" @blur="scoreEdit0([scope.column.label],scope.row[scope.column.property])"></el-input>
+                            <el-input class="paperview-input-text"
+                                      type="number"
+                                      min="0"
+                                      max="5"
+                                      step="0.5"
+                                      v-model="scope.row[scope.column.property]" @blur="scoreEdit0([scope.column.label],scope.row[scope.column.property])"></el-input>
                           </template>
                         </el-table-column>
                       </template>
@@ -119,7 +124,12 @@
                       <template v-for="(item,index) in tableHead">
                         <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
                           <template slot-scope="scope">
-                            <el-input class="paperview-input-text" v-model="scope.row[scope.column.property]" @blur="scoreEdit1([scope.column.label],scope.row[scope.column.property])"></el-input>
+                            <el-input
+                              type="number"
+                              min="0"
+                              max="5"
+                              step="0.5"
+                              class="paperview-input-text" v-model="scope.row[scope.column.property]" @blur="scoreEdit1([scope.column.label],scope.row[scope.column.property])"></el-input>
                           </template>
                         </el-table-column>
                       </template>
@@ -175,7 +185,12 @@
                       <template v-for="(item,index) in tableHead">
                         <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
                           <template slot-scope="scope">
-                            <el-input class="paperview-input-text" v-model="scope.row[scope.column.property]" @blur="scoreEdit2([scope.column.label],scope.row[scope.column.property])"></el-input>
+                            <el-input class="paperview-input-text"
+                                      type="number"
+                                      min="0"
+                                      max="5"
+                                      step="0.5"
+                                      v-model="scope.row[scope.column.property]" @blur="scoreEdit2([scope.column.label],scope.row[scope.column.property])"></el-input>
                           </template>
                         </el-table-column>
                       </template>
@@ -231,7 +246,12 @@
                       <template v-for="(item,index) in tableHead">
                         <el-table-column  :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
                           <template slot-scope="scope">
-                            <el-input class="paperview-input-text" v-model="scope.row[scope.column.property]" @blur="scoreEdit3([scope.column.label],scope.row[scope.column.property])" ></el-input>
+                            <el-input class="paperview-input-text"
+                                      type="number"
+                                      min="0"
+                                      max="5"
+                                      step="0.5"
+                                      v-model="scope.row[scope.column.property]" @blur="scoreEdit3([scope.column.label],scope.row[scope.column.property])" ></el-input>
                           </template>
                         </el-table-column>
                       </template>
@@ -319,6 +339,7 @@
           }
       },
       methods:{
+
         getName: function () {
           this.name = this.$store.state.user.uname;
         },

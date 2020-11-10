@@ -310,7 +310,6 @@
       },
 
       handleEidt : function (index, row) {
-        debugger
         axios.get('getDeptById?did=' + row.did).then(res => {
           this.editData = res.data;
         });

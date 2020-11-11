@@ -5,6 +5,13 @@
         <div style="padding-top: 20px">
           <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
                    class="demo-ruleForm">
+            <el-form-item label= "旧密码：" prop="oldPass">
+              <el-col :span="18">
+                <el-input :type="passw" v-model="ruleForm.oldPass" autocomplete="off" @change="getPass()">
+                  <i slot="suffix" :class="icon" @click="showPass"></i>
+                </el-input>
+              </el-col>
+            </el-form-item>
             <el-form-item label= "新密码：" prop="newPass">
               <el-col :span="18">
                 <el-input :type="passw" v-model="ruleForm.newPass" autocomplete="off" @change="setPass()">
@@ -39,6 +46,18 @@
   export default {
     name: "changePass",
     data() {
+      var checkOldPass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入旧密码'));
+        } else if (value != this.password){
+          callback(new Error('密码输入错误'));
+        } else {
+          if (this.ruleForm.checkOldPass !== '') {
+            this.$refs.ruleForm.validateField('checkOldPass');
+          }
+          callback();
+        }
+      };
       var checkNewPass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入新密码'));
@@ -61,15 +80,20 @@
 
       return {
         //用于改变Input类型
+        password:"",
         passw: "password",
         icon: "el-icon-view",
         uid: this.$store.state.user.uid,
         pwd: '',
         ruleForm: {
+          oldPass: '',
           newPass: '',
           checkPass: ''
         },
         rules: {
+          oldPass:[
+            {validator: checkOldPass, trigger: 'blur'}
+          ],
           newPass: [
             {validator: checkNewPass, trigger: 'blur'}
           ],
@@ -80,6 +104,11 @@
       };
     },
     methods: {
+      getPass:function(){
+        axios.get('getPassword?uid=' + this.uid).then( res =>{
+          this.password = res.data
+        })
+      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
             if (valid) {
@@ -115,6 +144,9 @@
       setPass() {
         this.pwd = this.ruleForm.newPass;
       }
+    },
+    mounted() {
+      this.getPass();
     }
   }
 </script>

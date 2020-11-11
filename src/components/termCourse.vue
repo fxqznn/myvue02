@@ -1,42 +1,48 @@
 <template>
   <div>
-    <el-row>
-      <el-col :span="3">
-        <h2>{{term.tname}}</h2>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="13" :offset="3">
-        <el-input placeholder="请输入课程名称" v-model="cname" style="width: 200px">
-          <el-button slot="append" @click="tableRenderData">查询</el-button>
-        </el-input>
-
-      </el-col>
-      <el-col :span="8" >
-        <el-button @click="add()" type="primary">添加课程</el-button>
-        <el-button @click="dels()" type="danger">删除课程</el-button>
-      </el-col>
-    </el-row>
-
-    <br />
-
-    <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="600"
-              :default-sort="{prop:'cid',order:'ascending'}"  @selection-change="handleSelectionChange">
-      <el-table-column fixed type="selection"></el-table-column>
-      <el-table-column fixed prop="cid" label="编号"></el-table-column>
-      <el-table-column fixed prop="cname" label="名称"></el-table-column>
-      <el-table-column fixed="right" prop="type" label="类型" :formatter="typeFormat"></el-table-column>
-      <el-table-column fixed="right" label="操作">
-        <template slot-scope="scope">
-          <el-button @click="handleDelete(scope.$index, scope.row)" type="text" size="small">删除</el-button>
-          <el-button @click="handleEidt(scope.$index, scope.row)" type="text" size="small">修改信息</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                   :current-page="current" :page-sizes="[5, 10, 15, 20, 25, 30]" :page-size="size"
-                   layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
+    <el-container>
+      <el-header>
+        <el-row>
+          <el-col :span="3">
+            <h2>{{term.tname}}</h2>
+          </el-col>
+          <el-col :span="10" :offset="3">
+            <el-input placeholder="请输入课程名称" v-model="cname" style="width: 200px">
+              <el-button slot="append" @click="tableRenderData">查询</el-button>
+            </el-input>
+          </el-col>
+          <el-col :span="8" >
+            <el-button @click="add()" type="primary">添加课程</el-button>
+            <el-button @click="dels()" type="danger">删除课程</el-button>
+          </el-col>
+        </el-row>
+      </el-header>
+      <el-main style="height: 550px">
+        <el-table ref="multipleTable" :data="tableData" border style="width: 100%" max-height="600"
+                  :default-sort="{prop:'cid',order:'ascending'}"  @selection-change="handleSelectionChange">
+          <el-table-column fixed type="selection"></el-table-column>
+          <el-table-column fixed prop="cid" label="编号"></el-table-column>
+          <el-table-column fixed prop="cname" label="名称"></el-table-column>
+          <el-table-column fixed="right" prop="type" label="类型" :formatter="typeFormat"></el-table-column>
+          <el-table-column fixed="right" label="操作">
+            <template slot-scope="scope">
+              <el-button @click="handleDelete(scope.$index, scope.row)" type="text" size="small">删除</el-button>
+              <el-button @click="handleEidt(scope.$index, scope.row)" type="text" size="small">修改信息</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-main>
+      <el-footer>
+        <el-row>
+          <el-col :span="8" :offset="8">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                           :current-page="current" :page-sizes="[5, 10, 15, 20, 25, 30]" :page-size="size"
+                           layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
+          </el-col>
+        </el-row>
+      </el-footer>
+    </el-container>
 
     <el-dialog title="添加课程" :visible.sync="addVisiable" width="50%" :center="dialogCenter">
       <el-form>

@@ -1,7 +1,8 @@
 <template>
   <div style="width: 100%; height: 100%"
        v-bind:style="{backgroundImage:'url(' + bg + ')',backgroundRepeat:'no-repeat',backgroundSize:'100% 100%'}">
-    <el-row style="padding-top: 70px; padding-right: 100px">
+    <div style="position: absolute;margin-top: 70px; margin-left: 500px"><span style="font-size: 40px; font-weight: bolder;color:rgba(255,255,255,0.9) ">金桥学员跟踪系统</span></div>
+    <el-row style="padding-top: 200px; padding-right: 100px">
       <el-col :span="8" :offset="16">
         <div style="padding-top: 20px;background-color: rgba(255,255,255,0.2)">
           <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">

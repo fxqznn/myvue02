@@ -13,9 +13,9 @@
         </el-select>
       </el-col>
       <el-col :span="8" :offset="0">
-        <el-button @click="add()" >添加学生</el-button>
+        <el-button @click="add()" type="primary">添加学生</el-button>
         <el-button @click="adds()" >批量添加</el-button>
-        <el-button @click="dels()" >删除学生</el-button>
+        <el-button @click="dels()" type="primary">删除学生</el-button>
       </el-col>
     </el-row>
 
@@ -45,14 +45,14 @@
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="姓名" label-width="50px">
-              <el-input v-model="addData.sname" @blur="checkNameAdd"></el-input>
+              <el-input v-model="addData.sname" @blur="checkNameAdd" style="width: 300px;"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="学期" label-width="50px">
-              <el-select v-model="addData.tid">
+              <el-select v-model="addData.tid" style="width: 300px;">
                 <el-option v-for="item in terms_add_edit" :key="item.value" :label="item.label" :value="item.value">
                   <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
@@ -63,8 +63,8 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="addConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelAdd()">取 消</el-button>
-        <el-button @click="addConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -72,31 +72,31 @@
       <el-upload class="upload" action :multiple="false" :show-file-list="false"
                  accept="csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                  :http-request="httpRequest">
-        <el-button>上 传 表 格</el-button>
+        <el-button type="primary">上 传 表 格</el-button>
       </el-upload>
       <el-table :data="addsData">
         <el-table-column prop="sname" label="姓名"></el-table-column>
         <el-table-column prop="tname" label="学期"></el-table-column>
       </el-table>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="addsConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelAdds()">取 消</el-button>
-        <el-button @click="addsConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
     <el-dialog title="删除学生" :visible.sync="delsVisiable" width="25%" :center="dialogCenter">
       <p><strong>确认删除所有选中的数据吗？</strong></p>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="delsConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelDels()">取 消</el-button>
-        <el-button @click="delsConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
     <el-dialog title="删除学生" :visible.sync="delVisiable" width="25%" :center="dialogCenter">
       <p><strong>确认删除吗？</strong></p>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="delConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelDel()">取 消</el-button>
-        <el-button @click="delConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -106,21 +106,21 @@
           <el-row>
             <el-col :span="12" :offset="6">
               <el-form-item label="学号" label-width="50px">
-                <el-input v-model="editData.sid" readonly></el-input>
+                <el-input v-model="editData.sid" readonly style="width: 300px;"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12" :offset="6">
               <el-form-item label="姓名" label-width="50px">
-                <el-input v-model="editData.sname" @blur="checkNameEdit"></el-input>
+                <el-input v-model="editData.sname" @blur="checkNameEdit" style="width: 300px;"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12" :offset="6">
               <el-form-item label="学期" label-width="50px">
-                <el-select v-model="editData.tid">
+                <el-select v-model="editData.tid" style="width: 300px;">
                   <el-option v-for="item in terms_add_edit" :key="item.value" :label="item.label" :value="item.value">
                     <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                     <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
@@ -130,8 +130,8 @@
             </el-col>
           </el-row>
         </el-form>
+        <el-button @click="eidtConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelEdit()">取 消</el-button>
-        <el-button @click="eidtConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 

@@ -63,7 +63,10 @@
                 </el-table-column>
               </template>
             </el-table-column>
-            <el-table-column align="center" prop="sumscore" :formatter="averageShow" label="整体评价分数">
+            <el-table-column prop="sumscore" align="center" label="整体评价分数">
+              <template slot-scope="scope">
+                <el-input class="paperview-input-text" v-model="scope.row[scope.column.property]" @blur="sumscoreEdit([scope.column.label],scope.row[scope.column.property])"></el-input>
+              </template>
             </el-table-column>
           </el-table>
         </td>
@@ -94,6 +97,7 @@
     name: "studentMsg",
     data(){
       return{
+        oldSumScore:0,
         htmlTitle: 'StudentMsg',
         appraise:"未评价",
         tabName:"学习评价",
@@ -134,31 +138,28 @@
           return data;
         }
       },
-      averageShow:function (row,column) {
-        var data = row[column.property];
-        if (data < 0){
-          return "未评分"
-        } else {
-          return data;
-        }
-      },
+
       returnStudentList:function(){
         this.$router.push("/StudentList")
       },
-
       scoreEdit(cname,score){
-        axios.post("updateStudentScore02?cname="
-          +cname+"&&score="+score+"&&sid="+this.sid+"&&eid="+this.eid).then(res => {
-          if (res.data=="success"){
-            this.$message.success("成功更新评分信息");
-            this.tableRenderData();
-            this.averageShow();
-            this.scoreShow();
+        if (score >= 0 && score <= 5) {
+          axios.post("updateStudentScore02?cname="
+            +cname+"&&score="+score+"&&sid="+this.sid+"&&eid="+this.eid).then(res => {
+            if (res.data=="success"){
+              this.$message.success("成功更新评分信息");
+              this.tableRenderData();
+              this.averageShow();
+              this.scoreShow();
 
-          } else{
-            this.$message.error("更新评分失败");
-          }
-        })
+            } else{
+              this.$message.error("更新评分失败");
+            }
+          })
+        } else{
+          this.$message.error("评分范围（0~5）");
+        }
+
       },
       getAppraise:function(){
         axios.get('getAppraise/' + this.sid +'/-1'+ '/' + this.eid).then(res =>{
@@ -171,6 +172,7 @@
       getAllCourse(){
         axios.get("getCoursesTerm?tid=" + this.tid).then(res => {
           this.tableHead = res.data;
+          this.oldSumScore = res.data.sumscore;
         })
       },
       tableRenderData:function () {
@@ -180,18 +182,39 @@
           this.tableData = res.data;
         });
       },
+      sumscoreEdit:function(cname,score){
+        if (score >= 0 && score <= 5) {
+          axios.get("updateApp02?sid=" + this.student.sid + "&&type=-1" + "&&sumscore=" + score).then(res => {
+            if (res.data == 1) {
+              this.$message({
+                message: '成功更新评分信息',
+                type: 'success'
+              });
+            }else {
+              this.$message.error("更新评分失败")
+            }
+          })
+        } else{
+          this.$message.error("评分范围（0~5）");
+        }
+
+      },
       addAppraise(type,appraise) {
-        if (!appraise == "") {
+        if (!appraise == "" && appraise.length <= 30) {
           axios.get("updateApp?sid=" + this.student.sid + "&&type=" + type + "&&content=" + appraise).then(res => {
             if (res.data == 1) {
               this.$message({
                 message: '更新评价成功',
                 type: 'success'
               });
-            } else {
-              this.$message.error("更新失败")
+            }else {
+              this.$message.error("更新评价失败")
             }
           })
+        } else if (!appraise == "" && appraise.length > 30) {
+          this.$message.error("字数超出限制（30字）")
+        } else {
+          this.$message.error("评价不能为空")
         }
       }
 
@@ -203,6 +226,7 @@
       this.getAppraise();
       this.getAllCourse();
       this.tableRenderData();
+
     }
   }
 </script>

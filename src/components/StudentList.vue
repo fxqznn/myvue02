@@ -66,51 +66,6 @@
                    :current-page="current" :page-sizes="[5, 10, 15, 20, 25, 30]" :page-size="size"
                    layout="total, sizes, prev, pager, next, jumper" :total="total">
     </el-pagination>
-    <el-dialog title="学员详细信息" :visible.sync="dialogTableVisible" width="1300px">
-      <table style="width: 1200px;height: 400px" align="center">
-        <tr>
-          <td style="font-weight: bolder;width: 120px">姓名</td>
-          <td width="200"></td>
-          <td style="font-weight: bolder;width: 200px">性别</td>
-          <td width="200"></td>
-          <td style="font-weight: bolder;width: 200px">民族</td>
-          <td width="200"></td>
-          <td rowspan="5" width="300px"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bolder">出生年月</td>
-          <td></td>
-          <td style="font-weight: bolder">籍贯</td>
-          <td></td>
-          <td style="font-weight: bolder">婚否</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bolder">联系电话</td>
-          <td></td>
-          <td style="font-weight: bolder">身份证号码</td>
-          <td colspan="3"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bolder">毕业院校</td>
-          <td></td>
-          <td style="font-weight: bolder">专业</td>
-          <td colspan="3"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bolder">入职时间</td>
-          <td></td>
-          <td style="font-weight: bolder">班期</td>
-          <td></td>
-          <td style="font-weight: bolder">部门名称</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bolder">备注</td>
-          <td colspan="6"></td>
-        </tr>
-      </table>
-    </el-dialog>
   </div>
 </template>
 

@@ -15,9 +15,9 @@
               </tr>
               <tr >
                 <td >姓名</td>
-                <td >{{student.sname}}</td>
-                <td >性别</td>
-                <td >{{student.sex}}</td>
+                <td width="70px">{{student.sname}}</td>
+                <td width="70px">性别</td>
+                <td width="70px">{{student.sex}}</td>
                 <td colspan="2" >民族</td>
                 <td colspan="2" >{{student.nation}}</td>
                 <td rowspan="4" colspan="2"><img :src="'http://localhost:8081/'+student.pic" style="width: 2.5cm;height: 3.5cm"></td>
@@ -64,17 +64,20 @@
                       <template v-for="(item,index) in tableHead">
                         <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
                           <template slot-scope="scope">
-                            <el-input class="paperview-input-text" v-model="scope.row[scope.column.property]" @blur="scoreEdit0([scope.column.label],scope.row[scope.column.property])"></el-input>
+                            <el-input class="paperview-input-text"
+                                      readonly
+                                      @input="inputChange(scope.row[scope.column.property])"
+                                      v-model="scope.row[scope.column.property]" ></el-input>
                           </template>
                         </el-table-column>
                       </template>
                     </el-table-column>
                     <el-table-column
                       align="center"
-                      prop="avg"
+                      prop="sumscore"
                       label="整体评价分数(平均分)">
                       <template slot-scope="scope">
-                        {{scope.row.avg || "尚未评分"}}
+                        {{scope.row.sumscore || "尚未评分"}}
                       </template>
                     </el-table-column>
                   </el-table>
@@ -96,7 +99,7 @@
                     type="textarea"
                     :rows="4"
                     v-model="textarea0"
-                    @blur="addAppraise(0,textarea0)">
+                    readonly>
                   </el-input>
                 </td>
               </tr>
@@ -119,17 +122,18 @@
                       <template v-for="(item,index) in tableHead">
                         <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
                           <template slot-scope="scope">
-                            <el-input class="paperview-input-text" v-model="scope.row[scope.column.property]" @blur="scoreEdit1([scope.column.label],scope.row[scope.column.property])"></el-input>
+                            <el-input
+                              class="paperview-input-text" v-model="scope.row[scope.column.property]" readonly></el-input>
                           </template>
                         </el-table-column>
                       </template>
                     </el-table-column>
                     <el-table-column
                       align="center"
-                      prop="avg"
+                      prop="sumscore"
                       label="整体评价分数(平均分)">
                       <template slot-scope="scope">
-                        {{scope.row.avg || "尚未评分"}}
+                        {{scope.row.sumscore || "尚未评分"}}
                       </template>
                     </el-table-column>
                   </el-table>
@@ -151,7 +155,7 @@
                     type="textarea"
                     :rows="4"
                     v-model="textarea1"
-                    @blur="addAppraise(1,textarea1)"
+                    readonly
                   >
                   </el-input>
                 </td>
@@ -175,17 +179,18 @@
                       <template v-for="(item,index) in tableHead">
                         <el-table-column :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
                           <template slot-scope="scope">
-                            <el-input class="paperview-input-text" v-model="scope.row[scope.column.property]" @blur="scoreEdit2([scope.column.label],scope.row[scope.column.property])"></el-input>
+                            <el-input class="paperview-input-text"
+                                      v-model="scope.row[scope.column.property]" readonly></el-input>
                           </template>
                         </el-table-column>
                       </template>
                     </el-table-column>
                     <el-table-column
                       align="center"
-                      prop="avg"
+                      prop="sumscore"
                       label="整体评价分数(平均分)">
                       <template slot-scope="scope">
-                        {{scope.row.avg || "尚未评分"}}
+                        {{scope.row.sumscore || "尚未评分"}}
                       </template>
                     </el-table-column>
                   </el-table>
@@ -207,7 +212,7 @@
                     type="textarea"
                     :rows="4"
                     v-model="textarea2"
-                    @blur="addAppraise(2,textarea2)"
+                    readonly
                   >
                   </el-input>
                 </td>
@@ -231,17 +236,22 @@
                       <template v-for="(item,index) in tableHead">
                         <el-table-column  :prop="item.cid" :label="item.cname" align="center" :formatter="showJudge">
                           <template slot-scope="scope">
-                            <el-input class="paperview-input-text" v-model="scope.row[scope.column.property]" @blur="scoreEdit3([scope.column.label],scope.row[scope.column.property])" ></el-input>
+                            <el-input class="paperview-input-text"
+                                      v-model="scope.row[scope.column.property]" @blur="scoreEdit3([scope.column.label],scope.row[scope.column.property])" ></el-input>
                           </template>
                         </el-table-column>
                       </template>
                     </el-table-column>
                     <el-table-column
                       align="center"
-                      prop="avg"
+                      prop="sumscore"
                       label="整体评价分数(平均分)">
                       <template slot-scope="scope">
-                        {{scope.row.avg || "尚未评分"}}
+                        <el-input class="paperview-input-text"
+                                  @input="inputChange(scope.row.sumscore)"
+                                  v-model="scope.row.sumscore"
+                                  @blur="editSum3(scope.row.sumscore)"
+                        ></el-input>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -319,6 +329,9 @@
           }
       },
       methods:{
+        inputChange(num){
+          num = num.replace(/[^\d.]/g,'');
+        },
         getName: function () {
           this.name = this.$store.state.user.uname;
         },
@@ -356,61 +369,38 @@
 
             })
           },
-        scoreEdit0(cname,score){
-
-          axios.get("http://localhost:8081/updateEmpScore?cname="
-            +cname+"&&score="+score+"&&eid="+this.eid+"&&type="+0).then(res => {
-            if (res.data=="success"){
-              this.$message.success("成功更新评分信息");
-              axios.get("http://localhost:8081/getOneAbilityScore?eid="+this.eid+"&&type=0").then(res => {
-                this.table0Data = res.data;
-              })
-            } else{
-              this.$message.error("更新评分失败");
-            }
-          })
-        },
-        scoreEdit1(cname,score){
-
-          axios.get("http://localhost:8081/updateEmpScore?cname="
-            +cname+"&&score="+score+"&&eid="+this.eid+"&&type="+1).then(res => {
-            if (res.data=="success"){
-              this.$message.success("成功更新评分信息");
-              axios.get("http://localhost:8081/getOneAbilityScore?eid="+this.eid+"&&type=1").then(res => {
-                this.table1Data = res.data;
-              })
-            } else{
-              this.$message.error("更新评分失败");
-            }
-          })
-        },
-        scoreEdit2(cname,score){
-
-          axios.get("http://localhost:8081/updateEmpScore?cname="
-            +cname+"&&score="+score+"&&eid="+this.eid+"&&type="+2).then(res => {
-            if (res.data=="success"){
-              this.$message.success("成功更新评分信息");
-              axios.get("http://localhost:8081/getOneAbilityScore?eid="+this.eid+"&&type=2").then(res => {
-                this.table1Data = res.data;
-              })
-            } else{
-              this.$message.error("更新评分失败");
-            }
-          })
-        },
-        scoreEdit3(cname,score){
-
-          axios.get("http://localhost:8081/updateEmpScore?cname="
-            +cname+"&&score="+score+"&&eid="+this.eid+"&&type="+3).then(res => {
-              if (res.data=="success"){
-                this.$message.success("成功更新评分信息");
-                axios.get("http://localhost:8081/getOneAbilityScore?eid="+this.eid+"&&type=3").then(res => {
-                  this.table1Data = res.data;
-                })
-              } else{
+        editSum3(sumscore){
+          if (sumscore<0||sumscore>100){
+            this.$message.error("评分：100分制");
+          } else{
+            axios.get("http://localhost:8081/updateApp02?sumscore="+sumscore+"&&sid="+this.student.sid+"&&type="+3).then(res => {
+              if (res.data==1){
+                this.$message.success("成功更新总评分信息");
+              }else{
                 this.$message.error("更新评分失败");
               }
-          })
+
+            })
+          }
+        },
+
+        scoreEdit3(cname,score){
+          if(score<0||score>100){
+            this.$message.error("评分：100分制");
+          }else {
+            axios.get("http://localhost:8081/updateEmpScore?cname="
+              + cname + "&&score=" + score + "&&eid=" + this.eid + "&&type=" + 3
+              +"&&ename="+this.ename1+"&&did="+this.emp.did).then(res => {
+              if (res.data == "success") {
+                this.$message.success("成功更新评分信息");
+                axios.get("http://localhost:8081/getOneAbilityScore?eid=" + this.eid + "&&type=3").then(res => {
+                  this.table1Data = res.data;
+                })
+              } else {
+                this.$message.error("更新评分失败");
+              }
+            })
+          }
         },
           getEmp(){
             axios.get("http://localhost:8081/getManager?eid="+this.eid).then(res=>{
@@ -423,7 +413,7 @@
               this.$router.go(-1);
           },
           addAppraise(type,textarea){
-            if(!textarea==""){
+
               axios.get("http://localhost:8081/updateApp?sid="+this.student.sid+"&&type="+type+"&&content="+textarea).then(res=>{
                 if (res.data==1){
                   this.$message({
@@ -434,47 +424,31 @@
                   this.$message.error("更新失败")
                 }
               })
-            }
+
 
           },
           getApp0(){
             axios.get("http://localhost:8081/getApp?eid="+this.eid+"&&type="+0).then(res=>{
               this.textarea0=res.data;
-              if (this.textarea0==""){
-                axios.get("http://localhost:8081/addApp?eid="+this.eid+"&&type="+0).then(res=>{
 
-                })
-              }
             })
           },
           getApp1(){
             axios.get("http://localhost:8081/getApp?eid="+this.eid+"&&type="+1).then(res=>{
               this.textarea1=res.data;
-              if (this.textarea1==""){
-                axios.get("http://localhost:8081/addApp?eid="+this.eid+"&&type="+1).then(res=>{
 
-                })
-              }
             })
           },
           getApp2(){
             axios.get("http://localhost:8081/getApp?eid="+this.eid+"&&type="+2).then(res=>{
               this.textarea2=res.data;
-              if (this.textarea2==""){
-                axios.get("http://localhost:8081/addApp?eid="+this.eid+"&&type="+2).then(res=>{
 
-                })
-              }
             })
           },
           getApp3(){
             axios.get("http://localhost:8081/getApp?eid="+this.eid+"&&type="+3).then(res=>{
               this.textarea3=res.data;
-              if (this.textarea3==""){
-                axios.get("http://localhost:8081/addApp?eid="+this.eid+"&&type="+3).then(res=>{
 
-                })
-              }
             })
           },
       },
@@ -514,7 +488,7 @@
     background-color: #FFF;
     background-image: none;
     border-radius: 4px;
-    border: 0px;
+    border: 0;
     width: 100%;
     text-align: center;
   }

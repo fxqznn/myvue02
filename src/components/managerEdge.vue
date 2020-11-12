@@ -30,7 +30,7 @@
           prop="eid"
           label="工号">
           <template slot-scope="scope">
-            <router-link :to="'/managerEdit/'+scope.row.eid+'/'+ename1">{{scope.row.eid}}</router-link>
+            <router-link :to="'/managerEdit'+value+'/'+scope.row.eid+'/'+ename1">{{scope.row.eid}}</router-link>
           </template>
         </el-table-column>
         <el-table-column
@@ -53,7 +53,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          prop="avg"
+          prop="sumscore"
           label="整体评价分数(平均分)"
           :formatter="showJudge1">
         </el-table-column>
@@ -115,11 +115,11 @@
         }
       },
       showJudge1(row,column){
-        const avg = row[column.property];
-        if (avg ==0){
+        const sumscore = row[column.property];
+        if (sumscore ==0){
           return "尚未评分";
         }else{
-          return avg;
+          return sumscore;
         }
       },
 

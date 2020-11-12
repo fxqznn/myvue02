@@ -20,7 +20,7 @@
         </el-select>
       </el-col>
       <el-col :span="8" >
-        <el-button @click="add()" >添加部门</el-button>
+        <el-button @click="add()" type="primary" >添加部门</el-button>
         <el-button @click="dels()" >删除部门</el-button>
       </el-col>
     </el-row>
@@ -70,24 +70,24 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="addConfirm()"  type="primary">确 定</el-button>
         <el-button @click="cancelAdd()">取 消</el-button>
-        <el-button @click="addConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
     <el-dialog title="删除部门" :visible.sync="delsVisiable" width="25%" :center="dialogCenter">
       <p><strong>确认删除所有选中的数据吗？</strong></p>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="delsConfirm()"  type="primary">确 定</el-button>
         <el-button @click="cancelDels()">取 消</el-button>
-        <el-button @click="delsConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
     <el-dialog title="删除部门" :visible.sync="delVisiable" width="25%" :center="dialogCenter">
       <p><strong>确认删除吗？</strong></p>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="delConfirm()"  type="primary">确 定</el-button>
         <el-button @click="cancelDel()">取 消</el-button>
-        <el-button @click="delConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -121,8 +121,8 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="eidtConfirm()"  type="primary">确 定</el-button>
         <el-button @click="cancelEdit()">取 消</el-button>
-        <el-button @click="eidtConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -134,7 +134,7 @@
         <el-table-column prop="isdel" label="状态"></el-table-column>
         <el-table-column fixed="right" prop="checked" label="操作">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.checked == true" @click="cancalChecked(scope.$index, scope.row)" type="text" size="small">取消</el-button>
+            <el-button v-if="scope.row.checked == true" @click="cancalChecked(scope.$index, scope.row)" type="text" size="small" style="color: coral">取消</el-button>
             <el-button v-if="scope.row.checked == false" @click="Checked(scope.$index, scope.row)" type="text" size="small">选课</el-button>
           </template>
         </el-table-column>
@@ -310,7 +310,6 @@
       },
 
       handleEidt : function (index, row) {
-        debugger
         axios.get('getDeptById?did=' + row.did).then(res => {
           this.editData = res.data;
         });
@@ -335,7 +334,7 @@
                 message:'修改成功',
                 type:'success'
               });
-            } else {
+            }else {
               this.$message.error('服务器响应失败');
             }
           });

@@ -3,7 +3,7 @@
     <el-header  style="height: 10% ;background-color: aliceblue">
       <div style="display: inline-block">
         <img src="../assets/jxd.jpg" style="vertical-align: middle" height="50px">
-        <span style="font-weight: bolder;font-size: 25px">金桥学员跟踪系统</span>
+        <span style="font-weight: bolder;font-size: 25px">金桥学员成长跟踪系统</span>
       </div>
       <el-dropdown style="margin-top:1%;float: right">
         <el-button >
@@ -27,7 +27,7 @@
         </el-menu>
       </el-aside>
       <el-container>
-        <el-main  style="width: 80%; height: 100%" >
+        <el-main  style="width: 80%; height: 100%;overflow-x: hidden;" >
           <router-view/>
         </el-main>
       </el-container>

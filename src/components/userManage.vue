@@ -13,7 +13,7 @@
         </el-select>
       </el-col>
       <el-col :span="8" :offset="0">
-        <el-button @click="addUser" >添加用户</el-button>
+        <el-button @click="addUser" type="primary" >添加用户</el-button>
         <el-button @click="deleteUsers" >删除用户</el-button>
       </el-col>
     </el-row>
@@ -44,8 +44,8 @@
       <p><strong>确认删除吗？</strong></p>
       <el-checkbox v-model="delCascade">级联删除账号所有信息</el-checkbox>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="delConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelDel()">取 消</el-button>
-        <el-button @click="delConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -53,8 +53,8 @@
       <p><strong>确认删除所有选中的数据吗？</strong></p>
       <el-checkbox v-model="delCascade">级联删除账号所有信息</el-checkbox>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="delUsersConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelDelUsers()">取 消</el-button>
-        <el-button @click="delUsersConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -63,14 +63,14 @@
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="姓名" label-width="50px">
-              <el-input v-model="user.name" @blur="checkUserName"></el-input>
+              <el-input v-model="user.name" @blur="checkUserName" style="width: 300px"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="角色" label-width="50px">
-              <el-select v-model="user.role">
+              <el-select v-model="user.role"  style="width: 300px">
                 <el-option v-for="item in roles_Add_Edit" :key="item.value" :label="item.label" :value="item.value">
                   <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
@@ -81,8 +81,8 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="addConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelAdd()">取 消</el-button>
-        <el-button @click="addConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -91,14 +91,14 @@
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="账户" label-width="50px">
-              <el-input v-model="editRowData.uname" readonly></el-input>
+              <el-input v-model="editRowData.uname" readonly  style="width: 300px"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12" :offset="6">
             <el-form-item label="角色" label-width="50px">
-              <el-select v-model="editRowData.role">
+              <el-select v-model="editRowData.role"  style="width: 300px">
                 <el-option v-for="item in roles_Add_Edit" :key="item.value" :label="item.label" :value="item.value">
                   <span style="float: left; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px">{{ item.label }}</span>
@@ -109,8 +109,8 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="eidtConfirm()" type="primary">确 定</el-button>
         <el-button @click="cancelEdit()">取 消</el-button>
-        <el-button @click="eidtConfirm()">确 定</el-button>
       </div>
     </el-dialog>
 

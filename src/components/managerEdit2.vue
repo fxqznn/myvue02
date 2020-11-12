@@ -334,7 +334,8 @@
           this.$message.error("评分：100分制");
         } else {
           axios.get("http://localhost:8081/updateEmpScore?cname="
-            + cname + "&&score=" + score + "&&eid=" + this.eid + "&&type=" + 2).then(res => {
+            + cname + "&&score=" + score + "&&eid=" + this.eid + "&&type=" + 2
+            +"&&ename="+this.ename1+"&&did="+this.emp.did).then(res => {
             if (res.data == "success") {
               this.$message.success("成功更新评分信息");
               axios.get("http://localhost:8081/getOneAbilityScore?eid=" + this.eid + "&&type=2").then(res => {

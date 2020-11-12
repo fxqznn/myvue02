@@ -27,7 +27,7 @@
         </el-menu>
       </el-aside>
       <el-container>
-        <el-main  style="width: 80%; height: 100%" >
+        <el-main  style="width: 80%; height: 100%;overflow-x: hidden;" >
           <router-view/>
         </el-main>
       </el-container>

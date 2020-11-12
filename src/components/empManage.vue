@@ -189,7 +189,7 @@
         delEmpVisiable:false,
         delEmp_eid:0,
         editEmpVisible:false,
-        empForEdit:{eid:'',ename:'',job:'',did:'',},
+        empForEdit:{},
         depts_forEdit:[],
       }
     },
@@ -225,7 +225,6 @@
       },
       delConfirm : function() {
         if(this.delCascade){
-          debugger
           axios.get('delEmpByIdCascade?eid=' + this.delEmp_eid).then(res => {
             if(res.data == "success"){
               this.$message({
@@ -252,12 +251,9 @@
         this.tableRenderData();
       },
       handleEidt : function(index, row) {
-        this.empForEdit = {eid:'',ename:'',job:'',did:'',};
+        this.empForEdit = {};
         axios.get('getEmpById?eid=' + row.eid).then(res => {
-          this.empForEdit.did = res.data.did;
-          this.empForEdit.eid = res.data.eid;
-          this.empForEdit.ename = res.data.ename;
-          this.empForEdit.job = res.data.job;
+          this.empForEdit = res.data;
         });
         axios.get('getAllDeptForEmp').then(res => {
           var depts_tem = [{value:0,label:'未分配部门'}];
@@ -281,9 +277,7 @@
       },
       eidtConfirm : function() {
         if(this.checkNameEdit() == true){
-          axios.post('editEmp',qs.stringify({eid:this.empForEdit.eid,
-            ename:this.empForEdit.ename, job:this.empForEdit.job,
-            did:this.empForEdit.did})).then(res => {
+          axios.post('editEmp',qs.stringify(this.empForEdit)).then(res => {
             if(res.data == "success"){
               this.$message({
                 message:'修改成功',

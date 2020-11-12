@@ -334,7 +334,7 @@
                 message:'修改成功',
                 type:'success'
               });
-            } else {
+            }else {
               this.$message.error('服务器响应失败');
             }
           });

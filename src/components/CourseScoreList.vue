@@ -42,8 +42,8 @@
         <td>学习评价</td>
       </tr>
       <tr>
-        <td height="100px">评价(包括主要优点及缺陷)</td>
-        <td colspan="6">{{appraise.content}}</td>
+        <td height="100px">整体评价</td>
+        <td colspan="6">{{appraise}}</td>
       </tr>
     </table>
   </div>
@@ -58,7 +58,7 @@
       return {
         tableHead: [],
         tableData: [],
-        appraise:{content:""}
+        appraise:""
       }
     },
     methods: {
@@ -80,16 +80,17 @@
           this.tableData = res.data;
         })
       },
-      getAppraise:function () {
-        axios.get("getAppraise/"+this.$store.state.student.sid+"/-1").then(res => {
-          this.appraise = res.data;
+      getContent:function () {
+        debugger
+        axios.get("getContent/"+this.$store.state.student.sid+"/-1").then(res => {
+          this.appraise=res.data;
         })
       }
     },
     mounted() {//编译后去获取数据
       this.getAllCourses();
       this.showScores();
-      this.getAppraise();
+      this.getContent();
     }
   }
 </script>

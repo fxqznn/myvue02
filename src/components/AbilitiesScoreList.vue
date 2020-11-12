@@ -48,7 +48,7 @@
       </tr>
       <tr>
         <td height="100px">评价(包括主要优点及缺陷)</td>
-        <td colspan="6">{{appraise.content}}</td>
+        <td colspan="6">{{appraise}}</td>
       </tr>
     </table>
   </div>
@@ -63,7 +63,7 @@
         return {
           tableHead: [],
           tableData: [],
-          appraise:{content:""},
+          appraise:"",
           type:this.$route.params.type,
           year:""
         }
@@ -91,7 +91,7 @@
           })
         },
         getAppraise:function () {
-          axios.get("getAppraise/"+this.$store.state.student.sid+"/"+this.type).then(res => {
+          axios.get("getContent/"+this.$store.state.student.sid+"/"+this.type).then(res => {
             this.appraise = res.data;
           })
         },

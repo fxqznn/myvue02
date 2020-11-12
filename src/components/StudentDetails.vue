@@ -28,7 +28,7 @@
       </tr>
       <tr>
         <td height="40px">出生年月</td>
-        <td><el-date-picker v-model="student.birthday" type="date" placeholder="选择日期" @blur="verifyBirthDay"></el-date-picker></td>
+        <td style="width: 150px"><el-date-picker v-model="student.birthday" type="date" placeholder="选择日期" @blur="verifyBirthDay" style="border: 0px;width: 150px"></el-date-picker></td>
         <td width="60px">籍贯</td>
         <td width="100px"><el-input v-model="student.address" @blur="verifyAdress"></el-input></td>
         <td width="100px">婚否</td>
@@ -36,7 +36,8 @@
           <el-radio v-model="marry" label="1" @change="changeMarry">已婚</el-radio></span></td>
       </tr>
       <tr>
-        <td height="40px">联系电话</td>
+        <td height="40px"
+        >联系电话</td>
         <td colspan="2"><el-input ref="phone" v-model="student.phone" @blur="verifyPhone"></el-input></td>
         <td>身份证号码</td>
         <td colspan="2"><el-input ref="cardid"  v-model="student.cardid" @blur="verifyCardid"></el-input></td>
